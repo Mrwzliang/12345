@@ -15,22 +15,16 @@
 
 
 
-<meta name="description" content="1.总的来说多线程提高了程序的执行效率（废话），但是要注意多个线程的微观上看来并不是同时进行的，一个cpu同一时刻只能执行一个任务，cpu在线程之间快速的切换，导致在宏观上感觉线程是同时运行的，而且cpu的切换是随机的。">
-<meta name="keywords" content="多线程">
-<meta property="og:type" content="article">
-<meta property="og:title" content="关于多线程">
-<meta property="og:url" content="http://www.godwzl.xyz/2017/08/09/关于多线程/index.html">
+<meta name="description" content="得到的都是侥幸">
+<meta property="og:type" content="website">
+<meta property="og:title" content="small love">
+<meta property="og:url" content="http://www.godwzl.xyz/archives/2020/03/index.html">
 <meta property="og:site_name" content="small love">
-<meta property="og:description" content="1.总的来说多线程提高了程序的执行效率（废话），但是要注意多个线程的微观上看来并不是同时进行的，一个cpu同一时刻只能执行一个任务，cpu在线程之间快速的切换，导致在宏观上感觉线程是同时运行的，而且cpu的切换是随机的。">
+<meta property="og:description" content="得到的都是侥幸">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://www.godwzl.xyz/2017/08/09/关于多线程/08/09/关于多线程/开启线程.jpg">
-<meta property="og:image" content="http://www.godwzl.xyz/2017/08/09/关于多线程/08/09/关于多线程/实现Runnable接口.jpg">
-<meta property="og:image" content="http://www.godwzl.xyz/2017/08/09/关于多线程/08/09/关于多线程/3条执行路径.jpg">
-<meta property="og:updated_time" content="2019-07-17T05:15:08.754Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于多线程">
-<meta name="twitter:description" content="1.总的来说多线程提高了程序的执行效率（废话），但是要注意多个线程的微观上看来并不是同时进行的，一个cpu同一时刻只能执行一个任务，cpu在线程之间快速的切换，导致在宏观上感觉线程是同时运行的，而且cpu的切换是随机的。">
-<meta name="twitter:image" content="http://www.godwzl.xyz/2017/08/09/关于多线程/08/09/关于多线程/开启线程.jpg">
+<meta name="twitter:title" content="small love">
+<meta name="twitter:description" content="得到的都是侥幸">
 
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
@@ -62,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>关于多线程 | small love</title>
+<title>Archives: 2020/3 | small love</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -72,8 +66,8 @@
         fancybox: true,
         animate: true,
         isHome: false,
-        isPost: true,
-        isArchive: false,
+        isPost: false,
+        isArchive: true,
         isTag: false,
         isCategory: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
@@ -276,198 +270,56 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我">
 </nav>
-      <div class="body-wrap"><article id="post-关于多线程" class="article article-type-post" itemscope="" itemprop="blogPost">
+      <div class="body-wrap">
   
-    <div class="article-meta">
-      <a href="/2017/08/09/关于多线程/" class="article-date">
-      <time datetime="2017-08-09T05:30:27.000Z" itemprop="datePublished">2017-08-09</time>
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2020" class="archive-year">2020</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+          <div class="article-meta">
+              <a href="/2020/03/10/分布式事务之消息队列解决方案/" class="archive-article-date">
+      <time datetime="2020-03-10T14:02:57.000Z" itemprop="datePublished">03-10</time>
 </a>
 
 
-    </div>
+        </div>
+         
   
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      关于多线程
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2020/03/10/分布式事务之消息队列解决方案/">分布式事务之消息队列解决方案</a>
     </h1>
   
 
-        
-    <div style="margin-top:10px;">
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-keyboard-o"></i>
-        <span class="post-meta-item-text">  字数统计: </span>
-        <span class="post-count">1.1k字</span>
-      </span>
-    </span>
-
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-        <i class="fa fa-hourglass-half"></i>
-        <span class="post-meta-item-text">  阅读时长: </span>
-        <span class="post-count">3分</span>
-      </span>
-    </span>
-</div>
-
-
-      </header>
-      
-      <div class="article-info article-info-post">
-        
-
-        
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多线程/">多线程</a></li></ul>
-    </div>
-
-        <div class="clearfix"></div>
-      </div>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
+        <div class="article-info info-on-archive">
           
-        <p>1.总的来说多线程提高了程序的执行效率（废话），但是要注意多个线程的微观上看来并不是同时进行的，一个cpu同一时刻只能执行一个任务，cpu在线程之间快速的切换，导致在宏观上感觉线程是同时运行的，而且cpu的切换是随机的。<br><a id="more"></a><br>2.从1看出，并不是线程开的越多越好（每个线程被切到的时候执行时间变少了）<br>3.上述现象可视为线程调度即计算机如果只有一个cpu，java中如何分配cpu使用权？<br>    a) 分时调度模型：所有线程轮流使用cpu的使用权，平均分配每个线程占用cpu的时间片。<br>    b) 抢占式调度模型：优先让优先级高的线程使用cpu,如果线程优先级相同，那么会随机选择一个，优先级高的线程获取的 CPU 时间片相对多一些。Java使用的是抢占式调度模型。<br>4.jvm运行时，是多线程，因为垃圾回收器与main函数并不是同一线程。<br>5.并行是同一时刻，多个线程同时运行。并发是一个时间段内，多个线程同时运行。</p>
-<p>6.多线程的实现（java）<br>    a)继承Thread类（线程类），子类重写Thread类的run方法（在这个方法里写线程要执行的代码）但是run方法仅仅是封装了线程的任务,也仅仅执行线程的任务，简单说就只是与main函数一个线程。开启线程需要执行start()函数。<br>    <img src="/2017/08/09/关于多线程/08/09/关于多线程/开启线程.jpg" title="开启线程"><br>    <strong>*</strong>几个疑问<strong>*</strong><br>    1.为什么要继承Thread类？<br>        首先java里用Thread这个类对线程进行描述，而我们希望通过自己的代码操作线程，那么自己的代码就要与Thread产生关系，当然这里采用了继承。这样我们自己的类就变成了线程类，就拥有了Thread类中的所有方法，自己的类可以对线程各种操作（开启线程等）。<br>    2.为什么我们自己的线程类要重写run()方法？<br>        因为我们希望程序中的某段代码可以同时运行，提高程序的运行效率。<br>        设计Thread这个API的人，在设计的时候，只设计了如何启动线程，至于线程要执行什么任务，他并不知道。所以，他这样设计：就是start启动线程之后，JVM会自动的调用run方法。<br>        因此，我们只要把自己的代码写到run方法中，就一定会被执行到。<br>    3.start方法和run方法的区别？<br>    run：只是封装线程任务。<br>    start：先调用系统资源，在内存中开辟一个新的空间启动线程，再执行run方法。<br>    b)实现Runnable接口，实现run方法，所创类即任务类，创建任务类对象，再创建Thread对象，并把任务对象作为参数传递。<br>    <img src="/2017/08/09/关于多线程/08/09/关于多线程/实现Runnable接口.jpg" title="实现Runnable接口"><br>    c)一般采用实现接口方式，主要是1.可以避免java中单继承的局限。2.把线程代码和任务的代码分离，解耦合(解除线程代码和任务的代<br>    码模块之间的依赖关系)。</p>
-<p>7.多线程程序运行路径图解<br>    <img src="/2017/08/09/关于多线程/08/09/关于多线程/3条执行路径.jpg" title="3条执行路径"></p>
-<p>8.关于线程安全问题<br>    java中每个对象都内置了一个监视器（锁）<br>    本质原因是cpu在处理多个线程时候，在操作共享数据的多条代码之间进行切换导致的。<br>    无法控制cpu的切换，只能控制某个线程在操作共享数据的时候，不让其它线程进入到操作共享数据的代码中去，即线程同步。<br>    可以通过关键字synchronized(obj锁){}来控制公共资源，在JDK1.5之后，使用Lock来代替synchronized，即创建<br>    ReentrantLock实例，但是需要手动获取锁与释放锁。<br>9.执行时间较长或者需要客户等待的情况下一般要考虑多线程，上传图片？<br>10.java中有些类保证线程安全有些没有，比如stringbuffer/stringbuild  vector/arraylist,保证线程安全性能一般都低了点，<br>所以根据实际业务来选择。</p>
 
-      
-    </div>
-    
-  </div>
-  
-    
-    <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/08/09/关于多线程/">关于多线程</a></p>
-        <p><span>文章作者:</span><a href="/" title="回到主页">得到的都是侥幸</a></p>
-        <p><span>发布时间:</span>2017-08-09, 13:30:27</p>
-        <p><span>最后更新:</span>2019-07-17, 13:15:08</p>
-        <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/08/09/关于多线程/" title="关于多线程">http://www.godwzl.xyz/2017/08/09/关于多线程/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://www.godwzl.xyz/2017/08/09/关于多线程/　　作者: 得到的都是侥幸" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
-            <script> var clipboard = new Clipboard('.copy-path'); </script>
-        </p>
-        <p>
-            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target="_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
-        </p>
+          
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式/">分布式</a></li></ul>
     </div>
 
-
-
-    <nav id="article-nav">
-        
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/08/21/js注入问题/">
-                    js注入问题
-                </a>
-            </div>
-        
-        
-            <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/03/06/情，搁浅芳华恨梦中，花开日，月下许相逢/">
-                    情，搁浅芳华恨梦中，花开日，月下许相逢
-                </a>
-            </div>
-        
-    </nav>
-
-  
-</article>
-
-    <div id="toc" class="toc-article">
-        <strong class="toc-title">文章目录</strong>
-        
-            
-        
-    </div>
-    <style>
-        .left-col .switch-btn,
-        .left-col .switch-area {
-            display: none;
-        }
-        .toc-level-3 i,
-        .toc-level-3 ol {
-            display: none !important;
-        }
-    </style>
-
-    <input type="button" id="tocButton" value="隐藏目录" title="点击按钮隐藏或者显示文章目录">
-
-    <script>
-        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
-    </script>
-
-
-
-    
-<div class="share">
-    
-        <div class="bdsharebuttonbox">
-            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
-            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
-            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
-            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
-            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
-            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
-            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></a>
         </div>
-        <script>
-            window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"关于多线程　| small love　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
-        </script>
-    
+        <div class="clearfix"></div>
+    </header>
+  </div>
+</article>
+  
+  
+    </div></section>
+  
 
     
-</div>
 
-
-
-
-
-
-
-    
-    
-
-
-
-
-
-    <div class="scroll" id="post-nav-button">
-        
-            <a href="/2017/08/21/js注入问题/" title="上一篇: js注入问题">
-                <i class="fa fa-angle-left"></i>
-            </a>
-        
-
-        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
-
-        
-            <a href="/2017/03/06/情，搁浅芳华恨梦中，花开日，月下许相逢/" title="下一篇: 情，搁浅芳华恨梦中，花开日，月下许相逢">
-                <i class="fa fa-angle-right"></i>
-            </a>
-        
-    </div>
-
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/03/10/分布式事务之消息队列解决方案/">分布式事务之消息队列解决方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/12/BSON与JSON的区别/">BSON与JSON的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/25/mysql优化小结/">mysql优化小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/15/kubernetes/">kubernetes</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/17/bio-nio-netty以及自定义rpc/">bio/nio/netty以及自定义rpc</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/17/使用nexus搭建maven仓库-本地私服/">使用nexus搭建maven仓库(本地私服)</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/13/关于docker以及与传统虚拟机的区/">关于docker以及与传统虚拟机的区</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/03/02/tomcat——简单优化/">tomcat——简单优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/20/分布式文件系统（FastDFS）/">分布式文件系统（FastDFS）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/28/jvm优化/">jvm优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/25/about-springsecurity/">about springsecurity</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/14/简化版类ORM框架的设计/">简化版类ORM框架的设计</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/06/Dubbo基本原理机制/">Dubbo基本原理机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/12/sprngboot应用即原理/">springboot基本应用</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/14/深入浅出MVC/">深入浅出MVC</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/11/mybatis应用小结/">mybatis应用小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/10/关于反射/">关于反射</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/21/js注入问题/">js注入问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/09/关于多线程/">关于多线程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/06/情，搁浅芳华恨梦中，花开日，月下许相逢/">情，搁浅芳华恨梦中，花开日，月下许相逢</a></li></ul>
-
-
-
-
-    <script>
-        
-    </script>
 </div>
       <footer id="footer">
 <script>

@@ -15,18 +15,22 @@
 
 
 
-<meta name="description" content="分布式事务早有耳闻，本文通过案例介绍一下消息队列的解决方案，其他的比如事务补偿等方案不作详解。">
+<meta name="description" content="分布式事务早有耳闻，本文通过案例介绍一下消息队列的解决方案，其他的比如事务补偿等方案不作详解。先给大家套一个业务场景，也是很常见的一个异步调用场景: 支付宝往余额宝转钱即将服务A假设为支付宝，服务B假设为余额宝。于是呢，我们的支付宝往余额宝转100块钱是怎么做的呢？特别容易，借助消息队列即可，如下图1所示 一致性解决OK，上面这一版有一个致命的问题！如下所示事务开始(1)给支付宝账户zhangsa">
 <meta name="keywords" content="分布式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="分布式事务之消息队列解决方案">
-<meta property="og:url" content="http://www.godwzl.xyz/2019/07/31/分布式事务之消息队列解决方案/index.html">
+<meta property="og:url" content="http://www.godwzl.xyz/2020/03/10/分布式事务之消息队列解决方案/index.html">
 <meta property="og:site_name" content="small love">
-<meta property="og:description" content="分布式事务早有耳闻，本文通过案例介绍一下消息队列的解决方案，其他的比如事务补偿等方案不作详解。">
+<meta property="og:description" content="分布式事务早有耳闻，本文通过案例介绍一下消息队列的解决方案，其他的比如事务补偿等方案不作详解。先给大家套一个业务场景，也是很常见的一个异步调用场景: 支付宝往余额宝转钱即将服务A假设为支付宝，服务B假设为余额宝。于是呢，我们的支付宝往余额宝转100块钱是怎么做的呢？特别容易，借助消息队列即可，如下图1所示 一致性解决OK，上面这一版有一个致命的问题！如下所示事务开始(1)给支付宝账户zhangsa">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-31T04:05:09.481Z">
+<meta property="og:image" content="http://www.godwzl.xyz/2020/03/10/分布式事务之消息队列解决方案/03/10/分布式事务之消息队列解决方案/1.png">
+<meta property="og:image" content="http://www.godwzl.xyz/2020/03/10/分布式事务之消息队列解决方案/03/10/分布式事务之消息队列解决方案/2.png">
+<meta property="og:image" content="http://www.godwzl.xyz/2020/03/10/分布式事务之消息队列解决方案/03/10/分布式事务之消息队列解决方案/3.png">
+<meta property="og:updated_time" content="2020-04-24T15:18:02.778Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分布式事务之消息队列解决方案">
-<meta name="twitter:description" content="分布式事务早有耳闻，本文通过案例介绍一下消息队列的解决方案，其他的比如事务补偿等方案不作详解。">
+<meta name="twitter:description" content="分布式事务早有耳闻，本文通过案例介绍一下消息队列的解决方案，其他的比如事务补偿等方案不作详解。先给大家套一个业务场景，也是很常见的一个异步调用场景: 支付宝往余额宝转钱即将服务A假设为支付宝，服务B假设为余额宝。于是呢，我们的支付宝往余额宝转100块钱是怎么做的呢？特别容易，借助消息队列即可，如下图1所示 一致性解决OK，上面这一版有一个致命的问题！如下所示事务开始(1)给支付宝账户zhangsa">
+<meta name="twitter:image" content="http://www.godwzl.xyz/2020/03/10/分布式事务之消息队列解决方案/03/10/分布式事务之消息队列解决方案/1.png">
 
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
@@ -275,8 +279,8 @@
       <div class="body-wrap"><article id="post-分布式事务之消息队列解决方案" class="article article-type-post" itemscope="" itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2019/07/31/分布式事务之消息队列解决方案/" class="article-date">
-      <time datetime="2019-07-31T14:02:57.000Z" itemprop="datePublished">2019-07-31</time>
+      <a href="/2020/03/10/分布式事务之消息队列解决方案/" class="article-date">
+      <time datetime="2020-03-10T14:02:57.000Z" itemprop="datePublished">2020-03-10</time>
 </a>
 
 
@@ -301,7 +305,7 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-keyboard-o"></i>
         <span class="post-meta-item-text">  字数统计: </span>
-        <span class="post-count">44字</span>
+        <span class="post-count">645字</span>
       </span>
     </span>
 
@@ -310,7 +314,7 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-hourglass-half"></i>
         <span class="post-meta-item-text">  阅读时长: </span>
-        <span class="post-count">1分</span>
+        <span class="post-count">2分</span>
       </span>
     </span>
 </div>
@@ -333,7 +337,12 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>分布式事务早有耳闻，本文通过案例介绍一下消息队列的解决方案，其他的比如事务补偿等方案不作详解。<br><a id="more"></a></p>
+        <p>分布式事务早有耳闻，本文通过案例介绍一下消息队列的解决方案，其他的比如事务补偿等方案不作详解。<br>先给大家套一个业务场景，也是很常见的一个异步调用场景:</p>
+<p>支付宝往余额宝转钱<br>即将服务A假设为支付宝，服务B假设为余额宝。<br>于是呢，我们的支付宝往余额宝转100块钱是怎么做的呢？<br>特别容易，借助消息队列即可，如下图1所示<br><img src="/2020/03/10/分布式事务之消息队列解决方案/03/10/分布式事务之消息队列解决方案/1.png" width="1"></p>
+<p>一致性解决<br>OK，上面这一版有一个致命的问题！如下所示<br>事务开始<br>(1)给支付宝账户zhangsan,扣100元<br>(2)将(给余额宝账户zhangsan,加100元)封装为消息，发送给消息队列<br>事务结束<br>敢问你，如何保证第一步和第二步是在同一个事务里完成的。换句话说，第一步操作的是数据库，第二步操作的是一个消息队列，你如何保证这两步之间的一致性？<br>记住了，任何涉及到数据库和中间件之间的业务逻辑操作，都需要考虑二者之间的一致性。比如，你先操作了数据库，再操作缓存，数据库和缓存之间一致性如何解决？好吧，如果是博主的铁粉，应该知道怎么解决了，回到我们的场景。<br>改变思路，加一张事务表，如下图2所示<br><img src="/2020/03/10/分布式事务之消息队列解决方案/03/10/分布式事务之消息队列解决方案/2.png" width="2"></p>
+<p>幂等性解决<br>注意了，这一版还存在一个幂等性问题!<br>仔细看，定时程序做了如下三个操作<br>(1)定时扫描事务表，发现一个状态为’UNFINISHED’的事件<br>(2)将事件信息，封装为消息，发送到消息中间件<br>(3)将事件状态改为’FINISHED’</p>
+<p>OK，假设在步骤(2)的时候，发送完消息体，还未执行步骤(3),定时程序阵亡了！然后重启定时程序，发现刚那个事务的状态依然为’UNFINISHED’，因此重新发送。这样，就会出现重复消费问题。因此，幂等性也是需要保证的！</p>
+<p>如果是博主的忠实读者，应该知道，博主曾经写过一篇《分布式之消息队列复习精讲》，里头就提到了如何解决幂等性问题。什么？你没看过这篇？拉出去枪毙！<br>借用这篇文章里的方案。在消费者端，也维护一个带主键的表，可以选txid为主键，如下图3所示<br><img src="/2020/03/10/分布式事务之消息队列解决方案/03/10/分布式事务之消息队列解决方案/3.png" width="3"><br><a id="more"></a></p>
 
       
     </div>
@@ -342,13 +351,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2019/07/31/分布式事务之消息队列解决方案/">分布式事务之消息队列解决方案</a></p>
+        <p><span>本文标题:</span><a href="/2020/03/10/分布式事务之消息队列解决方案/">分布式事务之消息队列解决方案</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">得到的都是侥幸</a></p>
-        <p><span>发布时间:</span>2019-07-31, 22:02:57</p>
-        <p><span>最后更新:</span>2019-07-31, 12:05:09</p>
+        <p><span>发布时间:</span>2020-03-10, 22:02:57</p>
+        <p><span>最后更新:</span>2020-04-24, 23:18:02</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2019/07/31/分布式事务之消息队列解决方案/" title="分布式事务之消息队列解决方案">http://www.godwzl.xyz/2019/07/31/分布式事务之消息队列解决方案/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://www.godwzl.xyz/2019/07/31/分布式事务之消息队列解决方案/　　作者: 得到的都是侥幸" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2020/03/10/分布式事务之消息队列解决方案/" title="分布式事务之消息队列解决方案">http://www.godwzl.xyz/2020/03/10/分布式事务之消息队列解决方案/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://www.godwzl.xyz/2020/03/10/分布式事务之消息队列解决方案/　　作者: 得到的都是侥幸" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -445,7 +454,7 @@
         
     </div>
 
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/07/31/分布式事务之消息队列解决方案/">分布式事务之消息队列解决方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/12/BSON与JSON的区别/">BSON与JSON的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/25/mysql优化小结/">mysql优化小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/15/kubernetes/">kubernetes</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/17/bio-nio-netty以及自定义rpc/">bio/nio/netty以及自定义rpc</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/17/使用nexus搭建maven仓库-本地私服/">使用nexus搭建maven仓库(本地私服)</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/13/关于docker以及与传统虚拟机的区/">关于docker以及与传统虚拟机的区</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/03/02/tomcat——简单优化/">tomcat——简单优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/20/分布式文件系统（FastDFS）/">分布式文件系统（FastDFS）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/28/jvm优化/">jvm优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/25/about-springsecurity/">about springsecurity</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/14/简化版类ORM框架的设计/">简化版类ORM框架的设计</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/06/Dubbo基本原理机制/">Dubbo基本原理机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/12/sprngboot应用即原理/">springboot基本应用</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/14/深入浅出MVC/">深入浅出MVC</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/11/mybatis应用小结/">mybatis应用小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/10/关于反射/">关于反射</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/21/js注入问题/">js注入问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/09/关于多线程/">关于多线程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/06/情，搁浅芳华恨梦中，花开日，月下许相逢/">情，搁浅芳华恨梦中，花开日，月下许相逢</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/03/10/分布式事务之消息队列解决方案/">分布式事务之消息队列解决方案</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/12/BSON与JSON的区别/">BSON与JSON的区别</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/06/25/mysql优化小结/">mysql优化小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/15/kubernetes/">kubernetes</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/17/bio-nio-netty以及自定义rpc/">bio/nio/netty以及自定义rpc</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/17/使用nexus搭建maven仓库-本地私服/">使用nexus搭建maven仓库(本地私服)</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/13/关于docker以及与传统虚拟机的区/">关于docker以及与传统虚拟机的区</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/03/02/tomcat——简单优化/">tomcat——简单优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/01/20/分布式文件系统（FastDFS）/">分布式文件系统（FastDFS）</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/10/28/jvm优化/">jvm优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/25/about-springsecurity/">about springsecurity</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/14/简化版类ORM框架的设计/">简化版类ORM框架的设计</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/06/Dubbo基本原理机制/">Dubbo基本原理机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/07/12/sprngboot应用即原理/">springboot基本应用</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/14/深入浅出MVC/">深入浅出MVC</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/01/11/mybatis应用小结/">mybatis应用小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/10/关于反射/">关于反射</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/21/js注入问题/">js注入问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/08/09/关于多线程/">关于多线程</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/06/情，搁浅芳华恨梦中，花开日，月下许相逢/">情，搁浅芳华恨梦中，花开日，月下许相逢</a></li></ul>
 
 
 
