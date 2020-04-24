@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>分布式事务之消息队列解决方案</title>
+      <link href="/2019/07/31/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E4%B9%8B%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"/>
+      <url>/2019/07/31/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E4%B9%8B%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>分布式事务早有耳闻，本文通过案例介绍一下消息队列的解决方案，其他的比如事务补偿等方案不作详解。<br><a id="more"></a></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 分布式 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>BSON与JSON的区别</title>
+      <link href="/2019/07/12/BSON%E4%B8%8EJSON%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
+      <url>/2019/07/12/BSON%E4%B8%8EJSON%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>BSON是由10gen开发的一个数据格式，目前主要用于MongoDB中，是MongoDB的数据存储格式。BSON基于JSON格式，选择JSON进行改造的原因主要是JSON的通用性及JSON的schemaless的特性。</p><p>BSON主要会实现以下三点目标：<br><a id="more"></a></p><p>1.更快的遍历速度</p><p>对JSON格式来说，太大的JSON结构会导致数据遍历非常慢。在JSON中，要跳过一个文档进行数据读取，需要对此文档进行扫描才行，需要进行麻烦的数据结构匹配，比如括号的匹配，而BSON对JSON的一大改进就是，它会将JSON的每一个元素的长度存在元素的头部，这样你只需要读取到元素长度就能直接seek到指定的点上进行读取了。</p><p>2.操作更简易</p><p>对JSON来说，数据存储是无类型的，比如你要修改基本一个值，从9到10，由于从一个字符变成了两个，所以可能其后面的所有内容都需要往后移一位才可以。而使用BSON，你可以指定这个列为数字列，那么无论数字从9长到10还是100，我们都只是在存储数字的那一位上进行修改，不会导致数据总长变大。当然，在MongoDB中，如果数字从整形增大到长整型，还是会导致数据总长变大的。</p><p>3.增加了额外的数据类型</p><p>JSON是一个很方便的数据交换格式，但是其类型比较有限。BSON在其基础上增加了“byte array”数据类型。这使得二进制的存储不再需要先base64转换后再存成JSON。大大减少了计算开销和数据大小。</p><p>当然，在有的时候，BSON相对JSON来说也并没有空间上的优势，比如对{“field”:7}，在JSON的存储上7只使用了一个字节，而如果用BSON，那就是至少4个字节（32位）</p><p>目前在10gen的努力下，BSON已经有了针对多种语言的编码解码包。并且都是Apache 2 license下开源的。并且还在随着MongoDB进一步地发展。关于BSON，</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> mongodb </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>mysql优化小结</title>
+      <link href="/2019/06/25/mysql%E4%BC%98%E5%8C%96%E5%B0%8F%E7%BB%93/"/>
+      <url>/2019/06/25/mysql%E4%BC%98%E5%8C%96%E5%B0%8F%E7%BB%93/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p> 本文针对mysql进行分析，mysql优化问题听起来简单，可是实质却小有复杂，主要是优化的方向有很多，但是要找到合适耳朵，话不多说，简单写写我所理解的，如有不妥之处请大家指点指点。。。。。。<br><a id="more"></a></p><p>Mysql锁的问题<br>简单的说锁就是协调并发访问数据库某一资源的机制，可想有多重要以及复杂。<br>按数据操作的粒度分：分表锁与行锁，及操作时会锁住整个表和锁住当前操作行。<br>按对数据的操作分：读锁（共享锁）及针对同一数据，多个读操作可以同时进行互补干扰。写锁（排它锁）及当前操作没完成之前，或阻断其他写锁或读锁</p><p>Mysql主从复制实现读写分离缓解数据库压力（利用中间件mycat)<br>将主库里的ddl与dml操作通过二进制日志传到从数据库，然后再从数据库里对二进制日志重新执行即可。<br>mysql支持主库同时向多台从库进行复制，也支持从库作为其他从库的主库向其他从库进行链状复制。<br>可参考下图：<br><img src="/2019/06/25/mysql优化小结/06/25/mysql优化小结/mysql主从复制.jpg" title="mysql主从复制"><br>经过一顿配置可以最终在slave数据库里执行show slave status\G。看到下图两个yes基本就行了，一般出问题可能是网络或者地址密码写错等。<br><img src="/2019/06/25/mysql优化小结/06/25/mysql优化小结/配置完的两个yes.jpg" title="配置完的两个yes"><br>大概说下配置，首先采用docker进行部署的话，最好就直接拉取mysql:xx的镜像等，不然后面可能有很多奇葩问题。<br>mysql配置文件里主要就是两个，开启二进制日志与设置一个服务器id，需要唯一，如果不是用docker部署可能要改一下uuid如果是直接复制虚拟机的话。<br>然后用的的主要指令就是：在master上执行GRANT REPLICATION SLAVE ON <em>.</em> to ‘root‘@’%’ identified by ‘123456’;<br>给副本授权可以复制任何表，登陆者为root不管哪台机器上都ok。<br>在slave数据库执行，master地址 端口（容器的端口）,二进制文件名，开始读的位置。<br>change master to master_host=’172.17.0.2’,master_user=’root’,master_password=’123456’,master_port=3306,master_log_file=’mysql-bin.000001’,master_log_pos=437;<br>有问题可以先stop slave再start slave试试。 到这里mysql本身已经搞定了，其实没有中间件，我们通过代码也可以实现读写分离，但是<br>mycat可以应付更复杂的系统以及业务，下面开始mycat的配置:我们这里只是简单的主从复制<br>mycat主要配置三大配置文件：server.xml(配置mycat账户和密码以及虚拟的数据库名称)<br>schema.xml ：配置具体配置（读写分离的配置，分片的配置。。。。。）<br>rule.xml ： 配置分片的规则 当然我们暂时不考虑分片所以这玩意先不管。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> mysql优化 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>kubernetes</title>
+      <link href="/2019/05/15/kubernetes/"/>
+      <url>/2019/05/15/kubernetes/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>关于kubernetes简单了解<br>    Kubernetes 是一个开源的 Docker 容器编排系统，它可以调度计算集群的节点，动态管理上面的作业，保证它们按用户期望的状态运行。通过使用「labels」和「pods」的概念，Kubernetes 将应用按逻辑单元进行分组，方便管理和服务发现。for simple just manager the container</p><a id="more"></a><p>  部署tomcat为例<br>          首先准备好kubernetes的环境<br>          systemctl disable firewall<br>          systemctl stop firewall<br>          yum install -y etcd kubernetes<br>          systemctl start etcd<br>          systemctl start docker<br>          systemctl start kube-apiserver<br>          systemctl start kube-controller-manager<br>          systemctl start kube-scheduler<br>          systemctl start kubelet<br>          systemctl start kube-proxy</p><pre><code>添加配置文件 mytomcat-rc.yaml mytoomcat-svc.yaml创建文件：kubectl create -f mytomcat-rc.yaml mytoomcat-svc.yaml配置文件里主要定义了对外开放的端口 镜像的信息，pod的副本数，用于刷选目标pod的label Selector等。但是在get pods时会出现 no resources found的问题，这需要我们改下里面的配置文件见下图1，改完重启api服务（systemctl restart kube-apisever)注意：yaml的格式很严谨严谨，空格符，&quot;-&quot;符都不能随意丢。见下图2中的配置文件：走到这里tomcat还不能正常访问由于网络限制不能正常拉取镜像需要改下配置文件以下方案都是讲资源搞到本地。方案一：1.yum install rhsm -y2.docker pull registry.access.redhat.com/rhel7/pod-infrastructure:latest如果以上两步解决不了继续以下执行3.docker search pod-infrastructure4.docker pull docker.io/tianyebj/pod-infrastructure5.docker tag tianyebj/pod-infrastructure 地址+端口/pod-infrastructure6.docker push 地址+端口/pod-infrastructure7.vi /etc/kubernetes/kubelet修改 KUBELET_POD_INFRA_CONTAINER=&quot;--pod-infra-containerimage=地址+端口/pod-infrastructure:latest&quot;8.重启服务方案二：1.docker pull kubernetes/pause2.docker tag docker.io/kubernetes/pause:latest地址+端口/google_containers/pause-amd64.3.03.docker push 地址+端口/google_containers/pause-amd64.3.04.vi /etc/kubernetes/kubelet配置为 KUBELET_ARGS=&quot;pod_infra_container_image=地址+端口/google_containers/pause-amd64.3.0&quot;5.重启kubelet服务kubenetes的核心组件：    etcd保存了整个集群的状态    apiserver提供了资源操作的唯一入口，并提供认证授权访问控制，api注册和发现等机制    controller manager 负责维护集群的状态，比如故障检修，自动扩展，滚动更新等    schedule 负责资源的调度，按照预定的调度策略将pod调度到相应的机器上    kublet负责维护容器的生命周期，同时也负责volume与网络的管理    Container runtime 负责镜像的管理以及pod和容器的真正运行    kube-proxy负责为service提供cluster内部的服务发现与负载均衡</code></pre>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>bio/nio/netty以及自定义rpc</title>
+      <link href="/2019/04/17/bio-nio-netty%E4%BB%A5%E5%8F%8A%E8%87%AA%E5%AE%9A%E4%B9%89rpc/"/>
+      <url>/2019/04/17/bio-nio-netty%E4%BB%A5%E5%8F%8A%E8%87%AA%E5%AE%9A%E4%B9%89rpc/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>BIO有的称之为basicIO有的称之为blockIO主要应用于文件IO（文件流一些类等）和网络IO（socket）以流的方式进行。如下图红圈部分代码，服务端、客户端都存在阻塞。</p><a id="more"></a><p>NIO有的称之为newIO有的称之为noblockIO，不再以流的方式，有的通道的概念。NIO也分文件与网络两块我们先看文件IO</p><p>NIO之文件IO：<br>    引入缓冲区（Buffer)的概念，可以看做一个容器，一个特殊的数组，Channel提供从网络或者文件读取数据的渠道，但是必须经过Buffer,当然这些也是基于流实现的，下图演示文件写入/读取以及文件复制的操作代码：</p><p>NIO之网络编程：<br>    一般java编写服务器，不可能一个客户端对应一个线程，加上线程池也不太现实，客户量变大，等待情况很严重，也很耗资源，所以NIO来解决倒是很好，因为它一个线程可以应对多个客户端（非阻塞）。为何NIO能做到？我们来看NIO四个核心的API<br>        1.Selector选择器，作用类似监听器，监听到有读写事件才去具体通道干活，如下图。<br>        2.SelectionKey,有不同的取值，代表不同的操作。<br>        3.ServerSocketChannel,用来监听新的客户端Socket连接。<br>        4.SocketChannel,网络IO通道，具体负责读写操作<br>    整体结构图如下：NIO搞网络的输入输出，小有复杂。</p><p>Netty框架：<br>    基于NIO，基于事件驱动，高性能，高可靠性的框架。<br>    Netty核心API：</p><pre><code>1.ChannelHandler 定义了许多事件处理的方法，通过重写这里的方法处理实际的业务逻辑2.pipeline与ChannelPipeLine 贯穿整个channel3.ChannelHanderContext(上下文) 实际处理通道的节点4.ChannelOption5.ChannelFuture6.EventLoopGroup7.ServerBootStrap与BootStrap                                                                                                                    8.Upooled 专门操作缓冲区的工具类</code></pre><p>自定义RPC：</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> NIO </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>使用nexus搭建maven仓库(本地私服)</title>
+      <link href="/2019/04/17/%E4%BD%BF%E7%94%A8nexus%E6%90%AD%E5%BB%BAmaven%E4%BB%93%E5%BA%93-%E6%9C%AC%E5%9C%B0%E7%A7%81%E6%9C%8D/"/>
+      <url>/2019/04/17/%E4%BD%BF%E7%94%A8nexus%E6%90%AD%E5%BB%BAmaven%E4%BB%93%E5%BA%93-%E6%9C%AC%E5%9C%B0%E7%A7%81%E6%9C%8D/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>关于docker以及与传统虚拟机的区</title>
+      <link href="/2019/04/13/%E5%85%B3%E4%BA%8Edocker%E4%BB%A5%E5%8F%8A%E4%B8%8E%E4%BC%A0%E7%BB%9F%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E5%8C%BA/"/>
+      <url>/2019/04/13/%E5%85%B3%E4%BA%8Edocker%E4%BB%A5%E5%8F%8A%E4%B8%8E%E4%BC%A0%E7%BB%9F%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E5%8C%BA/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>第一次接触Docker的时候，我把它比做一种轻量级的虚拟机。这样做无可厚非，因为Docker最初的成功秘诀，正是它比虚拟机更节省内存，启动更快。Docker不停地给大家宣传，”虚拟机需要数分钟启动，而Docker容器只需要50毫秒”。</p><p>然而，Docker容器并非虚拟机！<br><a id="more"></a><br>docker直接与本地系统挂钩，效率比较高。docker镜像与容器的概念等于就是类与对象的关系，我们可以镜像一个mysql，弄出三个mysql来控制。<br>docker也有自己的注册中心类似github，我们可以拉取镜像也可以上传自己的镜像、<br>常用命令：<br>    镜像相关的命令：<br>            查看镜像 docker images （参数   REPOSITORY：镜像名称<br>                            TAG：镜像标签<br>                            IMAGE ID：镜像ID<br>                            CREATED：镜像的创建日期（不是获取该镜像的日期）<br>            搜索镜像 需要从网络下载镜像 docker search（参数 NAME：仓库名称<br>                                    DESCRIPTION：镜像描述<br>                                    STARS：用户评价，反应一个镜像的受欢迎程度<br>                                    OFFICIAL：是否官方<br>                                    AUTOMATED：自动构建，表示该镜像由Docker Hub自动构建流程创建的 ）<br>            拉取镜像 就是从中央仓库下载镜像到本地 docker pull 镜像名称 （列如:docker pull centos:7）<br>            删除镜像 按镜像id删除 docker rmi 镜像ID  删除所有镜像 docker rmi `docker images ‐q<br>    容器相关命令：<br>            查看正在运行的容器 docker ps  查看所有容器 docker ps -a 查看最后一次运行的容器 docker ps -l 查看停止的容器 docker ps ‐f status=exited<br>            创建于启动容器<br>    创建与启动容器：<br>            1.交互式方式创建容器 docker run -it –name=容器名 镜像名称：标签 /bin/bash 这种方式只要退回宿主机，容器就自动关闭状态、<br>            将宿主机中的文件拷贝到容器里：docker cp 文件（夹）名 容器名：路径</p><pre><code>关于dockerfile（脚本），Dockerfile是由一系列命令和参数构成的脚本，这些命令应用于基础镜像并终创建一个 新的镜像。假如需要构建一个镜像，首先创建好文件夹，再将jdk上传进去，创建Dockerfile文件，首字母必须大写，dockerfile文件里添加：#依赖镜像名称和ID  FROM centos:7  #指定镜像创建者信息  MAINTAINER *** #切换工作目录  WORKDIR /usr  RUN mkdir  /usr/local/java  #ADD 是相对路径jar,把java添加到容器中  ADD jdk‐8u171‐linux‐x64.tar.gz /usr/local/java/ #配置java环境变量  ENV JAVA_HOME /usr/local/java/jdk1.8.0_171  ENV JRE_HOME $JAVA_HOME/jre  ENV CLASSPATH  $JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib:$CLASSPATH  ENV PATH $JAVA_HOME/bin:$PATH最后执行命令构建镜像 docker build ‐t=&apos;jdk1.8&apos; .关于docker私有仓库的搭建首先拉取镜像registry，但是需要docker相信我们的仓库所以还需要修改配置文件即：vi /etc/docker/daemon.json，添加配置{&quot;insecure‐registries&quot;:[&quot;地址+私服地址端口&quot;]}镜像上传到私有仓库:标记为镜像文件（jdk1.8） docker tag jdk1.8 私有仓库地址/jdk1.8docker push 私有仓库地址+镜像文件（docker push 私有仓库地址/jdk1.8）注意点：        1.docker里的参数等很注重大小写，补课随意写        2.部署mysql，设置密码的参数比较固定（MYSQL_ROOT_PASSWORD=***)</code></pre>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> docker </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>tomcat——简单优化</title>
+      <link href="/2019/03/02/tomcat%E2%80%94%E2%80%94%E7%AE%80%E5%8D%95%E4%BC%98%E5%8C%96/"/>
+      <url>/2019/03/02/tomcat%E2%80%94%E2%80%94%E7%AE%80%E5%8D%95%E4%BC%98%E5%8C%96/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>当一个进程有500个线程在跑的话，性能就很低了。tomcat默认配置的最大请求数是150，当然可以继续将其改大但是并不是越大越好，到底配置多少才是最合适的？当然这些也跟硬件有很大关系。禁用ajp服务是否会提高性能?<br><a id="more"></a></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> tomcat </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>分布式文件系统（FastDFS）</title>
+      <link href="/2019/01/20/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%EF%BC%88FastDFS%EF%BC%89/"/>
+      <url>/2019/01/20/%E5%88%86%E5%B8%83%E5%BC%8F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%EF%BC%88FastDFS%EF%BC%89/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>1.FastDFS是众多分布式文件系统中安装最简便的一种，即便如此也不太好安装，具体安装可自行百度。<br>2.分布式文件系统是指可以将用户上传的很多很多文件保存在多台计算机上，主要解决单台服务器硬盘容量不够用问题，并且能够做到数据传输的负载均衡、以及数据存储的主从备份。<br>3.FastDFS是由淘宝的余庆先生所开发，是一个轻量级、高性能的开源分布式文件系统，用纯C语言开发，包括文件存储、文件同步、文件访问（上传、下载）、存取负载均衡、在线扩容、相同内容只存储一份等功能，适合有大容量存储需求的应用或系统。做分布式系统开发时，其中要解决的一个问题就是图片、音视频、文件共享的问题，分布式文件系统正好可以解决这个需求。同类的分布式文件系统有谷歌的GFS、HDFS（Hadoop）、TFS（淘宝）等。<a id="more"></a></p><p>4.FastDFS两个主要的角色：Tracker Server 和 Storage Server<br>    Tracker Server：跟踪服务器，主要负责调度storage节点与client通信，在访问上起负载均衡的作用，和记录storage节点的运行状态，是连接client和storage节点的枢纽。 Storage Server：存储服务器，保存文件和文件的meta data（元数据） Group：文件组，也可以称为卷。同组内服务器上的文件是完全相同的，做集群时往往一个组会有多台服务器，上传一个文件到同组内的一台机器上后，FastDFS会将该文件即时同步到同组内的其它所有机器上，起到备份的作用。 meta data：文件相关属性，键值对（Key Value Pair）方式，如：width=1024, height=768。和阿里云OSS的meta data相似。</p><p>5.通过web服务器进行访问，一般选择Nginx（速度比tomcat快，主要是不需要jsp了）。</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>jvm优化</title>
+      <link href="/2018/10/28/jvm%E4%BC%98%E5%8C%96/"/>
+      <url>/2018/10/28/jvm%E4%BC%98%E5%8C%96/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>1.首先我们为啥要进行jvm优化？<br>在本地开发环境我们很少会遇到要对jvm进行优化的需求，但是到了生产环境，我们可能有新的需求，比如运行的应用卡住了，日志也不输出，客户响应数据程序也没有反应？再比如服务器的cpu负载突然升高，那如何分析问题，定位问题？再多线程的应用下，如何分配线程的数量？让程序跑起来，跑的更快？<a id="more"></a></p><p>2.关于jvm的运行参数<br>标准参数像-help -version之类的，不会因为jdk版本变化的参数<br>-X参数(非标准参数)像-Xint -Xcomp之类的，可能会变化<br>-XX参数(使用率较高，也是非标准，主要用于jvm调优和debug操作，一种是boolean类型，一种是非boolean类型)</p><p>3.设置系统参数值 通过-D&lt;参数名&gt;=&lt;值&gt;来设定，可以通过Symtem.getProperty(“参数名”);来校验。</p><p>4.java1.7与java1.8的堆内存模型比较<br>最大变化就是1.8取消了永久区，添加了非堆内存的元数据空间，该空间不在虚拟机内部，在本地内存空间中。至于为何要移除永久区，官方解释说是为了融合hotspot JVM与JRockit VM，JRockit没有永久区，在实际使用中，永久代内存经常不够用也有可能发生内存泄漏，爆出异常：java.lang.OutOfMemoryError: PermGen，所以在某种程度上也有点小优化的感觉。</p><p>5.内存溢出分析，一般是将堆内存使用情况快照到文件中，在通过jhat或者mat工具分析。如何定位分析？最主要的还是抓住是否某线程的内存占到80-90%,那这个线程跑的肯定有问题，再回到代码详细查询问题。</p><p>6.对于服务器CPU负载突然提高，出现死锁，死循环，那可以通过jstack将正在运行的jvm的线程情况进行快照，并打印。<br>用法：jstack <pid>(tomcat的pid等),可以看出各线程的状态。</pid></p><p>7.关于垃圾回收<br>什么是垃圾回收？？我们程序的运行必然需要申请内存资源，无效的对象资源不及时处理，就会一直占用内存资源，最终就会导致内存溢出，所以对内存资源的管理是非常重要的了。一般高级语言都有垃圾回收机制如c#，python等。可是问题就是垃圾回收机制怎么来实现的呢，他怎么知道哪些对象是垃圾要回收了，哪些不是？所以肯定有一定的算法来控制的。</p><p>8.垃圾回收的常见算法<br>    a&gt;引用计数法<br>        该算法可能是最悠久的一个吧，最早由George与Collins在1960的时候首次提出，到现在还被很多语言使用。<br>        原理：假设有一个对象A，任何一个对象对A的引用，那么对象A的引用计数器+1，当引用失败时，对象A的引用计数器就-1，如果对象A的引用计数器为0，说明对象A就可以被回收了。<br>        优点：实时性比较高及不需要等到内存不足时才开始回收。更新对象的计数器时，只是影响该对象，不会扫描全部对象。回收时，应用不需要挂起。<br>        缺点：每次对象被引用都需要去更新计数器，有一点时间开销，浪费CPU资源，即使内存够用，仍然在运行时计数统计。最致命的缺点是无法解决循环引用的问题！所谓循环引用就是两个对象互相引用，可是后面A与B都被置为null时，该算法还是不会回收这两个对象。所以java中一般不会使用该算法。<br>    b&gt;标记清除法<br>        解决引用计数法的循环利用缺点，但是新问题就是内存太碎片化，而且效率相对较低，因为要遍历所有对象,要暂停应用程序。</p><pre><code>c&gt;标记压缩算法    解决标记清除法的碎片化问题，但是效率相对不高d&gt;复制算法    类似jvm中年轻代的处理方式，将内存分为两块，gc时将存活对象复制到另一半内存，另一半的内存直接清空，这种方式适合存活对象较少的情况，存活对象较多，那么效率就不太行，而且内存利用效率不高。e&gt;分代算法    指不同区域按照实际情况使用不同算法，比如jvm的老年代，存活对象较多就不适合复制算法，可能更适合标记算法，但是年轻代适合复制算法。</code></pre><p>9.CMS垃圾回收器<br>    1.串行垃圾回收器<br>    一般会出现defnew关键字在日志里，很明显效率较低，一般不适用这种回收器。<br>    2.并行垃圾收集器<br>        ParNew垃圾收集器：ParNew垃圾收集器是工作在年轻代上的，只是将串行的垃圾收集器改为了并行。<br>        ParallelGC垃圾收集器：ParallelGC收集器工作机制和ParNewGC收集器一样，只是在此基础之上，新增了两个和系统吞吐量相关的参数， 使得其使用起来更加的灵活和高效。比如参数-XX:MaxGCPauseMillis，设置停顿时间。<br>    3.CMS垃圾收集器<br>        CMS全称 Concurrent Mark Sweep，是一款并发的、使用标记-清除算法的垃圾回收器，该回收器是针对老年代垃 圾回收的，通过参数-XX:+UseConcMarkSweepGC进行设置<br>    4.G1垃圾收集器<br>        也是jdk1.9默认的垃圾回收器<br>        G1的设计原则就是简化JVM性能调优，开发人员只需要简单的三步即可完成调优：<br>        1.第一步，开启G1垃圾收集器 </p><pre><code>  2. 第二步，设置堆的大内存   3. 第三步，设置大的停顿时间  对于G1垃圾收集器优化建议：      a&gt;年轻代大小       避免使用 -Xmn 选项或 -XX:NewRatio 等其他相关选项显式设置年轻代大小。       固定年轻代的大小会覆盖暂停时间目标。       b&gt;暂停时间目标不要太过严苛       G1 GC 的吞吐量目标是 90% 的应用程序时间和 10%的垃圾回收时间。       评估 G1 GC 的吞吐量时，暂停时间目标不要太严苛。目标太过严苛表示您愿意承受更多的垃圾回收开 销，而这会直接影响到吞吐量。  一般的我们可以通过gceasy这个在线分析网站，上传日志即可、  开发中出现以下情况,均需做jvm调优!1. heap 内存（老年代）持续上涨达到设置的最大内存值；2. Full GC 次数频繁；3. GC 停顿时间过长（超过1秒）；4. 应用出现OutOfMemory 等内存异常；5. 应用中有使用本地缓存且占用大量内存空间;6. 系统吞吐量与响应性能不高或下降</code></pre><p>调优需遵循以下原则:</p><pre><code>1.多数的Java应用不需要在服务器上进行JVM优化；2.多数导致GC问题的Java应用，都不是因为我们参数设置错误，而是代码问题；3.在应用上线之前，先考虑将机器的JVM参数设置到最优（最适合）；4.减少创建对象的数量；5.减少使用全局变量和大对象；6.JVM优化是到最后不得已才采用的手段；7.在实际使用中，分析GC情况优化代码比优化JVM参数更好；</code></pre>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> jvm </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>about springsecurity</title>
+      <link href="/2018/09/25/about-springsecurity/"/>
+      <url>/2018/09/25/about-springsecurity/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>首先是简单应用吧，搭建一个认证服务器，springsecurity权限框架在数据库这一块有默认自带的关于Oauth的6张表，给认证用的，比如有记录客户端信息（oauth_client_details），客户端id密码以及访问token的有效期，刷新token的有效期，授权类型等。<br><a id="more"></a><br>oauth2授权模式有四种：授权码模式，隐式授权模式，密码模式，客户端模式。一般授权码模式与密码模式应用较多。<br>1.授权码授权流程（假如再网易云音乐网站上使用微信认证的过程）：<br>        a&gt;客户端（浏览器）请求第三方（微信）授权<br>        b&gt;用户同意给客户端授权<br>        c&gt;客户端获取到授权码，请求认证服务器申请令牌<br>        d&gt;认证服务器资源服务器资源<br>        d&gt;资源服务器返回受保护资源<br>        简单来说就是：浏览器-&gt;授权码-&gt;令牌-&gt;资源</p><p>申请授权码的get请求（获取授权码)：<br>    参数：客户端id,授权码模式(默认为code),客户端范围（和授权配置类中设置的scop一致）,跳转uri（授权码接在后面）</p><p>申请令牌（授权码模式）的post请求：<br>    参数：申请令牌的模式，授权码（只能使用一次），跳转uri（与前面uri要一致）<br>子服务接入认证，导入spring cloud oauth2的依赖，添加配置类继承ResourceServerConfigurerAdapter重写里面方法（对每个到达系统的http请求连接进行校验）（@configuration，@enableresourceserver(表明当前服务为资源服务)，@enableglobalmethodsecurity）<br>    配置类里：一般就是公钥以及读取公钥内容，使用jwt令牌方式</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> springsecurity+oauth2认证协议 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>简化版类ORM框架的设计</title>
+      <link href="/2018/08/14/%E7%AE%80%E5%8C%96%E7%89%88%E7%B1%BBORM%E6%A1%86%E6%9E%B6%E7%9A%84%E8%AE%BE%E8%AE%A1/"/>
+      <url>/2018/08/14/%E7%AE%80%E5%8C%96%E7%89%88%E7%B1%BBORM%E6%A1%86%E6%9E%B6%E7%9A%84%E8%AE%BE%E8%AE%A1/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> ORM </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Dubbo基本原理机制</title>
+      <link href="/2018/08/06/Dubbo%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86%E6%9C%BA%E5%88%B6/"/>
+      <url>/2018/08/06/Dubbo%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86%E6%9C%BA%E5%88%B6/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>分布式服务框架：–高性能和透明化的RPC远程服务调用方案–SOA服务治理方案-Apache MINA 框架基于Reactor模型通信框架，基于tcp长连接Dubbo缺省协议采用单一长连接和NIO异步通讯，适合于小数据量大并发的服务调用，以及服务消费者机器数远大于服务提供者机器数的情况分析源代码，基本原理如下：client一个线程调用远程接口，生成一个唯一的ID（比如一段随机字符串，UUID等），<a id="more"></a>Dubbo是使用AtomicLong从0开始累计数字的将打包的方法调用信息（如调用的接口名称，方法名称，参数值列表等），和处理结果的回调对象callback，全部封装在一起，组成一个对象object向专门存放调用信息的全局ConcurrentHashMap里面put(ID, object)将ID和打包的方法调用信息封装成一对象connRequest，使用IoSession.write(connRequest)异步发送出去当前线程再使用callback的get()方法试图获取远程返回的结果，在get()内部，则使用synchronized获取回调对象callback的锁， 再先检测是否已经获取到结果，如果没有，然后调用callback的wait()方法，释放callback上的锁，让当前线程处于等待状态。服务端接收到请求并处理后，将结果（此结果中包含了前面的ID，即回传）发送给客户端，客户端socket连接上专门监听消息的线程收到消息，分析结果，取到ID，再从前面的ConcurrentHashMap里面get(ID)，从而找到callback，将方法调用结果设置到callback对象里。监听线程接着使用synchronized获取回调对象callback的锁（因为前面调用过wait()，那个线程已释放callback的锁了），再notifyAll()，唤醒前面处于等待状态的线程继续执行（callback的get()方法继续执行就能拿到调用结果了），至此，整个过程结束。当前线程怎么让它“暂停”，等结果回来后，再向后执行？    答：先生成一个对象obj，在一个全局map里put(ID,obj)存放起来，再用synchronized获取obj锁，再调用obj.wait()让当前线程处于等待状态，然后另一消息监听线程等到服          务端结果来了后，再map.get(ID)找到obj，再用synchronized获取obj锁，再调用obj.notifyAll()唤醒前面处于等待状态的线程。正如前面所说，Socket通信是一个全双工的方式，如果有多个线程同时进行远程方法调用，这时建立在client server之间的socket连接上会有很多双方发送的消息传递，前后顺序也可能是乱七八糟的，server处理完结果后，将结果消息发送给client，client收到很多消息，怎么知道哪个消息结果是原先哪个线程调用的？    答：使用一个ID，让其唯一，然后传递给服务端，再服务端又回传回来，这样就知道结果是原先哪个线程的了。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Dubbo </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>springboot基本应用</title>
+      <link href="/2018/07/12/sprngboot%E5%BA%94%E7%94%A8%E5%8D%B3%E5%8E%9F%E7%90%86/"/>
+      <url>/2018/07/12/sprngboot%E5%BA%94%E7%94%A8%E5%8D%B3%E5%8E%9F%E7%90%86/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>1.springboot 特点简化了配置，上手快.</p><p>2.@SpringBootApplication的类表明是boot的启动类，而且此注解包含了@SpringBootConfiguration（原spring的@Configuration）表明此类为boot的配置类；@EnableAutoConﬁguration，SpringBoot自动配置功能开启。</p><a id="more"></a><p>3.springboot与mybatis整合：pom文件添加mybatis起步依赖（由mybatis提供），MySql连接驱动；在properties文件里添加数据库连接信息（我们这里键的格式都是由boot预定好了，只是对默认值的修改）；创建表与实体类；编写mapper接口；配置mapper的映射文件；最后需要在properties中添加mybatis信息（格式，boot的低层也规定好，一般的话底层也是读取metadata的信息），一般就是配置实体类的包（pojo别名扫描）以及mapper映射文件包。</p><p>4.springboot与redis的整合：类似与前面整合mybatis,首先还是先在pom里添加redis的起步依赖，properties文件里写好地址端口等。具体操作直接注入redisTemplate模版，调用boundValueOps(“key:xxx”).get()/set()通过key值进行获取或者存放value。当然，boot底层继承了springmvc，所以<br>可以用jackson来进行字符串的转换（objectmapper）</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> spring </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>深入浅出MVC</title>
+      <link href="/2018/01/14/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAMVC/"/>
+      <url>/2018/01/14/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAMVC/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>标题一：早期开发模型介绍</p><p>model1时我们根本就没有controller,主要就是浏览器，jsp，javabean（包含service,dao）,在项目都比较大，业务逻辑比较复杂的情况下，肯定行不通，jsp等于干了视图与控制器的事，逻辑代码写在jsp里复用性差，维护性差。model2模型对model1进行了改良，明确了分工。由浏览器，servlet,javabean(业务逻辑部分）jsp组成。添加了servlet组件即作为控制器，去处理请求（比如是否有权限继续，携带的参数是否正确），<br>接下来再去调用业务逻辑，再返回结果交给servlet处理，再找到对应的jsp给浏览器展示数据。<br>mvc模型也存在弊端，其一就是展现数据比较慢（jsp需要翻译成java,编译成class，然后展示），还有就是异步交互并不方便（响应回ajax引擎之后的数据处理，需要有dom编程的功底），以及前端的逻辑代码与数据的展现部分代码过于耦合（目前vue框架已经实现分离）。所以mvvc即解决这种弊端的一种模型。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> mvc </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>mybatis应用小结</title>
+      <link href="/2018/01/11/mybatis%E5%BA%94%E7%94%A8%E5%B0%8F%E7%BB%93/"/>
+      <url>/2018/01/11/mybatis%E5%BA%94%E7%94%A8%E5%B0%8F%E7%BB%93/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>1.mybatis(前身是apache的ibatis)的出现解决了JDBC的若干缺陷，而且直接基于JDBC做了简单的映射包装，所以从性能上来说JDBC&gt;Mybatis&gt;Hibernate.</p><p>2.Hibernate与Mybatis都是ORM(对象关系映射)持久化框架，但是Mybatis是将接口与POJO对象映射成数据库中的记录，Hibernate仅仅是通过pojo对象<br>Mybatis除了支持简单sql查询，也支持高级映射(关联查询)与存储过程，实现了自动对sql参数的设置，自动对结果集进行解析与封装。</p><p>3.虽然mybatis支持注解与xml方式配置，但是一般来说我们采用xml配置方式，这样能将java代码与sql语句很好的隔离下来。</p><p>4.但是正因为她只是做了简单的封装，所以需要手动写sql(通用mapper只是简单查询)，所以如果对性能要求较高的电商项目会用mybatis，而对于业务逻辑复杂，不太在乎执行效率的传统行业，一般会使用Hibernate.</p><p>5.mybatis两种配置文件，一个全局的，还有一个映射文件，通过这两个配置文件就可以构建sqlsessionFactory相当于hibernate里的sessionFactory,打开sqlsession的会话。在通过session实现CRUD,接下来就是Executor(执行器)，是一个接口，有两种实现，一个是缓存的实现，还有一个是数据库的实现。最底层的Mapper Statement主要是在三个方面，即sql语句，参数类型(hashmap,基本数据类型，包装类型pojo)，结果集类型。</p><p>6.mapper接口的动态代理实现，主要是两点，其一就是映射文件中的命名空间与Mapper接口的全路径一致。其二映射文件中的statementId与Mapper接口的方法名保持一致。</p><p>7.mybatis-config.xml的配置，有严格的顺序之分。<br><img src="/2018/01/11/mybatis应用小结/01/11/mybatis应用小结/mybatis整体框架.jpg" title="mybatis整体框架"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> mybatis </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>关于反射</title>
+      <link href="/2017/09/10/%E5%85%B3%E4%BA%8E%E5%8F%8D%E5%B0%84/"/>
+      <url>/2017/09/10/%E5%85%B3%E4%BA%8E%E5%8F%8D%E5%B0%84/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>1.首先，在java中，java程序如何运行的？很明显是将.java文件编译成.class文件，即字节码文件，是可以被jvm直接操作的，jvm通过类加载器ClassLoader把class文件加载到内存中，这样就可以使用这个类中的成员变量与方法了，同时被加载到内存中class文件就会变成一个Class类的对象。而我们的反射需要依赖Class对象。任何一个class文件都是Class这个类的一个实例对象。Class对象通过(Field getField(String name),Method getMethod(),Constructor getConstructor())。</p><p>2.所以反射就是通过一个类的Class对象把类中的各种成员映射成对应的Java类。一个类中的：成员变量、构造函数、成员方法都有对应的Java类：Field、Contructor、Method。</p><p>3.我们可以通过Class类的newInstance()来创建真实对象，当然这个方法需要对象里提供无参构造,否则会出现 java.lang.InstantiationException.</p><p>4.sun公司专门给我们提供了如何获取一个类中的所有构造函数。Constructor[] getConstructors(), Constructor[] getDeclaredConstructors(),<br>Constructor getConstructor(Class … parameterTypes),Constructor getDeclaredConstructor(Class … parameterTypes).获取到构造函数对象后，就可以创造某个真实对象。注意暴力访问时候，需要setAccessible(true);</p><p>5.反射过程如下图<br><img src="/2017/09/10/关于反射/09/10/关于反射/反射过程.jpg" title="反射过程"></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>js注入问题</title>
+      <link href="/2017/08/21/js%E6%B3%A8%E5%85%A5%E9%97%AE%E9%A2%98/"/>
+      <url>/2017/08/21/js%E6%B3%A8%E5%85%A5%E9%97%AE%E9%A2%98/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>什么是javascript注入攻击？</p><p>　　1.每当接受用户输入的内容并重新显示这些内容时，网站就很容易遭受 JavaScript 注入攻击。让我们研究一个容易遭受 JavaScript 注入攻击的具体应用程序。假设已经创建了一个客户反馈网站。客户可以访问网站并输入对产品的反馈信息。当客户提交反馈时，反馈信息重新显示在反馈页面上。<br>客户反馈网站是一个简单的网站。不幸的是，此网站容易遭受 JavaScript 注入攻击。<br>假设正在将以下文本输入到客户反馈表单中：<script>alert(“Attack!”)</script><br>　　此文本表示显示警告消息框的 JavaScript 脚本。在某人将此脚本提交到客户反馈表单后，消息Attack! 会在将来任何人访问客户反馈网站时显示。</p><p>　　2.还有一种就是在浏览器地址栏中输入一段js代码，用来改变页面js变量、页面标签的内容。<br>使用Javascript注入，用户不需要关闭或保存网页就可以改变其内容，这是在浏览器的地址栏上完成的。命令的语法如下：<br>javascript:alert(#command#)<br>    <a id="more"></a><br>　　例如，如果你想在<a href="http://www.example.com站点上看到一个alert警告框，那么首先在" target="_blank" rel="noopener">http://www.example.com站点上看到一个alert警告框，那么首先在</a> 地址栏上输入URL并等待页面加载完 成，然后删掉URL并输入：<br>javascript:alert(“Hello World”)<br>　　 作为新的URL。这将弹出一个“Hello World”警告框，使用这一技术几乎可以改变网页的任何内容，例如一张图片。假设有一张网站logo图片，我们通过查看页面源文件找到其中一段HTML代码：</p><p><img name="hi" src="/2017/08/21/js注入问题/hello.gif"><br>　　图片被命名为“hi”，源文件是“hello.gif”，我们想要把它改成存储在我们站点（<a href="http://www.mysite.com）上的" target="_blank" rel="noopener">http://www.mysite.com）上的</a> “bye.jpeg”文件，因此图片完整的URL地址是<a href="http://www.mysite.com/bye.jpeg，使用Javascript注入，" target="_blank" rel="noopener">http://www.mysite.com/bye.jpeg，使用Javascript注入，</a> 我们只需要在地址栏上输入：</p><p>javascript:alert(document.hi.src=”<a href="http://www.mysite.com/bye.jpeg&quot;" target="_blank" rel="noopener">http://www.mysite.com/bye.jpeg&quot;</a>)<br>　　你将会看到弹出“<a href="http://www.mysite.com/bye.jpeg”alert警告，然后图片就被更改了。需要注意的是，这些更改只是暂时的！如果你刷新页面或者重新进入，你的更改将会消失，因为你只是在你的PC作了这些更改，而不是在网页服务器上。" target="_blank" rel="noopener">http://www.mysite.com/bye.jpeg”alert警告，然后图片就被更改了。需要注意的是，这些更改只是暂时的！如果你刷新页面或者重新进入，你的更改将会消失，因为你只是在你的PC作了这些更改，而不是在网页服务器上。</a></p><p>　　使用同样的方法我们可以查看或更改变量的值，例如我们在网页上找到一段这样的代码：</p><p><script language="JavaScript"><br>var a=”test”<br></script><br>　　意思是变量a的值为“test”，现在我们输入：</p><p>javascript:alert(a)<br>　　然后我们将其值改为“hello”：<br>javascript:alert(a=”hello”)<br>　　 Javascript注入通常被用来更改表单属性，假设有一段这样的代码：</p><form name="format" action="send.php" method="post"><br><input type="hidden" name="mail" value="someone@somewhere.com"><br><input type="text" name="name"><br><input type="submit" value="submit"></form><br>　　我们想让表单发送到我们的邮箱，而不是<a href="mailto:someone@somewhere.com" target="_blank" rel="noopener">someone@somewhere.com</a>。可以使用如下命令：<br><br><br>javascript:alert(document.format.mail.value=”<a href="mailto:me@hacker.com" target="_blank" rel="noopener">me@hacker.com</a>“)<br>也许你已经注意到了这些命令的层次关系：<br>我们按照从左到右的顺序依次说明：<br>1)最左边是document<br>2)然后是我们想要更改的对象名(比如document.hi.src)或其包含的对象(比如document.format.mail.value)<br>3)最后是我们想要更改的属性(比如源路径:document.hi.src，或变量值:document.format.mail.value)<br>4)使用“.”号分隔<br>5)当我们想要更改属性值的时候，我们使用“=”号和新的属性值<br>*注释:当新的属性值为字符串时(比如:document.format.mail.value=”<a href="mailto:me@hacker.com" target="_blank" rel="noopener">me@hacker.com</a>“)需要用双引号把它括起来。<br>如果我们想要把它作为一个变量的值，则不需要使用双引号””。例如我们想要将变量b的值赋予变量a，我们可以输入javascript:alert(a=b)。<br>但是,页面中的大部分标签都没有名字，比如：<br><form action="send.php" method="post"><br><input type="hidden" name="mail" value="someone@somewhere.com"><br><input type="text" name="name"><br><input type="submit" value="submit"></form><br>　　在这段代码中没有表单名，综合上面这些信息，可以使用此命令：<br>javascript:alert(document. .mail.value=”<a href="mailto:me@hacker.com" target="_blank" rel="noopener">me@hacker.com</a>“)<br>　　 在这种情况下我们必须统计并找出表单序号，下面是一个例子：<br><form action="send.php" method="post"><br><input type="text" name="name"><br><input type="submit" value="submit"><br></form><form action="send.php" method="post"><br><input type="hidden" name="mail" value="someone@somewhere.com"><br><input type="text" name="name"><br><input type="submit" value="submit"><br></form><p><form action="send.php" method="post"></form></p><p><input type="text" name="name"></p><p><input type="submit" value="submit"><br><br>在以上代码中我们看见了3个表单，但我们只对第二个感兴趣，因此我们想要的表单序号就是2。不要忘记我们是从1开始计算的,比如1,2,3,4…而javascript却从0开始计算，比如0,1,2,3…所以真正的表单序号是1，不是2，通常我们要把找到的表单序号减一。我们将用这个序号来补全我们的命令:</p><p>javascript:alert(document.forms[1].mail.value=”<a href="mailto:me@hacker.com" target="_blank" rel="noopener">me@hacker.com</a>“)<br>这样你就可以更改没有名字的图片或链接了，你可以把“forms”换成任何你想要的标签类型。对于图片就是</p><p>javascript:alert(document.images[3].src=”#the url of the picture you want#”)<br>　　对于链接就是</p><p>javascript:alert(document.links[0].href=”#the url you want#”)<br> 最后，我们可以用这个技巧来编辑cookies。下面的命令由triviasecurity.net的Dr_aMado编写，我只修改了一点点，让它在用户编辑之前显示出来。你只要把它们复制到地址栏就可以了：</p><p>javascript:alert(window.c=function a(n,v,nv){c=document.cookie;c=c.substring(c.indexOf(n)+n.length,c.length);<br>c=c.substring(1,( (c.indexOf(“;”)&gt;-1) ? c.indexOf(“;”) : c.length));nc=unescape(c).replace(v,nv);<br>document.cookie=n+”=”+escape(nc);return unescape(document.cookie);});<br>alert(‘The cookie is: “‘+document.cookie+’”‘);alert(c(prompt(“The name of the cookie:”,””),<br>prompt(“Change this value:”,””),prompt(“with this:”,””)))</p><p>//如果你想要手动更改你的cookie，可以使用下面这条命令：<br>javascript:alert(document.cookie)<br>　　这将显示你的当前cookie，假设是“userid=1”，如果你想把它改成“userid=2”，可以使用下列命令：</p><p>javascript:alert(document.cookie=”userid=2”)<br>　　最后我必须强调的是，所有的更改都只是在客户端！就像是把网页保存在你的PC上然后修改它。尽管如此，使用这一技巧你仍然可以欺骗页面(例如cookies)或绕过安全验证。例如一些网页会检测用户发送数据的位置，如果从<a href="http://www.test.com/form.php" target="_blank" rel="noopener">http://www.test.com/form.php</a> 发送数据到<a href="http://www.test.com/check.php，check.php可能会检测数据是否来自http" target="_blank" rel="noopener">http://www.test.com/check.php，check.php可能会检测数据是否来自http</a>: //<a href="http://www.test.com/form.php上的表单。除此之外，如果你打算在页面中输入你自己的JavaScript代码，通过使用一些这样的技巧，你将能够更改图片并保持不变！" target="_blank" rel="noopener">www.test.com/form.php上的表单。除此之外，如果你打算在页面中输入你自己的JavaScript代码，通过使用一些这样的技巧，你将能够更改图片并保持不变！</a></p><p>　　最后的最后，既然js注入这么可怕，我们自己写的网站有什么解决办法来防止js注入呢？</p><p>方法一：</p><p>　　阻止 JavaScript 注入攻击的一种简单方法是重新在视图中显示数据时，用 HTML 编码任何网站用户输入的数据<br>如：&lt;%=Html.Encode(feedback.Message)%&gt;<br>使用 HTML 编码一个字符串的含意是什么呢？使用 HTML 编码字符串时，危险字符如 &lt; 和 &gt; 被替换为 HTML 实体，如 &lt; 和 &gt;。所以，当使用 HTML 编码字符串 <script>alert(“Boo!”)</script> 时，它将转换为 &lt;script&gt;alert(“Attack!”)&lt;/script&gt;。浏览器在解析编码的字符串时不再执行 JavaScript 脚本。而是显示无害的页面。</p><p>方法二：</p><p>　　除了在视图中显示数据时使用 HTML 编码数据，还可以在将数据提交到数据库之前使用 HTML 编码数据。</p><p>StringEscapeUtils.escapeHtml（”前台提交的数据”);<br>　　通常，人们喜欢使用本教程中讨论的第一种方法，而不喜欢使用第二种方法。第二种方法的问题在于在数据库中最终会保留 HTML 编码的数据。换言之，数据库中的数据会包含奇怪的字符。这有什么坏处呢？如果需要用除网页以外的形式显示数据库数据，则将遇到问题。例如，不能轻易在 Windows Forms 应用程序中显示数据。</p><p> 感谢网友分享：<a href="http://zxf-noimp.iteye.com/blog/1130771" target="_blank" rel="noopener">http://zxf-noimp.iteye.com/blog/1130771</a></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> javascript </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>关于多线程</title>
+      <link href="/2017/08/09/%E5%85%B3%E4%BA%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
+      <url>/2017/08/09/%E5%85%B3%E4%BA%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>1.总的来说多线程提高了程序的执行效率（废话），但是要注意多个线程的微观上看来并不是同时进行的，一个cpu同一时刻只能执行一个任务，cpu在线程之间快速的切换，导致在宏观上感觉线程是同时运行的，而且cpu的切换是随机的。<br><a id="more"></a><br>2.从1看出，并不是线程开的越多越好（每个线程被切到的时候执行时间变少了）<br>3.上述现象可视为线程调度即计算机如果只有一个cpu，java中如何分配cpu使用权？<br>    a) 分时调度模型：所有线程轮流使用cpu的使用权，平均分配每个线程占用cpu的时间片。<br>    b) 抢占式调度模型：优先让优先级高的线程使用cpu,如果线程优先级相同，那么会随机选择一个，优先级高的线程获取的 CPU 时间片相对多一些。Java使用的是抢占式调度模型。<br>4.jvm运行时，是多线程，因为垃圾回收器与main函数并不是同一线程。<br>5.并行是同一时刻，多个线程同时运行。并发是一个时间段内，多个线程同时运行。</p><p>6.多线程的实现（java）<br>    a)继承Thread类（线程类），子类重写Thread类的run方法（在这个方法里写线程要执行的代码）但是run方法仅仅是封装了线程的任务,也仅仅执行线程的任务，简单说就只是与main函数一个线程。开启线程需要执行start()函数。<br>    <img src="/2017/08/09/关于多线程/08/09/关于多线程/开启线程.jpg" title="开启线程"><br>    <strong>*</strong>几个疑问<strong>*</strong><br>    1.为什么要继承Thread类？<br>        首先java里用Thread这个类对线程进行描述，而我们希望通过自己的代码操作线程，那么自己的代码就要与Thread产生关系，当然这里采用了继承。这样我们自己的类就变成了线程类，就拥有了Thread类中的所有方法，自己的类可以对线程各种操作（开启线程等）。<br>    2.为什么我们自己的线程类要重写run()方法？<br>        因为我们希望程序中的某段代码可以同时运行，提高程序的运行效率。<br>        设计Thread这个API的人，在设计的时候，只设计了如何启动线程，至于线程要执行什么任务，他并不知道。所以，他这样设计：就是start启动线程之后，JVM会自动的调用run方法。<br>        因此，我们只要把自己的代码写到run方法中，就一定会被执行到。<br>    3.start方法和run方法的区别？<br>    run：只是封装线程任务。<br>    start：先调用系统资源，在内存中开辟一个新的空间启动线程，再执行run方法。<br>    b)实现Runnable接口，实现run方法，所创类即任务类，创建任务类对象，再创建Thread对象，并把任务对象作为参数传递。<br>    <img src="/2017/08/09/关于多线程/08/09/关于多线程/实现Runnable接口.jpg" title="实现Runnable接口"><br>    c)一般采用实现接口方式，主要是1.可以避免java中单继承的局限。2.把线程代码和任务的代码分离，解耦合(解除线程代码和任务的代<br>    码模块之间的依赖关系)。</p><p>7.多线程程序运行路径图解<br>    <img src="/2017/08/09/关于多线程/08/09/关于多线程/3条执行路径.jpg" title="3条执行路径"></p><p>8.关于线程安全问题<br>    java中每个对象都内置了一个监视器（锁）<br>    本质原因是cpu在处理多个线程时候，在操作共享数据的多条代码之间进行切换导致的。<br>    无法控制cpu的切换，只能控制某个线程在操作共享数据的时候，不让其它线程进入到操作共享数据的代码中去，即线程同步。<br>    可以通过关键字synchronized(obj锁){}来控制公共资源，在JDK1.5之后，使用Lock来代替synchronized，即创建<br>    ReentrantLock实例，但是需要手动获取锁与释放锁。<br>9.执行时间较长或者需要客户等待的情况下一般要考虑多线程，上传图片？<br>10.java中有些类保证线程安全有些没有，比如stringbuffer/stringbuild  vector/arraylist,保证线程安全性能一般都低了点，<br>所以根据实际业务来选择。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 多线程 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>情，搁浅芳华恨梦中，花开日，月下许相逢</title>
+      <link href="/2017/03/06/%E6%83%85%EF%BC%8C%E6%90%81%E6%B5%85%E8%8A%B3%E5%8D%8E%E6%81%A8%E6%A2%A6%E4%B8%AD%EF%BC%8C%E8%8A%B1%E5%BC%80%E6%97%A5%EF%BC%8C%E6%9C%88%E4%B8%8B%E8%AE%B8%E7%9B%B8%E9%80%A2/"/>
+      <url>/2017/03/06/%E6%83%85%EF%BC%8C%E6%90%81%E6%B5%85%E8%8A%B3%E5%8D%8E%E6%81%A8%E6%A2%A6%E4%B8%AD%EF%BC%8C%E8%8A%B1%E5%BC%80%E6%97%A5%EF%BC%8C%E6%9C%88%E4%B8%8B%E8%AE%B8%E7%9B%B8%E9%80%A2/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>有个人经常问我该不该跟他男朋友分手，我说该！我觉得站在爱情的角度来说，最终走到一起的两个人一定是因为无法割舍的依恋和喜欢，而不是出于合适或现实，那才是我理想中的恋爱或者婚姻应有的模样。<br><a id="more"></a><br>我没有尝过爱情的滋味，这的确是一个很大的遗憾，更让我伤心的是，我也并非一个没有感情的人，相反，我的内心对爱情充满了渴望。仔细分 析来，从小到大，遇见过好许欢喜的女孩子，可是自己也永远停留在这个地步。我也不知道自己到底怎么了，可能被封建教育洗脑了吧，是的，我们不该谈恋爱。也可能自己上辈子是个僧人吧，注定这辈子在爱情方面没有大的成果。    好想这辈子还做一个和尚啊，哪怕是当一个天天敲钟，挑水的和尚也行！那样就不会遇到不该遇到的人，就不会因为感情而悲伤；这么说来，当个和尚真的很幸福！因为爱情她真的是把双刃剑，找不到相互依赖人，那可是真的痛苦，所以你可不要随便喜欢一个人，要是她不喜欢你，你这辈子该怎么办？可是那又怎么样？爱情本身就很珍贵，也很昂贵，不是大部分人都没有享受到吗？落花是有意恋流水，流水也的确无心恋落花。可是不知道为什么心里还是很难受，很不甘心。可是你还不是妥协？<br>拼死聚不齐的財，努力散不完的情；烟云飘渺无需顾，管他阴雨管他晴。是的，人活着要负责任，你还有你的亲朋好友，记得报答他们，你就必须听他们的安排，你就必须要找一个现实的，合适的对象。结婚也许本来就不一定要互相喜欢。说白了你已经错过了追求恋爱的时间段。你要完全认清自己，盲目给自己定位受伤的总是自己。你喜欢，也就仅仅是你喜欢，至于她，:-(。<br>一直以为自己给自己的兴趣远远大于别人给的，可是，我错了。我发现现在的自己变了，变得患得患失，这种感觉真的很难受，不管做什么自己有兴趣的事，都不管用了，迎来的只是无穷的悲伤，你说过，男孩子不应该这样。<br>骗了别人也骗了自己是圣人，骗了别人但骗不了自己是骗子，骗不了别人却骗了自己是精神病。我想我就是神经病:-(。好想有个追求自己爱情的机会，尽管没有经验，没有出色的外貌。也许别人会笑你是个小学生。是的，我还是孩子，很天真。<br>人活得越久，回忆就越多，这里面亦包括很多不那么美好的回忆，所以对于记忆力比较好的人——譬如我来说，是有点痛苦的。多么希望能一直停留在比较年轻甚至幼稚的阶段，这样脑海里就不会储存太多挥之不去的、想起来会让人揪心或者唏嘘的事物。不过代价是美好的经历也会相对变少，但我宁愿如此，做一个故事少一点的人也好，至少可以一夜无梦，安睡到天明。<br>多么希望她也很喜欢我啊，希望她相信缘份，相信生死轮回，相信我才是她这辈子要找的人。<br>一年的光景又过去了，所谓“醒来或者吃饱又是一年，相遇然后分别就在一天”。</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+  
+  
+    
+    
+    <entry>
+      <title>标签</title>
+      <link href="/categories/index.html"/>
+      <url>/categories/index.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>tags</title>
+      <link href="/tags/index.html"/>
+      <url>/tags/index.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script>]]></content>
+      
+    </entry>
+    
+    
+  
+</search>
