@@ -15,20 +15,18 @@
 
 
 
-<meta name="description" content="1.mybatis(前身是apache的ibatis)的出现解决了JDBC的若干缺陷，而且直接基于JDBC做了简单的映射包装，所以从性能上来说JDBC&amp;gt;Mybatis&amp;gt;Hibernate. 2.Hibernate与Mybatis都是ORM(对象关系映射)持久化框架，但是Mybatis是将接口与POJO对象映射成数据库中的记录，Hibernate仅仅是通过pojo对象Mybatis除了支">
-<meta name="keywords" content="mybatis">
+<meta name="description" content="1.本文主要阐述h5中的3d转换（位移与旋转），基本格式：位移：translate3d(x,y,z) 旋转：rotate3d(x,y,z) 透视(进大远小的方式体现立体，模拟人的眼睛，越近越大耶，记得放父盒子哟(＾Ｕ＾))：perspective 呈现：transform-style. 2.简单的3d效果实现，注意要修改transform-style的属性，默认为flat，这样会导致子元素失去原先">
+<meta name="keywords" content="3D（H5）">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mybatis应用小结">
-<meta property="og:url" content="http://www.godwzl.xyz/2018/01/11/mybatis应用小结/index.html">
+<meta property="og:title" content="H5-3D动画系列">
+<meta property="og:url" content="http://www.godwzl.xyz/2020/05/08/H5-3D动画系列/index.html">
 <meta property="og:site_name" content="small love">
-<meta property="og:description" content="1.mybatis(前身是apache的ibatis)的出现解决了JDBC的若干缺陷，而且直接基于JDBC做了简单的映射包装，所以从性能上来说JDBC&amp;gt;Mybatis&amp;gt;Hibernate. 2.Hibernate与Mybatis都是ORM(对象关系映射)持久化框架，但是Mybatis是将接口与POJO对象映射成数据库中的记录，Hibernate仅仅是通过pojo对象Mybatis除了支">
+<meta property="og:description" content="1.本文主要阐述h5中的3d转换（位移与旋转），基本格式：位移：translate3d(x,y,z) 旋转：rotate3d(x,y,z) 透视(进大远小的方式体现立体，模拟人的眼睛，越近越大耶，记得放父盒子哟(＾Ｕ＾))：perspective 呈现：transform-style. 2.简单的3d效果实现，注意要修改transform-style的属性，默认为flat，这样会导致子元素失去原先">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://www.godwzl.xyz/2018/01/11/mybatis应用小结/01/11/mybatis应用小结/mybatis整体框架.jpg">
-<meta property="og:updated_time" content="2019-03-02T08:49:50.698Z">
+<meta property="og:updated_time" content="2020-06-09T17:03:01.977Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mybatis应用小结">
-<meta name="twitter:description" content="1.mybatis(前身是apache的ibatis)的出现解决了JDBC的若干缺陷，而且直接基于JDBC做了简单的映射包装，所以从性能上来说JDBC&amp;gt;Mybatis&amp;gt;Hibernate. 2.Hibernate与Mybatis都是ORM(对象关系映射)持久化框架，但是Mybatis是将接口与POJO对象映射成数据库中的记录，Hibernate仅仅是通过pojo对象Mybatis除了支">
-<meta name="twitter:image" content="http://www.godwzl.xyz/2018/01/11/mybatis应用小结/01/11/mybatis应用小结/mybatis整体框架.jpg">
+<meta name="twitter:title" content="H5-3D动画系列">
+<meta name="twitter:description" content="1.本文主要阐述h5中的3d转换（位移与旋转），基本格式：位移：translate3d(x,y,z) 旋转：rotate3d(x,y,z) 透视(进大远小的方式体现立体，模拟人的眼睛，越近越大耶，记得放父盒子哟(＾Ｕ＾))：perspective 呈现：transform-style. 2.简单的3d效果实现，注意要修改transform-style的属性，默认为flat，这样会导致子元素失去原先">
 
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
@@ -60,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>mybatis应用小结 | small love</title>
+<title>H5-3D动画系列 | small love</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -274,11 +272,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我">
 </nav>
-      <div class="body-wrap"><article id="post-mybatis应用小结" class="article article-type-post" itemscope="" itemprop="blogPost">
+      <div class="body-wrap"><article id="post-H5-3D动画系列" class="article article-type-post" itemscope="" itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2018/01/11/mybatis应用小结/" class="article-date">
-      <time datetime="2018-01-11T10:28:36.000Z" itemprop="datePublished">2018-01-11</time>
+      <a href="/2020/05/08/H5-3D动画系列/" class="article-date">
+      <time datetime="2020-05-08T11:32:53.000Z" itemprop="datePublished">2020-05-08</time>
 </a>
 
 
@@ -293,7 +291,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      mybatis应用小结
+      H5-3D动画系列
     </h1>
   
 
@@ -303,7 +301,7 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-keyboard-o"></i>
         <span class="post-meta-item-text">  字数统计: </span>
-        <span class="post-count">471字</span>
+        <span class="post-count">845字</span>
       </span>
     </span>
 
@@ -312,7 +310,7 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-hourglass-half"></i>
         <span class="post-meta-item-text">  阅读时长: </span>
-        <span class="post-count">1分</span>
+        <span class="post-count">4分</span>
       </span>
     </span>
 </div>
@@ -325,7 +323,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mybatis/">mybatis</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/3D（H5）/">3D（H5）</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -335,13 +333,149 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>1.mybatis(前身是apache的ibatis)的出现解决了JDBC的若干缺陷，而且直接基于JDBC做了简单的映射包装，所以从性能上来说JDBC&gt;Mybatis&gt;Hibernate.</p>
-<p>2.Hibernate与Mybatis都是ORM(对象关系映射)持久化框架，但是Mybatis是将接口与POJO对象映射成数据库中的记录，Hibernate仅仅是通过pojo对象<br>Mybatis除了支持简单sql查询，也支持高级映射(关联查询)与存储过程，实现了自动对sql参数的设置，自动对结果集进行解析与封装。</p>
-<p>3.虽然mybatis支持注解与xml方式配置，但是一般来说我们采用xml配置方式，这样能将java代码与sql语句很好的隔离下来。</p>
-<p>4.但是正因为她只是做了简单的封装，所以需要手动写sql(通用mapper只是简单查询)，所以如果对性能要求较高的电商项目会用mybatis，而对于业务逻辑复杂，不太在乎执行效率的传统行业，一般会使用Hibernate.</p>
-<p>5.mybatis两种配置文件，一个全局的，还有一个映射文件，通过这两个配置文件就可以构建sqlsessionFactory相当于hibernate里的sessionFactory,打开sqlsession的会话。在通过session实现CRUD,接下来就是Executor(执行器)，是一个接口，有两种实现，一个是缓存的实现，还有一个是数据库的实现。最底层的Mapper Statement主要是在三个方面，即sql语句，参数类型(hashmap,基本数据类型，包装类型pojo)，结果集类型。</p>
-<p>6.mapper接口的动态代理实现，主要是两点，其一就是映射文件中的命名空间与Mapper接口的全路径一致。其二映射文件中的statementId与Mapper接口的方法名保持一致。</p>
-<p>7.mybatis-config.xml的配置，有严格的顺序之分。<br><img src="/2018/01/11/mybatis应用小结/01/11/mybatis应用小结/mybatis整体框架.jpg" title="mybatis整体框架"></p>
+        <p>1.本文主要阐述h5中的3d转换（位移与旋转），基本格式：位移：translate3d(x,y,z) 旋转：rotate3d(x,y,z) 透视(进大远小的方式体现立体，模拟人的眼睛，越近越大耶，记得放父盒子哟(＾Ｕ＾))：perspective 呈现：transform-style.</p>
+<p>2.简单的3d效果实现，注意要修改transform-style的属性，默认为flat，这样会导致子元素失去原先的3d效果，改为preserve-3d即可。<br>//body {<br>            perspective: 500px;<br>        }</p>
+<pre><code>    .box {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        margin: 100px auto;
+        transition: all 2s;
+        /* 让子元素保持3d立体空间环境 */
+        transform-style: preserve-3d;
+    }
+
+    .box:hover {
+        transform: rotateY(60deg);
+    }
+
+    .box div {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: pink;
+    }
+
+    .box div:last-child {
+        background-color: purple;
+        transform: rotateX(60deg);
+    }
+&lt;//style&gt;
+</code></pre><p>&lt;//head&gt;</p>
+<p>&lt;//body&gt;<br>    &lt;//div class=”box”&gt;<br>        &lt;//div&gt;&lt;//div&gt;<br>        &lt;//div&gt;&lt;//div&gt;<br>    &lt;//ody&gt;/div&gt;<br>&lt;//body&gt;<br>3.导航栏练习，注意在位移旋转的操作时，其是有先后顺序的，必须先位移再其他操作！<br>&lt;//style&gt;</p>
+<pre><code>    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    ul {
+        margin: 100px;
+    }
+
+    ul li {
+        float: left;
+        margin: 0 5px;
+        width: 120px;
+        height: 35px;
+        list-style: none;
+        /* 一会我们需要给box 旋转 也需要透视 干脆给li加 里面的子盒子都有透视效果 */
+        perspective: 500px;
+    }
+
+    .box {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: all .4s;
+    }
+
+    .box:hover {
+        transform: rotateX(90deg);
+    }
+
+    .front,
+    .bottom {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .front {
+        background-color: pink;
+        z-index: 1;
+        transform: translateZ(17.5px);
+    }
+
+    .bottom {
+        background-color: purple;
+        /* 这个x轴一定是负值 */
+        /* 我们如果有移动 或者其他样式，必须先写我们的移动 */
+        transform: translateY(17.5px) rotateX(-90deg);
+    }
+&lt;//style&gt;
+</code></pre><p>&lt;//head&gt;</p>
+<p>&lt;//body&gt;<br>    &lt;//ul&gt;<br>        &lt;//li&gt;<br>            &lt;//div class=”box”&gt;<br>                &lt;//div class=”front”&gt;黑马程序员&lt;//div&gt;<br>                &lt;//div class=”bottom”&gt;pink老师等你&lt;//div&gt;<br>            &lt;//div&gt;<br>        &lt;//li&gt;<br>        &lt;//li&gt;<br>            &lt;//div class=”box”&gt;<br>                &lt;//div class=”front”&gt;黑马程序员&lt;//div&gt;<br>                &lt;//div class=”bottom”&gt;pink老师等你&lt;//div&gt;<br>            &lt;//div&gt;<br>        &lt;//li&gt;<br>        &lt;//li&gt;<br>            &lt;//div class=”box”&gt;<br>                &lt;//iv class=”front”&gt;黑马程序员&lt;//div&gt;<br>                &lt;//div class=”bottom”&gt;pink老师等你&lt;//div&gt;<br>            &lt;//div&gt;<br>        &lt;//li&gt;<br>        &lt;//li&gt;<br>            &lt;//iv class=”box”&gt;<br>                &lt;//div class=”front”&gt;黑马程序员&lt;///div&gt;<br>                &lt;//div class=”bottom”&gt;pink老师等你&lt;//div&gt;<br>            &lt;//li&gt;/div&gt;<br>        &lt;//li&gt;<br>        &lt;//li&gt;<br>            &lt;//div class=”box”&gt;<br>                &lt;//div class=”front”&gt;黑马程序员&lt;//div&gt;/div&gt;<br>                &lt;//div class=”bottom”&gt;pink老师等你&lt;//div&gt;<br>            &lt;//div&gt;<br>        &lt;//ul&gt;/li&gt;<br>        &lt;//li&gt;<br>            &lt;//div class=”box”&gt;<br>                &lt;//div class=”front”&gt;黑马程序员&lt;//div&gt;/div&gt;<br>                &lt;//div class=”bottom”&gt;pink老师等你&lt;//li&gt;/div&gt;<br>            &lt;//div&gt;<br>        &lt;//ul&gt;/li&gt;<br>    &lt;//ul&gt;<br>&lt;//body&gt;<br>4.旋转木马练习(先rotate再translate,子元素3d效果需要在父元素里加上 transform-style: preserve-3d;)<br>    body {<br>        perspective: 1500px;<br>    }</p>
+<pre><code>section {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    margin: 150px auto;
+    transform-style: preserve-3d;
+    animation: rotate 10s infinite linear;
+}
+
+section:hover {
+    animation-play-state: paused;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotateY(0);
+    }
+    100% {
+        transform: rotateY(360deg);
+    }
+}
+
+section div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url(../media/dog.jpg) no-repeat;
+}
+
+section div:nth-child(1) {
+    transform: translateZ(300px);
+}
+
+section div:nth-child(2) {
+    transform: rotateY(60deg) translateZ(300px);
+}
+
+section div:nth-child(3) {
+    transform: rotateY(120deg) translateZ(300px);
+}
+
+section div:nth-child(4) {
+    transform: rotateY(180deg) translateZ(300px);
+}
+
+section div:nth-child(5) {
+    transform: rotateY(240deg) translateZ(300px);
+}
+
+section div:nth-child(6) {
+    transform: rotateY(300deg) translateZ(300px);
+}
+</code></pre><p>&lt;//style&gt;</p>
+<p>ddbody&gt;<br>    &lt;//section&gt;<br>        &lt;//div&gt;&lt;//div&gt;<br>        &lt;//div&gt;&lt;//div&gt;<br>        &lt;//div&gt;&lt;//div&gt;<br>        &lt;//div&gt;&lt;//&gt;/div&gt;<br>        &lt;//div&gt;&lt;//div&gt;<br>    &lt;//section&gt;<br>dbody&gt;</p>
 
       
     </div>
@@ -350,13 +484,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2018/01/11/mybatis应用小结/">mybatis应用小结</a></p>
+        <p><span>本文标题:</span><a href="/2020/05/08/H5-3D动画系列/">H5-3D动画系列</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">得到的都是侥幸</a></p>
-        <p><span>发布时间:</span>2018-01-11, 18:28:36</p>
-        <p><span>最后更新:</span>2019-03-02, 16:49:50</p>
+        <p><span>发布时间:</span>2020-05-08, 19:32:53</p>
+        <p><span>最后更新:</span>2020-06-10, 01:03:01</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2018/01/11/mybatis应用小结/" title="mybatis应用小结">http://www.godwzl.xyz/2018/01/11/mybatis应用小结/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://www.godwzl.xyz/2018/01/11/mybatis应用小结/　　作者: 得到的都是侥幸" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2020/05/08/H5-3D动画系列/" title="H5-3D动画系列">http://www.godwzl.xyz/2020/05/08/H5-3D动画系列/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://www.godwzl.xyz/2020/05/08/H5-3D动画系列/　　作者: 得到的都是侥幸" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -368,16 +502,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2018/01/14/深入浅出MVC/">
-                    深入浅出MVC
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/09/10/关于反射/">
-                    关于反射
+                <a href="/2020/05/03/H5/">
+                    H5
                 </a>
             </div>
         
@@ -425,7 +553,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"mybatis应用小结　| small love　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"H5-3D动画系列　| small love　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -447,15 +575,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2018/01/14/深入浅出MVC/" title="上一篇: 深入浅出MVC">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/09/10/关于反射/" title="下一篇: 关于反射">
+            <a href="/2020/05/03/H5/" title="下一篇: H5">
                 <i class="fa fa-angle-right"></i>
             </a>
         

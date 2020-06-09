@@ -195,7 +195,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dubbo/">Dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/H5/">H5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/">ORM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emmet/">emmet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mvc/">mvc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql优化/">mysql优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springsecurity-oauth2认证协议/">springsecurity+oauth2认证协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式/">分布式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/问题/">问题</a></li></ul>
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/3D（H5）/">3D（H5）</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dubbo/">Dubbo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/H5/">H5</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NIO/">NIO</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/">ORM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emmet/">emmet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mongodb/">mongodb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mvc/">mvc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mybatis/">mybatis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql优化/">mysql优化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spring/">spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springsecurity-oauth2认证协议/">springsecurity+oauth2认证协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/分布式/">分布式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多线程/">多线程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/问题/">问题</a></li></ul>
                     </div>
                 </section>
                 
@@ -277,6 +277,229 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-H5-3D动画系列" class="article article-type-post" itemscope="" itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2020/05/08/H5-3D动画系列/" class="article-date">
+      <time datetime="2020-05-08T11:32:53.000Z" itemprop="datePublished">2020-05-08</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/05/08/H5-3D动画系列/">H5-3D动画系列</a>
+    </h1>
+  
+
+        
+    <div style="margin-top:10px;">
+    <span class="post-time">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-keyboard-o"></i>
+        <span class="post-meta-item-text">  字数统计: </span>
+        <span class="post-count">845字</span>
+      </span>
+    </span>
+
+    <span class="post-time">
+      &nbsp; | &nbsp;
+      <span class="post-meta-item-icon">
+        <i class="fa fa-hourglass-half"></i>
+        <span class="post-meta-item-text">  阅读时长: </span>
+        <span class="post-count">4分</span>
+      </span>
+    </span>
+</div>
+
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>1.本文主要阐述h5中的3d转换（位移与旋转），基本格式：位移：translate3d(x,y,z) 旋转：rotate3d(x,y,z) 透视(进大远小的方式体现立体，模拟人的眼睛，越近越大耶，记得放父盒子哟(＾Ｕ＾))：perspective 呈现：transform-style.</p>
+<p>2.简单的3d效果实现，注意要修改transform-style的属性，默认为flat，这样会导致子元素失去原先的3d效果，改为preserve-3d即可。<br>//body {<br>            perspective: 500px;<br>        }</p>
+<pre><code>    .box {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        margin: 100px auto;
+        transition: all 2s;
+        /* 让子元素保持3d立体空间环境 */
+        transform-style: preserve-3d;
+    }
+
+    .box:hover {
+        transform: rotateY(60deg);
+    }
+
+    .box div {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: pink;
+    }
+
+    .box div:last-child {
+        background-color: purple;
+        transform: rotateX(60deg);
+    }
+&lt;//style&gt;
+</code></pre><p>&lt;//head&gt;</p>
+<p>&lt;//body&gt;<br>    &lt;//div class=”box”&gt;<br>        &lt;//div&gt;&lt;//div&gt;<br>        &lt;//div&gt;&lt;//div&gt;<br>    &lt;//ody&gt;/div&gt;<br>&lt;//body&gt;<br>3.导航栏练习，注意在位移旋转的操作时，其是有先后顺序的，必须先位移再其他操作！<br>&lt;//style&gt;</p>
+<pre><code>    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    ul {
+        margin: 100px;
+    }
+
+    ul li {
+        float: left;
+        margin: 0 5px;
+        width: 120px;
+        height: 35px;
+        list-style: none;
+        /* 一会我们需要给box 旋转 也需要透视 干脆给li加 里面的子盒子都有透视效果 */
+        perspective: 500px;
+    }
+
+    .box {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: all .4s;
+    }
+
+    .box:hover {
+        transform: rotateX(90deg);
+    }
+
+    .front,
+    .bottom {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .front {
+        background-color: pink;
+        z-index: 1;
+        transform: translateZ(17.5px);
+    }
+
+    .bottom {
+        background-color: purple;
+        /* 这个x轴一定是负值 */
+        /* 我们如果有移动 或者其他样式，必须先写我们的移动 */
+        transform: translateY(17.5px) rotateX(-90deg);
+    }
+&lt;//style&gt;
+</code></pre><p>&lt;//head&gt;</p>
+<p>&lt;//body&gt;<br>    &lt;//ul&gt;<br>        &lt;//li&gt;<br>            &lt;//div class=”box”&gt;<br>                &lt;//div class=”front”&gt;黑马程序员&lt;//div&gt;<br>                &lt;//div class=”bottom”&gt;pink老师等你&lt;//div&gt;<br>            &lt;//div&gt;<br>        &lt;//li&gt;<br>        &lt;//li&gt;<br>            &lt;//div class=”box”&gt;<br>                &lt;//div class=”front”&gt;黑马程序员&lt;//div&gt;<br>                &lt;//div class=”bottom”&gt;pink老师等你&lt;//div&gt;<br>            &lt;//div&gt;<br>        &lt;//li&gt;<br>        &lt;//li&gt;<br>            &lt;//div class=”box”&gt;<br>                &lt;//iv class=”front”&gt;黑马程序员&lt;//div&gt;<br>                &lt;//div class=”bottom”&gt;pink老师等你&lt;//div&gt;<br>            &lt;//div&gt;<br>        &lt;//li&gt;<br>        &lt;//li&gt;<br>            &lt;//iv class=”box”&gt;<br>                &lt;//div class=”front”&gt;黑马程序员&lt;///div&gt;<br>                &lt;//div class=”bottom”&gt;pink老师等你&lt;//div&gt;<br>            &lt;//li&gt;/div&gt;<br>        &lt;//li&gt;<br>        &lt;//li&gt;<br>            &lt;//div class=”box”&gt;<br>                &lt;//div class=”front”&gt;黑马程序员&lt;//div&gt;/div&gt;<br>                &lt;//div class=”bottom”&gt;pink老师等你&lt;//div&gt;<br>            &lt;//div&gt;<br>        &lt;//ul&gt;/li&gt;<br>        &lt;//li&gt;<br>            &lt;//div class=”box”&gt;<br>                &lt;//div class=”front”&gt;黑马程序员&lt;//div&gt;/div&gt;<br>                &lt;//div class=”bottom”&gt;pink老师等你&lt;//li&gt;/div&gt;<br>            &lt;//div&gt;<br>        &lt;//ul&gt;/li&gt;<br>    &lt;//ul&gt;<br>&lt;//body&gt;<br>4.旋转木马练习(先rotate再translate,子元素3d效果需要在父元素里加上 transform-style: preserve-3d;)<br>    body {<br>        perspective: 1500px;<br>    }</p>
+<pre><code>section {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    margin: 150px auto;
+    transform-style: preserve-3d;
+    animation: rotate 10s infinite linear;
+}
+
+section:hover {
+    animation-play-state: paused;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotateY(0);
+    }
+    100% {
+        transform: rotateY(360deg);
+    }
+}
+
+section div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url(../media/dog.jpg) no-repeat;
+}
+
+section div:nth-child(1) {
+    transform: translateZ(300px);
+}
+
+section div:nth-child(2) {
+    transform: rotateY(60deg) translateZ(300px);
+}
+
+section div:nth-child(3) {
+    transform: rotateY(120deg) translateZ(300px);
+}
+
+section div:nth-child(4) {
+    transform: rotateY(180deg) translateZ(300px);
+}
+
+section div:nth-child(5) {
+    transform: rotateY(240deg) translateZ(300px);
+}
+
+section div:nth-child(6) {
+    transform: rotateY(300deg) translateZ(300px);
+}
+</code></pre><p>&lt;//style&gt;</p>
+<p>ddbody&gt;<br>    &lt;//section&gt;<br>        &lt;//div&gt;&lt;//div&gt;<br>        &lt;//div&gt;&lt;//div&gt;<br>        &lt;//div&gt;&lt;//div&gt;<br>        &lt;//div&gt;&lt;//&gt;/div&gt;<br>        &lt;//div&gt;&lt;//div&gt;<br>    &lt;//section&gt;<br>dbody&gt;</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/3D（H5）/">3D（H5）</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-H5" class="article article-type-post" itemscope="" itemprop="blogPost">
   
     <div class="article-meta">
@@ -337,9 +560,9 @@
     border-radius: 50%;
     border: 5px solid pink;
     /* 过渡写到本身上，谁做动画给谁加 */
-    transition: all 0.3s;
+    //transition: all 0.3s;
 }        
-img:hover {
+//img:hover {
     transform: rotate(360deg);
 }
 </code></pre> &lt;//style&gt;<br>&lt;//head&gt;<br>&lt;//body&gt;<br> &lt;//img src=”media/pic.jpg” alt=””&gt;<br>&lt;//body&gt;</li></ol>
@@ -1038,93 +1261,6 @@ img:hover {
       
 
       
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-关于docker以及与传统虚拟机的区" class="article article-type-post" itemscope="" itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2019/04/13/关于docker以及与传统虚拟机的区/" class="article-date">
-      <time datetime="2019-04-13T06:09:22.000Z" itemprop="datePublished">2019-04-13</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/13/关于docker以及与传统虚拟机的区/">关于docker以及与传统虚拟机的区</a>
-    </h1>
-  
-
-        
-    <div style="margin-top:10px;">
-    <span class="post-time">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-keyboard-o"></i>
-        <span class="post-meta-item-text">  字数统计: </span>
-        <span class="post-count">842字</span>
-      </span>
-    </span>
-
-    <span class="post-time">
-      &nbsp; | &nbsp;
-      <span class="post-meta-item-icon">
-        <i class="fa fa-hourglass-half"></i>
-        <span class="post-meta-item-text">  阅读时长: </span>
-        <span class="post-count">3分</span>
-      </span>
-    </span>
-</div>
-
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-            
-              <p>第一次接触Docker的时候，我把它比做一种轻量级的虚拟机。这样做无可厚非，因为Docker最初的成功秘诀，正是它比虚拟机更节省内存，启动更快。Docker不停地给大家宣传，”虚拟机需要数分钟启动，而Docker容器只需要50毫秒”。</p>
-<p>然而，Docker容器并非虚拟机！<br></p>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2019/04/13/关于docker以及与传统虚拟机的区/#more">more >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>
