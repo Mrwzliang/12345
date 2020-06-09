@@ -327,150 +327,9 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>1.本文主要阐述h5中的3d转换（位移与旋转），基本格式：位移：translate3d(x,y,z) 旋转：rotate3d(x,y,z) 透视(进大远小的方式体现立体，模拟人的眼睛，越近越大耶，记得放父盒子哟(＾Ｕ＾))：perspective 呈现：transform-style.</p>
-<p>2.简单的3d效果实现，注意要修改transform-style的属性，默认为flat，这样会导致子元素失去原先的3d效果，改为preserve-3d即可。<br>//body {<br>            perspective: 500px;<br>        }</p>
-<pre><code>    .box {
-        position: relative;
-        width: 200px;
-        height: 200px;
-        margin: 100px auto;
-        transition: all 2s;
-        /* 让子元素保持3d立体空间环境 */
-        transform-style: preserve-3d;
-    }
-
-    .box:hover {
-        transform: rotateY(60deg);
-    }
-
-    .box div {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: pink;
-    }
-
-    .box div:last-child {
-        background-color: purple;
-        transform: rotateX(60deg);
-    }
-&lt;//style&gt;
-</code></pre><p>&lt;//head&gt;</p>
-<p>&lt;//body&gt;<br>    &lt;//div class=”box”&gt;<br>        &lt;//div&gt;&lt;//div&gt;<br>        &lt;//div&gt;&lt;//div&gt;<br>    &lt;//ody&gt;/div&gt;<br>&lt;//body&gt;<br>3.导航栏练习，注意在位移旋转的操作时，其是有先后顺序的，必须先位移再其他操作！<br>&lt;//style&gt;</p>
-<pre><code>    * {
-        margin: 0;
-        padding: 0;
-    }
-
-    ul {
-        margin: 100px;
-    }
-
-    ul li {
-        float: left;
-        margin: 0 5px;
-        width: 120px;
-        height: 35px;
-        list-style: none;
-        /* 一会我们需要给box 旋转 也需要透视 干脆给li加 里面的子盒子都有透视效果 */
-        perspective: 500px;
-    }
-
-    .box {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        transform-style: preserve-3d;
-        transition: all .4s;
-    }
-
-    .box:hover {
-        transform: rotateX(90deg);
-    }
-
-    .front,
-    .bottom {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-    }
-
-    .front {
-        background-color: pink;
-        z-index: 1;
-        transform: translateZ(17.5px);
-    }
-
-    .bottom {
-        background-color: purple;
-        /* 这个x轴一定是负值 */
-        /* 我们如果有移动 或者其他样式，必须先写我们的移动 */
-        transform: translateY(17.5px) rotateX(-90deg);
-    }
-&lt;//style&gt;
-</code></pre><p>&lt;//head&gt;</p>
-<p>&lt;//body&gt;<br>    &lt;//ul&gt;<br>        &lt;//li&gt;<br>            &lt;//div class=”box”&gt;<br>                &lt;//div class=”front”&gt;黑马程序员&lt;//div&gt;<br>                &lt;//div class=”bottom”&gt;pink老师等你&lt;//div&gt;<br>            &lt;//div&gt;<br>        &lt;//li&gt;<br>        &lt;//li&gt;<br>            &lt;//div class=”box”&gt;<br>                &lt;//div class=”front”&gt;黑马程序员&lt;//div&gt;<br>                &lt;//div class=”bottom”&gt;pink老师等你&lt;//div&gt;<br>            &lt;//div&gt;<br>        &lt;//li&gt;<br>        &lt;//li&gt;<br>            &lt;//div class=”box”&gt;<br>                &lt;//iv class=”front”&gt;黑马程序员&lt;//div&gt;<br>                &lt;//div class=”bottom”&gt;pink老师等你&lt;//div&gt;<br>            &lt;//div&gt;<br>        &lt;//li&gt;<br>        &lt;//li&gt;<br>            &lt;//iv class=”box”&gt;<br>                &lt;//div class=”front”&gt;黑马程序员&lt;///div&gt;<br>                &lt;//div class=”bottom”&gt;pink老师等你&lt;//div&gt;<br>            &lt;//li&gt;/div&gt;<br>        &lt;//li&gt;<br>        &lt;//li&gt;<br>            &lt;//div class=”box”&gt;<br>                &lt;//div class=”front”&gt;黑马程序员&lt;//div&gt;/div&gt;<br>                &lt;//div class=”bottom”&gt;pink老师等你&lt;//div&gt;<br>            &lt;//div&gt;<br>        &lt;//ul&gt;/li&gt;<br>        &lt;//li&gt;<br>            &lt;//div class=”box”&gt;<br>                &lt;//div class=”front”&gt;黑马程序员&lt;//div&gt;/div&gt;<br>                &lt;//div class=”bottom”&gt;pink老师等你&lt;//li&gt;/div&gt;<br>            &lt;//div&gt;<br>        &lt;//ul&gt;/li&gt;<br>    &lt;//ul&gt;<br>&lt;//body&gt;<br>4.旋转木马练习(先rotate再translate,子元素3d效果需要在父元素里加上 transform-style: preserve-3d;)<br>    body {<br>        perspective: 1500px;<br>    }</p>
-<pre><code>section {
-    position: relative;
-    width: 300px;
-    height: 200px;
-    margin: 150px auto;
-    transform-style: preserve-3d;
-    animation: rotate 10s infinite linear;
-}
-
-section:hover {
-    animation-play-state: paused;
-}
-
-@keyframes rotate {
-    0% {
-        transform: rotateY(0);
-    }
-    100% {
-        transform: rotateY(360deg);
-    }
-}
-
-section div {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url(../media/dog.jpg) no-repeat;
-}
-
-section div:nth-child(1) {
-    transform: translateZ(300px);
-}
-
-section div:nth-child(2) {
-    transform: rotateY(60deg) translateZ(300px);
-}
-
-section div:nth-child(3) {
-    transform: rotateY(120deg) translateZ(300px);
-}
-
-section div:nth-child(4) {
-    transform: rotateY(180deg) translateZ(300px);
-}
-
-section div:nth-child(5) {
-    transform: rotateY(240deg) translateZ(300px);
-}
-
-section div:nth-child(6) {
-    transform: rotateY(300deg) translateZ(300px);
-}
-</code></pre><p>&lt;//style&gt;</p>
-<p>ddbody&gt;<br>    &lt;//section&gt;<br>        &lt;//div&gt;&lt;//div&gt;<br>        &lt;//div&gt;&lt;//div&gt;<br>        &lt;//div&gt;&lt;//div&gt;<br>        &lt;//div&gt;&lt;//&gt;/div&gt;<br>        &lt;//div&gt;&lt;//div&gt;<br>    &lt;//section&gt;<br>dbody&gt;</p>
-
+            
+              <p>1.本文主要阐述h5中的3d转换（位移与旋转），基本格式：位移：translate3d(x,y,z) 旋转：rotate3d(x,y,z) 透视(进大远小的方式体现立体，模拟人的眼睛，越近越大耶，记得放父盒子哟(＾Ｕ＾))：perspective 呈现：transform-style.</p>
+          
       
     </div>
     
@@ -483,6 +342,10 @@ section div:nth-child(6) {
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/3D（H5）/">3D（H5）</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2020/05/08/H5-3D动画系列/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
