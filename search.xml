@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>vue项目之登录模块</title>
+      <link href="/2020/06/10/vue%E9%A1%B9%E7%9B%AE%E4%B9%8B%E7%99%BB%E5%BD%95%E6%A8%A1%E5%9D%97/"/>
+      <url>/2020/06/10/vue%E9%A1%B9%E7%9B%AE%E4%B9%8B%E7%99%BB%E5%BD%95%E6%A8%A1%E5%9D%97/</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>一丶初始化前端项目基本步骤：<br>0.安装vue脚手架<br>1.通过vue脚手架创建项目<br>2.配置vue路由 配置element-ui组件库<br>3.配置axios库 初始化git远程仓库<br>4.托管项目<br><a id="more"></a><br>二丶登录的业务流程没啥好说的，技术点涉及一下几点：<br>0.http是无状态的<br>1.通过cookie再客户端记录状态<br>2.通过session在服务器记录状态（不需要跨域，1与2即可）<br>3.通过token维持登录状态（跨域情况下）</p><p>三丶具体实现<br>1.通过element-ui组件实现布局（el-form,el-form-item,el-input,el-button,字体图标）</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> vue </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>H5-3D动画系列</title>
       <link href="/2020/05/08/H5-3D%E5%8A%A8%E7%94%BB%E7%B3%BB%E5%88%97/"/>
       <url>/2020/05/08/H5-3D%E5%8A%A8%E7%94%BB%E7%B3%BB%E5%88%97/</url>
