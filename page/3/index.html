@@ -174,7 +174,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>分布式服务框架：–高性能和透明化的RPC远程服务调用方案–SOA服务治理方案-Apache MINA 框架基于Reactor模型通信框架，基于tcp长连接Dubbo缺省协议采用单一长连接和NIO异步通讯，适合于小数据量大并发的服务调用，以及服务消费者机器数远大于服务提供者机器数的情况分析源代码，基本原理如下：client一个线程调用远程接口，生成一个唯一的ID（比如一段随机字符串，UUID等），
+        <p>分布式服务框架：–高性能和透明化的RPC远程服务调用方案–SOA服务治理方案-Apache MINA 框架基于Reactor模型通信框架，基于tcp长连接Dubbo缺省协议采用单一长连接和NIO异步通讯，适合于小数据量大并发的服务调用，以及服务消费者机器数远大于服务提供者机器数的情况分析源代码，基本原理如下：client一个线程调用远程接口，生成一个唯一的ID（比如一段随机字符串，UUID等），</p>
         
           <a class="article-more-a" href="/2018/08/06/Dubbo%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86%E6%9C%BA%E5%88%B6/#more">more >></a>
         
@@ -409,7 +409,7 @@
 <p>5.mybatis两种配置文件，一个全局的，还有一个映射文件，通过这两个配置文件就可以构建sqlsessionFactory相当于hibernate里的sessionFactory,打开sqlsession的会话。在通过session实现CRUD,接下来就是Executor(执行器)，是一个接口，有两种实现，一个是缓存的实现，还有一个是数据库的实现。最底层的Mapper Statement主要是在三个方面，即sql语句，参数类型(hashmap,基本数据类型，包装类型pojo)，结果集类型。</p>
 <p>6.mapper接口的动态代理实现，主要是两点，其一就是映射文件中的命名空间与Mapper接口的全路径一致。其二映射文件中的statementId与Mapper接口的方法名保持一致。</p>
 <p>7.mybatis-config.xml的配置，有严格的顺序之分。</p>
-<img src="/2018/01/11/mybatis%E5%BA%94%E7%94%A8%E5%B0%8F%E7%BB%93/mybatis%E6%95%B4%E4%BD%93%E6%A1%86%E6%9E%B6.jpg" class="" title="mybatis整体框架">
+<img src="/.xyz//01/11/mybatis%E5%BA%94%E7%94%A8%E5%B0%8F%E7%BB%93/mybatis%E6%95%B4%E4%BD%93%E6%A1%86%E6%9E%B6.jpg" class title="mybatis整体框架">
       
 
       
@@ -487,7 +487,7 @@
 <p>3.我们可以通过Class类的newInstance()来创建真实对象，当然这个方法需要对象里提供无参构造,否则会出现 java.lang.InstantiationException.</p>
 <p>4.sun公司专门给我们提供了如何获取一个类中的所有构造函数。Constructor[] getConstructors(), Constructor[] getDeclaredConstructors(),<br>Constructor getConstructor(Class … parameterTypes),Constructor getDeclaredConstructor(Class … parameterTypes).获取到构造函数对象后，就可以创造某个真实对象。注意暴力访问时候，需要setAccessible(true);</p>
 <p>5.反射过程如下图</p>
-<img src="/2017/09/10/%E5%85%B3%E4%BA%8E%E5%8F%8D%E5%B0%84/%E5%8F%8D%E5%B0%84%E8%BF%87%E7%A8%8B.jpg" class="" title="反射过程">
+<img src="/.xyz//09/10/%E5%85%B3%E4%BA%8E%E5%8F%8D%E5%B0%84/%E5%8F%8D%E5%B0%84%E8%BF%87%E7%A8%8B.jpg" class title="反射过程">
       
 
       
@@ -551,7 +551,7 @@
       
         <p>什么是javascript注入攻击？</p>
 <p>　　1.每当接受用户输入的内容并重新显示这些内容时，网站就很容易遭受 JavaScript 注入攻击。让我们研究一个容易遭受 JavaScript 注入攻击的具体应用程序。假设已经创建了一个客户反馈网站。客户可以访问网站并输入对产品的反馈信息。当客户提交反馈时，反馈信息重新显示在反馈页面上。<br>客户反馈网站是一个简单的网站。不幸的是，此网站容易遭受 JavaScript 注入攻击。<br>假设正在将以下文本输入到客户反馈表单中：<script>alert(“Attack!”)</script><br>　　此文本表示显示警告消息框的 JavaScript 脚本。在某人将此脚本提交到客户反馈表单后，消息Attack! 会在将来任何人访问客户反馈网站时显示。</p>
-<p>　　2.还有一种就是在浏览器地址栏中输入一段js代码，用来改变页面js变量、页面标签的内容。<br>使用Javascript注入，用户不需要关闭或保存网页就可以改变其内容，这是在浏览器的地址栏上完成的。命令的语法如下：<br>javascript:alert(#command#)<br>
+<p>　　2.还有一种就是在浏览器地址栏中输入一段js代码，用来改变页面js变量、页面标签的内容。<br>使用Javascript注入，用户不需要关闭或保存网页就可以改变其内容，这是在浏览器的地址栏上完成的。命令的语法如下：<br>javascript:alert(#command#)<br></p>
         
           <a class="article-more-a" href="/2017/08/21/js%E6%B3%A8%E5%85%A5%E9%97%AE%E9%A2%98/#more">more >></a>
         
@@ -849,15 +849,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cdn</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Dubbo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">3D（H5）</a>
+                <a href="javascript:void(0)" class="js-tag color4">cdn</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -865,7 +861,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">emmet</a>
+                <a href="javascript:void(0)" class="js-tag color2">3D（H5）</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">springsecurity+oauth2认证协议</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -873,7 +873,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">springsecurity+oauth2认证协议</a>
+                <a href="javascript:void(0)" class="js-tag color1">emmet</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -897,11 +897,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">spring</a>
+                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+                <a href="javascript:void(0)" class="js-tag color2">spring</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -180,7 +180,7 @@
 <p>3.设置系统参数值 通过-D&lt;参数名&gt;&#x3D;&lt;值&gt;来设定，可以通过Symtem.getProperty(“参数名”);来校验。</p>
 <p>4.java1.7与java1.8的堆内存模型比较<br>最大变化就是1.8取消了永久区，添加了非堆内存的元数据空间，该空间不在虚拟机内部，在本地内存空间中。至于为何要移除永久区，官方解释说是为了融合hotspot JVM与JRockit VM，JRockit没有永久区，在实际使用中，永久代内存经常不够用也有可能发生内存泄漏，爆出异常：java.lang.OutOfMemoryError: PermGen，所以在某种程度上也有点小优化的感觉。</p>
 <p>5.内存溢出分析，一般是将堆内存使用情况快照到文件中，在通过jhat或者mat工具分析。如何定位分析？最主要的还是抓住是否某线程的内存占到80-90%,那这个线程跑的肯定有问题，再回到代码详细查询问题。</p>
-<p>6.对于服务器CPU负载突然提高，出现死锁，死循环，那可以通过jstack将正在运行的jvm的线程情况进行快照，并打印。<br>用法：jstack <pid>(tomcat的pid等),可以看出各线程的状态。</p>
+<p>6.对于服务器CPU负载突然提高，出现死锁，死循环，那可以通过jstack将正在运行的jvm的线程情况进行快照，并打印。<br>用法：jstack <pid>(tomcat的pid等),可以看出各线程的状态。</pid></p>
 <p>7.关于垃圾回收<br>什么是垃圾回收？？我们程序的运行必然需要申请内存资源，无效的对象资源不及时处理，就会一直占用内存资源，最终就会导致内存溢出，所以对内存资源的管理是非常重要的了。一般高级语言都有垃圾回收机制如c#，python等。可是问题就是垃圾回收机制怎么来实现的呢，他怎么知道哪些对象是垃圾要回收了，哪些不是？所以肯定有一定的算法来控制的。</p>
 <p>8.垃圾回收的常见算法<br>    a&gt;引用计数法<br>        该算法可能是最悠久的一个吧，最早由George与Collins在1960的时候首次提出，到现在还被很多语言使用。<br>        原理：假设有一个对象A，任何一个对象对A的引用，那么对象A的引用计数器+1，当引用失败时，对象A的引用计数器就-1，如果对象A的引用计数器为0，说明对象A就可以被回收了。<br>        优点：实时性比较高及不需要等到内存不足时才开始回收。更新对象的计数器时，只是影响该对象，不会扫描全部对象。回收时，应用不需要挂起。<br>        缺点：每次对象被引用都需要去更新计数器，有一点时间开销，浪费CPU资源，即使内存够用，仍然在运行时计数统计。最致命的缺点是无法解决循环引用的问题！所谓循环引用就是两个对象互相引用，可是后面A与B都被置为null时，该算法还是不会回收这两个对象。所以java中一般不会使用该算法。<br>    b&gt;标记清除法<br>        解决引用计数法的循环利用缺点，但是新问题就是内存太碎片化，而且效率相对较低，因为要遍历所有对象,要暂停应用程序。</p>
 <pre><code>c&gt;标记压缩算法
@@ -461,15 +461,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">cdn</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Dubbo</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">3D（H5）</a>
+                <a href="javascript:void(0)" class="js-tag color4">cdn</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -477,7 +473,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">emmet</a>
+                <a href="javascript:void(0)" class="js-tag color2">3D（H5）</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">springsecurity+oauth2认证协议</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -485,7 +485,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">springsecurity+oauth2认证协议</a>
+                <a href="javascript:void(0)" class="js-tag color1">emmet</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -509,11 +509,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">spring</a>
+                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+                <a href="javascript:void(0)" class="js-tag color2">spring</a>
               </li>
              
               <li class="article-tag-list-item">
