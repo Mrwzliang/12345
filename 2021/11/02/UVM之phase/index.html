@@ -8,20 +8,20 @@
   <link rel="dns-prefetch" href="http://www.wzljava.xyz">
   <title>UVM之phase | small love</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="此贴简单分为奇偶分频，再通过综合代码及tb进行验证">
+  <meta name="description" content="一直很好奇，phase为什么可以自动运行，它到底怎么自动运行的，通过什么办法执行的呢？">
 <meta property="og:type" content="article">
 <meta property="og:title" content="UVM之phase">
 <meta property="og:url" content="http://www.wzljava.xyz/2021/11/02/UVM%E4%B9%8Bphase/index.html">
 <meta property="og:site_name" content="small love">
-<meta property="og:description" content="此贴简单分为奇偶分频，再通过综合代码及tb进行验证">
+<meta property="og:description" content="一直很好奇，phase为什么可以自动运行，它到底怎么自动运行的，通过什么办法执行的呢？">
 <meta property="og:locale">
-<meta property="og:image" content="http://www.wzljava.xyz/2021/11/02/UVM%E4%B9%8Bphase/phase_1.jpg">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/11/02/UVM%E4%B9%8Bphase/phase_%E5%AE%8F%E8%A7%82.jpg">
 <meta property="article:published_time" content="2021-11-02T02:20:25.000Z">
-<meta property="article:modified_time" content="2022-04-10T10:21:00.902Z">
+<meta property="article:modified_time" content="2022-04-11T07:48:18.333Z">
 <meta property="article:author" content="得到的都是侥幸">
 <meta property="article:tag" content="源码">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://www.wzljava.xyz/2021/11/02/UVM%E4%B9%8Bphase/phase_1.jpg">
+<meta name="twitter:image" content="http://www.wzljava.xyz/2021/11/02/UVM%E4%B9%8Bphase/phase_%E5%AE%8F%E8%A7%82.jpg">
   
     <link rel="alternative" href="/atom.xml" title="small love" type="application/atom+xml">
   
@@ -177,12 +177,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>此贴简单分为奇偶分频，再通过综合代码及tb进行验证</p>
+        <p>一直很好奇，phase为什么可以自动运行，它到底怎么自动运行的，通过什么办法执行的呢？</p>
 <span id="more"></span>
-
-<p>先看奇数分频：<br>三分频：</p>
-<p>7.多线程程序运行路径图解<br>    <img src="/2021/11/02/UVM%E4%B9%8Bphase/phase_1.jpg" class="" title="phase_1"></p>
-<p>8.关于线程安全问题<br>    java中每个对象都内置了一个监视器（锁）<br>    本质原因是cpu在处理多个线程时候，在操作共享数据的多条代码之间进行切换导致的。<br>    无法控制cpu的切换，只能控制某个线程在操作共享数据的时候，不让其它线程进入到操作共享数据的代码中去，即线程同步。<br>    可以通过关键字synchronized(obj锁){}来控制公共资源，在JDK1.5之后，使用Lock来代替synchronized，即创建<br>    ReentrantLock实例，但是需要手动获取锁与释放锁。<br>9.执行时间较长或者需要客户等待的情况下一般要考虑多线程，上传图片？<br>10.java中有些类保证线程安全有些没有，比如stringbuffer&#x2F;stringbuild  vector&#x2F;arraylist,保证线程安全性能一般都低了点，<br>所以根据实际业务来选择。</p>
+<p>首先从宏观上看一下我们phase的执行流程，可能更多的表达方式以图片+源码结合的方式展示，毕竟文字很苍白&#x3D;_-</p>
+<img src="/2021/11/02/UVM%E4%B9%8Bphase/phase_%E5%AE%8F%E8%A7%82.jpg" class="" title="phase_宏观">
+<p>总结：核心就是m_run_phases(),先获取uvm_phase,再放入一个mailbox,最后无限循环，从mailbox取紧接着开开辟进程，执行execute函数，<br>最后维护一个联合数组，索引是phase类型，值是进程句柄。<br>问题：1.get_common_domain()与uvm_phase的关系   2.execute方法发生了什么  3.注意体会这种设计方式</p>
 
       
 
@@ -420,15 +419,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">mongodb</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">cdn</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Dubbo</a>
+                <a href="javascript:void(0)" class="js-tag color3">mongodb</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -440,7 +435,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">emmet</a>
+                <a href="javascript:void(0)" class="js-tag color1">Dubbo</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -456,6 +451,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">emmet</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">javascript</a>
               </li>
              
@@ -464,15 +463,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">mybatis</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">mysql优化</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">spring</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -484,15 +475,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">mybatis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">spring</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">docker</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">多线程</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -509,6 +504,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">ORM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
               </li>
             
             <div class="clearfix"></div>
