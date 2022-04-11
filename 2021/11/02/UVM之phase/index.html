@@ -16,8 +16,9 @@
 <meta property="og:description" content="一直很好奇，phase为什么可以自动运行，它到底怎么自动运行的，通过什么办法执行的呢？">
 <meta property="og:locale">
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/02/UVM%E4%B9%8Bphase/phase_%E5%AE%8F%E8%A7%82.jpg">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/11/02/UVM%E4%B9%8Bphase/phase_domain.png">
 <meta property="article:published_time" content="2021-11-02T02:20:25.000Z">
-<meta property="article:modified_time" content="2022-04-11T07:48:18.333Z">
+<meta property="article:modified_time" content="2022-04-11T08:13:18.416Z">
 <meta property="article:author" content="得到的都是侥幸">
 <meta property="article:tag" content="源码">
 <meta name="twitter:card" content="summary">
@@ -182,6 +183,13 @@
 <p>首先从宏观上看一下我们phase的执行流程，可能更多的表达方式以图片+源码结合的方式展示，毕竟文字很苍白&#x3D;_-</p>
 <img src="/2021/11/02/UVM%E4%B9%8Bphase/phase_%E5%AE%8F%E8%A7%82.jpg" class="" title="phase_宏观">
 <p>总结：核心就是m_run_phases(),先获取uvm_phase,再放入一个mailbox,最后无限循环，从mailbox取紧接着开开辟进程，执行execute函数，<br>最后维护一个联合数组，索引是phase类型，值是进程句柄。<br>问题：1.get_common_domain()与uvm_phase的关系   2.execute方法发生了什么  3.注意体会这种设计方式</p>
+<p>uvm_domain也是继承与uvm_phase的一个object,我们知道phase有很多种，get_common_domain方法里面去整合这些phase，包括函数&#x2F;任务类的<br>还有12个动态运行的phase,这也复合我们面向对象语言的特性，也就是说这个方法返回了包含所有phase的phase,看下图，四个成员变量<br>m_common_domain中存放的就是我们正常运行时所有的phase，包括各种函数phase，run_phase及12个动态运行时的phase。<br>m_uvm_domain中存放的是一个uvm_phase类型的变量m_uvm_schedule，而这个变量中存放着12个动态运行时的phase。<br>m_uvm_schedule存放的是12个动态运行的phase。<br>m_domains则用于记录所有的uvm_domain信息（每当有一个uvm_domain实例化的时候，就会往m_domains中插入一条记录，<br>而这条记录的内容就是这个实例的指针，当一个验证平台中如果自己不另外定义uvm_domain的话，那么m_domains中的记录只有这两条）</p>
+<img src="/2021/11/02/UVM%E4%B9%8Bphase/phase_domain.png" class="" title="phase_domain">
+
+
+
+
+
 
       
 
@@ -419,11 +427,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">mongodb</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">cdn</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">mongodb</a>
+                <a href="javascript:void(0)" class="js-tag color1">Dubbo</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -435,7 +447,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Dubbo</a>
+                <a href="javascript:void(0)" class="js-tag color1">emmet</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -451,10 +463,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">emmet</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">javascript</a>
               </li>
              
@@ -463,11 +471,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">mybatis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">mysql优化</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
+                <a href="javascript:void(0)" class="js-tag color2">spring</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -475,11 +487,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">mybatis</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">spring</a>
+                <a href="javascript:void(0)" class="js-tag color2">tomcat</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -488,6 +496,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">多线程</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -504,10 +516,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">ORM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">分布式</a>
               </li>
             
             <div class="clearfix"></div>
