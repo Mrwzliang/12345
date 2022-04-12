@@ -22,7 +22,7 @@
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/02/UVM%E4%B9%8Bphase/%E5%89%8D%E9%A9%B1%E5%90%8E%E7%BB%A7.png">
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/02/UVM%E4%B9%8Bphase/execute_domain.png">
 <meta property="article:published_time" content="2021-11-02T02:20:25.000Z">
-<meta property="article:modified_time" content="2022-04-12T13:46:22.453Z">
+<meta property="article:modified_time" content="2022-04-12T14:34:11.300Z">
 <meta property="article:author" content="得到的都是侥幸">
 <meta property="article:tag" content="源码">
 <meta name="twitter:card" content="summary">
@@ -195,7 +195,7 @@
 <img src="/2021/11/02/UVM%E4%B9%8Bphase/%E5%89%8D%E9%A9%B1%E5%90%8E%E7%BB%A7.png" class="" title="前驱后继">
 <p>好了，经过上面分析，大概了解了uvm_phase以及uvm_domain我们来到起初m_run_phase的方法里，看phase.execute_phase(),phase即我们从mailbox里获取到的<br>封装了各个phase的domain。<br>此方法的运行根据phase的种类可以分三种，domain类phase，函数phase以及任务phase我们先来分析domain类：</p>
 <img src="/2021/11/02/UVM%E4%B9%8Bphase/execute_domain.png" class="" title="execute_domain">
-<p>基本流程：通过前面get_common_domain方法获得调用此方法的对象我们这里即m_common_domain，它等于是所有phase的集合，当然也是一个phase,<br>存入mailbox后，在后面get，每次get都会启动一个进程去执行它，一开始是等待前驱phase先执行完，记过一些判断到5，这个方法其实是去除一些其他phase，来<br>执行兄弟phase，很显然，我们这domain这一块基本没什么用，最后根据前面uvm_phase的知识得知m_common_domain唯一的后继是uvm_build_phase,将其放入之前的mailbox<br>这样就开始新的一轮execute的执行，只是这时候调用此方法的phase是build_phase,剩下两种方式的执行流程也很类似，由此我们得知，自动执行的实现方式<br>mailbox+无限循环get,去执行execute方法。</p>
+<p>基本流程：通过前面get_common_domain方法获得调用此方法的对象我们这里即m_common_domain，它等于是所有phase的集合，当然也是一个phase,<br>存入mailbox后，在后面get，每次get都会启动一个进程去执行它，一开始是等待前驱phase先执行完，记过一些判断到5，这个方法其实是去除一些其他phase，来<br>执行兄弟phase，很显然，我们这domain这一块基本没什么用，最后根据前面uvm_phase的知识得知m_common_domain唯一的后继是uvm_build_phase,将其放入之前的mailbox<br>这样就开始新的一轮execute的执行，这时候调用此方法的是build_phase，很显然在11判断时，这是imp类型的phase,在后面调用traverse()方法，传入参数为：comp(uvm_root)<br>执行状态为：UVM_PHASE_STARTED，之后就递归调用此tre方法（root-&gt;最底层的一个），执行完回到execute_phase，更换phase状态，继续调用此tre方法。build的tre方法属于uvm_topdown_phase，<br>而其他的自底而上的phase调用的是uvm_bottomup_phase中的tre方法。uvm_topdown_phase的traverse对比一下就能看出差异。对于topdown来说，是自上而下执行的，由于传给traverse的参数是最顶层的uvm_root，<br>前者先执行uvm_root的build_phase，之后再一个一个的执行各个子component的build_phase。但是对于bottomup来说，则是先去执行所有子component的相应phase(如connect_phase)，等到全部执行完毕后，再返回来执行自己的connect_phase，<br>也就说uvm_root的connect_phase将会在最后时刻执行。这刚好就是bottomup的意思。</p>
 
       
 
@@ -461,11 +461,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">NIO</a>
+                <a href="javascript:void(0)" class="js-tag color1">springsecurity+oauth2认证协议</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">springsecurity+oauth2认证协议</a>
+                <a href="javascript:void(0)" class="js-tag color4">NIO</a>
               </li>
              
               <li class="article-tag-list-item">
