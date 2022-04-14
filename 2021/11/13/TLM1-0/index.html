@@ -20,9 +20,11 @@
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/uvm_port_base%E4%B8%8Euvm_port_component%E5%85%B3%E7%B3%BB1.png">
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/uvm_port_base%E4%B8%8Euvm_port_component%E5%85%B3%E7%B3%BB2.png">
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/uvm_port_base%E4%B8%8Euvm_port_component%E5%85%B3%E7%B3%BB3.png">
-<meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/uvm_port_base%E4%B8%8Euvm_port_component%E5%85%B3%E7%B3%BB1.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/connect1.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/connect2.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/connect3.png">
 <meta property="article:published_time" content="2021-11-13T11:50:18.000Z">
-<meta property="article:modified_time" content="2022-04-14T06:31:20.687Z">
+<meta property="article:modified_time" content="2022-04-14T08:50:29.316Z">
 <meta property="article:author" content="得到的都是侥幸">
 <meta property="article:tag" content="源码">
 <meta name="twitter:card" content="summary">
@@ -193,7 +195,10 @@
 <img src="/2021/11/13/TLM1-0/uvm_port_base%E4%B8%8Euvm_port_component%E5%85%B3%E7%B3%BB2.png" class="" title="uvm_port_base与uvm_port_component关系2">
 <img src="/2021/11/13/TLM1-0/uvm_port_base%E4%B8%8Euvm_port_component%E5%85%B3%E7%B3%BB3.png" class="" title="uvm_port_base与uvm_port_component关系3">
 <p>我们发现uvm_port_base里有个m_comp的变量，这就把两者关系一一对应起来</p>
-<img src="/2021/11/13/TLM1-0/uvm_port_base%E4%B8%8Euvm_port_component%E5%85%B3%E7%B3%BB1.png" class="" title="uvm_port_base与uvm_port_component关系1">
+<p>下面我们来看一下connect方法，我们经常在env里通过connect方法将两个端口连接起来，此方法里对两个端口的连接做了一些列的检查：</p>
+<img src="/2021/11/13/TLM1-0/connect1.png" class="" title="connect1">
+<img src="/2021/11/13/TLM1-0/connect2.png" class="" title="connect2">
+<img src="/2021/11/13/TLM1-0/connect3.png" class="" title="connect3">
 
       
 
