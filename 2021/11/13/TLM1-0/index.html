@@ -35,8 +35,11 @@
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/connect2.png">
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/connect3.png">
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/resolve_bindings.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/IMP001.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/IMP002.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/IMP003.png">
 <meta property="article:published_time" content="2021-11-13T11:50:18.000Z">
-<meta property="article:modified_time" content="2022-04-19T04:15:06.855Z">
+<meta property="article:modified_time" content="2022-04-19T15:37:40.734Z">
 <meta property="article:author" content="shymakers">
 <meta property="article:tag" content="源码">
 <meta name="twitter:card" content="summary">
@@ -247,7 +250,11 @@
 <img src="/2021/11/13/TLM1-0/connect3.png" class="" title="connect3"> 
 <p>分析一下resolve_bindings<br>此方法本质上是表现端口连接关系看下面类的基本关系：</p>
 <img src="/2021/11/13/TLM1-0/resolve_bindings.png" class="" title="resolve_bindings">
-<p>到这里我们清楚uvm_port_component存在的意义，它使得port有了component的功能，它里面重写了resolve_bindings的方法，并且让m_port去调用。</p>
+<p>到这里我们清楚uvm_port_component存在的意义，它使得port有了component的功能，它里面重写了resolve_bindings的方法，并且让m_port去调用。<br>下面我们分析一下imp类端口，这里主要以uvm_blocking_put_imp为例</p>
+<img src="/2021/11/13/TLM1-0/IMP001.png" class="" title="IMP001">
+<img src="/2021/11/13/TLM1-0/IMP002.png" class="" title="IMP002">
+<img src="/2021/11/13/TLM1-0/IMP003.png" class="" title="IMP003">
+<p>主要涉及的代码如上所示，包含两个宏：<code>UVM_IMP_COMMON </code>UVM_BLOCKING_PUT_IMP,第一个宏从common名字可以看出一般是做一些普通或者大众的设置等，<br>展开看到，他定义了一个m_imp变量，并且把imp赋值给它，其实呢，那个function new 方法里的参数，在我们具体例化一个端口的时候会传入参数，第一个就是<br>端口的名字string类型，第二个就是端口所在的component的指针，这样一来，m_imp就有了端口所在component的指针。下面的那个MASK我们前面已经讨论过，<br>其实就是为了匹配相同类型端口用的。第二个宏对于本例来说就是重写了uvm_tlm_if_base里的put方法，然后再通过传来的m_imp来执行put方法，即端口所在<br>component来执行，那么就需要在此component里定义一个put方法，即具体的操作行为我们都是在component里定义的对应方法，IMP本身并不参与具体的操作，<br>他只是通过所在component来操作。</p>
 
     </div>
 
