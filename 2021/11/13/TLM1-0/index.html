@@ -34,8 +34,9 @@
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/connect1.png">
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/connect2.png">
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/connect3.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/resolve_bindings.png">
 <meta property="article:published_time" content="2021-11-13T11:50:18.000Z">
-<meta property="article:modified_time" content="2022-04-17T03:37:34.284Z">
+<meta property="article:modified_time" content="2022-04-19T04:15:06.855Z">
 <meta property="article:author" content="shymakers">
 <meta property="article:tag" content="源码">
 <meta name="twitter:card" content="summary">
@@ -160,7 +161,7 @@
     </div>
   </aside>
   <div class="sidebar-dimmer"></div>
-  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=29140417&auto=0&height=66"></iframe>
+  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=33875750&auto=1&height=66"></iframe>
 
 
     </header>
@@ -243,8 +244,10 @@
 <p>下面我们来看一下connect方法，我们经常在env里通过connect方法将两个端口连接起来，此方法里对两个端口的连接做了一些列的检查：</p>
 <img src="/2021/11/13/TLM1-0/connect1.png" class="" title="connect1">
 <img src="/2021/11/13/TLM1-0/connect2.png" class="" title="connect2">
-<img src="/2021/11/13/TLM1-0/connect3.png" class="" title="connect3">
+<img src="/2021/11/13/TLM1-0/connect3.png" class="" title="connect3"> 
 <p>分析一下resolve_bindings<br>此方法本质上是表现端口连接关系看下面类的基本关系：</p>
+<img src="/2021/11/13/TLM1-0/resolve_bindings.png" class="" title="resolve_bindings">
+<p>到这里我们清楚uvm_port_component存在的意义，它使得port有了component的功能，它里面重写了resolve_bindings的方法，并且让m_port去调用。</p>
 
     </div>
 
