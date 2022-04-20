@@ -41,8 +41,13 @@
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/PORT001.png">
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/PORT002.png">
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/PORT003.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/analysis_port.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/fifo001.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/fifo002.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/fifo003.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/11/13/TLM1-0/fifo004.png">
 <meta property="article:published_time" content="2021-11-13T11:50:18.000Z">
-<meta property="article:modified_time" content="2022-04-19T16:48:12.368Z">
+<meta property="article:modified_time" content="2022-04-20T08:44:07.811Z">
 <meta property="article:author" content="shymakers">
 <meta property="article:tag" content="源码">
 <meta name="twitter:card" content="summary">
@@ -261,7 +266,14 @@
 <img src="/2021/11/13/TLM1-0/PORT001.png" class="" title="PORT001">
 <img src="/2021/11/13/TLM1-0/PORT002.png" class="" title="PORT002">
 <img src="/2021/11/13/TLM1-0/PORT003.png" class="" title="PORT003">
-<p>由上图可知，也是包含两个宏，注意与上面的区分，第一个宏展开直接设置一下MASK就行了，而第二个宏跟上面的一样，只是传进来的参数不一致，这里传的是m_if，<br>由上述知道，m_if是指着imp的，而imp最终还是由imp所在的component来执行此put函数。所以从这里可以体会出m_if的妙用，为什么前面最后都要把各个类型的端口<br>的m_if都指向imp,因为执行具体的方法终归需要imp来操作。再这里也可以想一下假如port只连接export的时候，m_if指向空的imp，即null.put(),这样必然会报错。</p>
+<p>由上图可知，也是包含两个宏，注意与上面的区分，第一个宏展开直接设置一下MASK就行了，而第二个宏跟上面的一样，只是传进来的参数不一致，这里传的是m_if，<br>由上述知道，m_if是指着imp的，而imp最终还是由imp所在的component来执行此put函数。所以从这里可以体会出m_if的妙用，为什么前面最后都要把各个类型的端口<br>的m_if都指向imp,因为执行具体的方法终归需要imp来操作。再这里也可以想一下假如port只连接export的时候，m_if指向空的imp，即null.put(),这样必然会报错。<br>analysis port相对清晰一点，看下面port的代码</p>
+<img src="/2021/11/13/TLM1-0/analysis_port.png" class="" title="analysis_port">
+<p>框出部分表现了连接的imp端口数目是0-x，从这里可以推断出export是1-x,在write函数里，根据上述分析肯定是从m_imp_list里通过get_if遍历出所有imp,<br>然后这些imp再通过调用所在component的write函数来实现广播。<br>下面我们来看一下fifo的应用，因为imp的使用终归要自己定义一个对应的函数在端口所在component。本质上是封装多个port,将数据缓存，fifo实现基本思想：<br>假如com_a与com_b通信，在这中间插入一个com_c,其中a中analysis_port那么c中有analysis_imp与之相连并且定义一个write函数，将a传来的数据放入一个<br>缓存，后来我们知道，是存放在mailbox的，然后b中假如定义的是blcoking_get_port,则需要在c中定义一个get_imp，在b中get数据，则c调用get，将刚刚传<br>入mailbox的数据传给b,这样就不存在imp的问题了。在uvm_tlm_fifos文件中我们发现它分了两种，一个是uvm_tlm_fifo一个是uvm_tlm_analysis_fifo,前者继承<br>于uvm_tlm_fifo_base，后者继承于前者<br>如下图所示，展示了fifo的相关类以及分类：</p>
+<img src="/2021/11/13/TLM1-0/fifo001.png" class="" title="fifo001">
+<img src="/2021/11/13/TLM1-0/fifo002.png" class="" title="fifo002">
+<img src="/2021/11/13/TLM1-0/fifo003.png" class="" title="fifo003">
+<img src="/2021/11/13/TLM1-0/fifo004.png" class="" title="fifo004">
+<p>uvm_tlm_fifo重写了父类的方法，主要看put与get两个方法，每当有tr来都会put进mailbox里，再通过put_ap（父类中定义的uvm_analysis_port）广播出去，<br>每当有get请求从此fifo中取得transaction时，会从mailbox中得到一个transaction，并且把此transaction通过get_ap广播出去.</p>
 
     </div>
 
