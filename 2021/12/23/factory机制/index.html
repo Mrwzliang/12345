@@ -33,7 +33,7 @@
 <meta property="og:image" content="http://www.wzljava.xyz/2021/12/23/factory%E6%9C%BA%E5%88%B6/factory005.png">
 <meta property="og:image" content="http://www.wzljava.xyz/2021/12/23/factory%E6%9C%BA%E5%88%B6/factory006.png">
 <meta property="article:published_time" content="2021-12-23T15:39:50.000Z">
-<meta property="article:modified_time" content="2022-04-21T10:57:34.641Z">
+<meta property="article:modified_time" content="2022-04-21T11:00:04.295Z">
 <meta property="article:author" content="shymakers">
 <meta property="article:tag" content="factory">
 <meta name="twitter:card" content="summary">
@@ -234,7 +234,7 @@
 <img src="/2021/12/23/factory%E6%9C%BA%E5%88%B6/factory002.png" class="" title="factory002">
 <img src="/2021/12/23/factory%E6%9C%BA%E5%88%B6/factory003.png" class="" title="factory003">
 <p>关键私有变量me，类型this_type即这个例，其在声明时通过get初始化，非空说明factory里已经有了，否则new一个，再放入factory,回到typedef,我们惊奇的<br>发现并没有将T进行注册，而是将uvm_object_registry类里的成员变量me注册到factory中，而me就是此类的一个实例，所以我们这里的注册其实注册的是这个<br>参数化的类而不是具体的T，uvm为什么要这样设计，可能这样更通用吧，将具体的某个类型抽象成”父类”的意思，但是这样的确能到达T与参数类一一对应的效果，有种隔山打牛的感觉，也有种代理模式<br>的感觉。</p>
-<p>2.上面的问题大致已解决，但是尚有遗留问题，讨论一下上面factory的get方法以及me是如何注册到factory里的。<br>其实factory是单例模式跟uvm_root一个样，看下图，简单总结了单例模式的特性：</p>
+<p>2.进一步讨论一下上面factory的get方法以及me是如何注册到factory里的。<br>其实factory是单例模式跟uvm_root一个样，看下图，简单总结了单例模式的特性：</p>
 <img src="/2021/12/23/factory%E6%9C%BA%E5%88%B6/factory004.png" class="" title="factory004">
 <p>核心方法registry：<br>联合数组定义：protected uvm_object_wrapper    m_type_names[string] 我们正常传入的值当然是wrapper的子类。 第二个联合数组： protected bit m_types[uvm_object_wrapper]</p>
 <img src="/2021/12/23/factory%E6%9C%BA%E5%88%B6/factory005.png" class="" title="factory005">
