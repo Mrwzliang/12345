@@ -31,8 +31,14 @@
 <meta property="og:image" content="http://www.wzljava.xyz/2022/01/10/UVM%E3%81%AEcomponent/component003.png">
 <meta property="og:image" content="http://www.wzljava.xyz/2022/01/10/UVM%E3%81%AEcomponent/component004.png">
 <meta property="og:image" content="http://www.wzljava.xyz/2022/01/10/UVM%E3%81%AEcomponent/component005.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/01/10/UVM%E3%81%AEcomponent/component006.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/01/10/UVM%E3%81%AEcomponent/run_test001.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/01/10/UVM%E3%81%AEcomponent/run_test002.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/01/10/UVM%E3%81%AEcomponent/run_test003.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/01/10/UVM%E3%81%AEcomponent/run_test005.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/01/10/UVM%E3%81%AEcomponent/run_test004.png">
 <meta property="article:published_time" content="2022-01-10T14:39:19.000Z">
-<meta property="article:modified_time" content="2022-04-22T03:31:04.268Z">
+<meta property="article:modified_time" content="2022-04-22T07:48:19.607Z">
 <meta property="article:author" content="shymakers">
 <meta property="article:tag" content="component">
 <meta name="twitter:card" content="summary">
@@ -240,6 +246,17 @@
 <p>好的，我们下面来看一下uvm_root，这个也很重要呢&#x3D;_-<br>基本想到啥就介绍啥，以后可能会补充：首先uvm_root也是单例模式，像之前的factory等，它在每个component的new函数里都可以看到，往往以我们熟悉的名字<br>top命名，然后通过get函数就可以获得它的实例啦（单例模式特点）。uvm_component的功能实现也离不开uvm_root。<br>上面我们已经将uvm树的基本构成了解了一下，但是这个树的根部是如何生成的呢？</p>
 <img src="/2022/01/10/UVM%E3%81%AEcomponent/component005.png" class="" title="component005">
 <p>这个new函数不需要任何参数，它调用super.new，传 入的name参数为__top__，而parent参数为null。</p>
+<img src="/2022/01/10/UVM%E3%81%AEcomponent/component006.png" class="" title="component006">
+<p>上图在uvm_component的new函数中，当发现传入的参数是null和__top__的时候，就知道这是由uvm_root调用的，因此直接返回。在这个过程中，并没有给m_parent赋值，所以m_parent的值为null。<br>另外，也并没有调用m_parent.m_add_child函数，因为parent等于null，调用m_add_child也是无意义的。示，如果一个component在实例化时，其parent被设置为null，<br>那么这个component的实例的parent将会被系统设置为系统中唯一的uvm_root的实例uvm_top，从而保证整个系统中只有一棵树，所以树的结点都是uvm_top的子结点。</p>
+<p>下面分析一下uvm_root里面的run_test方法，我想它也算是比较重要的：</p>
+<img src="/2022/01/10/UVM%E3%81%AEcomponent/run_test001.png" class="" title="run_test001">
+<img src="/2022/01/10/UVM%E3%81%AEcomponent/run_test002.png" class="" title="run_test002">
+<img src="/2022/01/10/UVM%E3%81%AEcomponent/run_test003.png" class="" title="run_test003">
+<img src="/2022/01/10/UVM%E3%81%AEcomponent/run_test005.png" class="" title="run_test005">
+<p>根据m_children的数量来判断是不是已经创建了一个实例，当有一个uvm_component被新创建的时候，如果其parent为null，那么就会在uvm_root的m_children中插入一条记录，如果其parent不为null，<br>那么这个parent可能是uvm_top，也可能是其它的，设为A。如果是uvm_top，那么自然会在uvm_top.m_children中插入一条记录，如果是A的话，那么可以想像，在A实例化的时候，<br>或者在A的parent及其更早的祖先实例化的时候，会在uvm_top.m_children中插入一条记录。因此，由于uvm_root的单实例特性，可以根据其m_children中记录的数量来判断是不是有case实例化。<br>最后放个树形结构瞅瞅。。。</p>
+<img src="/2022/01/10/UVM%E3%81%AEcomponent/run_test004.png" class="" title="run_test004">
+
+
 
     </div>
 
