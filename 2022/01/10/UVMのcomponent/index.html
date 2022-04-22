@@ -22,27 +22,27 @@
     <meta name="description" content="首先看下图，component的派生关系图  没错，component也是object的子类，而且还不是直系的，中间查了一个report_object,object相对简单，提供基础接口，比如fiield_automation机制的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="UVMのcomponent">
-<meta property="og:url" content="http://www.wzljava.xyz/2021/12/10/UVM%E3%81%AEcomponent/index.html">
+<meta property="og:url" content="http://www.wzljava.xyz/2022/01/10/UVM%E3%81%AEcomponent/index.html">
 <meta property="og:site_name" content="small love">
 <meta property="og:description" content="首先看下图，component的派生关系图  没错，component也是object的子类，而且还不是直系的，中间查了一个report_object,object相对简单，提供基础接口，比如fiield_automation机制的">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://www.wzljava.xyz/2021/12/10/UVM%E3%81%AEcomponent/component001.png">
-<meta property="og:image" content="http://www.wzljava.xyz/2021/12/10/UVM%E3%81%AEcomponent/component002.png">
-<meta property="og:image" content="http://www.wzljava.xyz/2021/12/10/UVM%E3%81%AEcomponent/component003.png">
-<meta property="og:image" content="http://www.wzljava.xyz/2021/12/10/UVM%E3%81%AEcomponent/component004.png">
-<meta property="article:published_time" content="2021-12-10T14:39:19.000Z">
-<meta property="article:modified_time" content="2022-04-22T03:01:58.832Z">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/01/10/UVM%E3%81%AEcomponent/component001.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/01/10/UVM%E3%81%AEcomponent/component002.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/01/10/UVM%E3%81%AEcomponent/component003.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/01/10/UVM%E3%81%AEcomponent/component004.png">
+<meta property="article:published_time" content="2022-01-10T14:39:19.000Z">
+<meta property="article:modified_time" content="2022-04-22T03:11:49.701Z">
 <meta property="article:author" content="shymakers">
 <meta property="article:tag" content="component">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://www.wzljava.xyz/2021/12/10/UVM%E3%81%AEcomponent/component001.png">
+<meta name="twitter:image" content="http://www.wzljava.xyz/2022/01/10/UVM%E3%81%AEcomponent/component001.png">
 
 
-<link rel="canonical" href="http://www.wzljava.xyz/2021/12/10/UVM%E3%81%AEcomponent/">
+<link rel="canonical" href="http://www.wzljava.xyz/2022/01/10/UVM%E3%81%AEcomponent/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.wzljava.xyz/2021/12/10/UVM%E3%81%AEcomponent/","path":"2021/12/10/UVMのcomponent/","title":"UVMのcomponent"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.wzljava.xyz/2022/01/10/UVM%E3%81%AEcomponent/","path":"2022/01/10/UVMのcomponent/","title":"UVMのcomponent"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>UVMのcomponent | small love</title>
@@ -183,7 +183,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.wzljava.xyz/2021/12/10/UVM%E3%81%AEcomponent/">
+    <link itemprop="mainEntityOfPage" href="http://www.wzljava.xyz/2022/01/10/UVM%E3%81%AEcomponent/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -212,7 +212,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-12-10 22:39:19" itemprop="dateCreated datePublished" datetime="2021-12-10T22:39:19+08:00">2021-12-10</time>
+      <time title="创建时间：2022-01-10 22:39:19" itemprop="dateCreated datePublished" datetime="2022-01-10T22:39:19+08:00">2022-01-10</time>
     </span>
 
   
@@ -226,15 +226,15 @@
     
     <div class="post-body" itemprop="articleBody">
         <p>首先看下图，component的派生关系图</p>
-<img src="/2021/12/10/UVM%E3%81%AEcomponent/component001.png" class="" title="component001">
+<img src="/2022/01/10/UVM%E3%81%AEcomponent/component001.png" class="" title="component001">
 <p>没错，component也是object的子类，而且还不是直系的，中间查了一个report_object,object相对简单，提供基础接口，比如fiield_automation机制的</p>
 <span id="more"></span>
 <p>打包，打印，复制，get_name,get_type_name等report_object提供一些报告机制的接口比如uvm_report_error等而我们的component算是相对更有实际性的内容，<br>两大特点：parent与phase机制。<br>为什么要有parent？任何问题的答案都是从需求出发，因为肯定会要求查看UVM中的所有结构，比如查看A类的所有子类，如果不定义parent显然不能快速得到答案，</p>
-<img src="/2021/12/10/UVM%E3%81%AEcomponent/component002.png" class="" title="component002">
+<img src="/2022/01/10/UVM%E3%81%AEcomponent/component002.png" class="" title="component002">
 <p>这两个联合数组实现了UVM的树形组织结构。m_children联合数组的索引是string类型的，其存储的内容则是uvm_component类型的。m_children_by_handle的索引是uvm_component类型的，<br>存储的内容是uvm_component类型的。另外，还有一个uvm_component类型的成员变量m_parent用于存储这个component的父亲的指针。<br>m_parent，m_children和m_children_by_handle三个成员变量实现了UVM的树形结构。<br>在component的构造函数里，因为都会传进来一个parent，然后执行parent.m_add_child(this)，等于调用的是uvm_component的m_add_child方法。</p>
-<img src="/2021/12/10/UVM%E3%81%AEcomponent/component003.png" class="" title="component003">
+<img src="/2022/01/10/UVM%E3%81%AEcomponent/component003.png" class="" title="component003">
 <p>看上图，可以跳过if语句（ps:其实源码里很多代码都是检查作用，往往实现核心功能的不是在这里），核心的是下面两个联合数组，当然也不难理解，<br>第一个联合数组索引即类名，值即实例的指针，这样parent就知道有这个子类了，因为有了记录，第二个联合数组索引与值都是此类的指针。<br>大概结构可以参考下图：</p>
-<img src="/2021/12/10/UVM%E3%81%AEcomponent/component004.png" class="" title="component004">
+<img src="/2022/01/10/UVM%E3%81%AEcomponent/component004.png" class="" title="component004">
 
 
 
@@ -256,7 +256,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://www.wzljava.xyz/2021/12/10/UVM%E3%81%AEcomponent/" title="UVMのcomponent">http://www.wzljava.xyz/2021/12/10/UVMのcomponent/</a>
+      <a href="http://www.wzljava.xyz/2022/01/10/UVM%E3%81%AEcomponent/" title="UVMのcomponent">http://www.wzljava.xyz/2022/01/10/UVMのcomponent/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -272,14 +272,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/11/13/TLM1-0/" rel="prev" title="TLM1.0">
-                  <i class="fa fa-chevron-left"></i> TLM1.0
+                <a href="/2021/12/23/factory%E6%9C%BA%E5%88%B6/" rel="prev" title="factory机制">
+                  <i class="fa fa-chevron-left"></i> factory机制
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/12/20/async-fifo/" rel="next" title="async_fifo">
-                  async_fifo <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
