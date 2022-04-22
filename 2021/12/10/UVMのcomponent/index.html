@@ -19,30 +19,33 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.wzljava.xyz","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="1.mybatis(前身是apache的ibatis)的出现解决了JDBC的若干缺陷，而且直接基于JDBC做了简单的映射包装，所以从性能上来说JDBC&gt;Mybatis&gt;Hibernate. 2.Hibernate与Mybatis都是ORM(对象关系映射)持久化框架，但是Mybatis是将接口与POJO对象映射成数据库中的记录，Hibernate仅仅是通过pojo对象Mybatis除了支">
+    <meta name="description" content="首先看下图，component的派生关系图  没错，component也是object的子类，而且还不是直系的，中间查了一个report_object,object相对简单，提供基础接口，比如fiield_automation机制的">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mybatis应用小结">
-<meta property="og:url" content="http://www.wzljava.xyz/2018/01/11/mybatis%E5%BA%94%E7%94%A8%E5%B0%8F%E7%BB%93/index.html">
+<meta property="og:title" content="UVMのcomponent">
+<meta property="og:url" content="http://www.wzljava.xyz/2021/12/10/UVM%E3%81%AEcomponent/index.html">
 <meta property="og:site_name" content="small love">
-<meta property="og:description" content="1.mybatis(前身是apache的ibatis)的出现解决了JDBC的若干缺陷，而且直接基于JDBC做了简单的映射包装，所以从性能上来说JDBC&gt;Mybatis&gt;Hibernate. 2.Hibernate与Mybatis都是ORM(对象关系映射)持久化框架，但是Mybatis是将接口与POJO对象映射成数据库中的记录，Hibernate仅仅是通过pojo对象Mybatis除了支">
+<meta property="og:description" content="首先看下图，component的派生关系图  没错，component也是object的子类，而且还不是直系的，中间查了一个report_object,object相对简单，提供基础接口，比如fiield_automation机制的">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://www.wzljava.xyz/2018/01/11/mybatis%E5%BA%94%E7%94%A8%E5%B0%8F%E7%BB%93/mybatis%E6%95%B4%E4%BD%93%E6%A1%86%E6%9E%B6.jpg">
-<meta property="article:published_time" content="2018-01-11T10:28:36.000Z">
-<meta property="article:modified_time" content="2019-03-02T08:49:50.698Z">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/12/10/UVM%E3%81%AEcomponent/component001.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/12/10/UVM%E3%81%AEcomponent/component002.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/12/10/UVM%E3%81%AEcomponent/component003.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/12/10/UVM%E3%81%AEcomponent/component004.png">
+<meta property="article:published_time" content="2021-12-10T14:39:19.000Z">
+<meta property="article:modified_time" content="2022-04-22T03:01:58.832Z">
 <meta property="article:author" content="shymakers">
-<meta property="article:tag" content="mybatis">
+<meta property="article:tag" content="component">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://www.wzljava.xyz/2018/01/11/mybatis%E5%BA%94%E7%94%A8%E5%B0%8F%E7%BB%93/mybatis%E6%95%B4%E4%BD%93%E6%A1%86%E6%9E%B6.jpg">
+<meta name="twitter:image" content="http://www.wzljava.xyz/2021/12/10/UVM%E3%81%AEcomponent/component001.png">
 
 
-<link rel="canonical" href="http://www.wzljava.xyz/2018/01/11/mybatis%E5%BA%94%E7%94%A8%E5%B0%8F%E7%BB%93/">
+<link rel="canonical" href="http://www.wzljava.xyz/2021/12/10/UVM%E3%81%AEcomponent/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.wzljava.xyz/2018/01/11/mybatis%E5%BA%94%E7%94%A8%E5%B0%8F%E7%BB%93/","path":"2018/01/11/mybatis应用小结/","title":"mybatis应用小结"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.wzljava.xyz/2021/12/10/UVM%E3%81%AEcomponent/","path":"2021/12/10/UVMのcomponent/","title":"UVMのcomponent"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>mybatis应用小结 | small love</title>
+<title>UVMのcomponent | small love</title>
   
 
 
@@ -180,7 +183,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.wzljava.xyz/2018/01/11/mybatis%E5%BA%94%E7%94%A8%E5%B0%8F%E7%BB%93/">
+    <link itemprop="mainEntityOfPage" href="http://www.wzljava.xyz/2021/12/10/UVM%E3%81%AEcomponent/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -193,12 +196,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="mybatis应用小结 | small love">
+      <meta itemprop="name" content="UVMのcomponent | small love">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          mybatis应用小结
+          UVMのcomponent
         </h1>
 
         <div class="post-meta-container">
@@ -209,7 +212,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2018-01-11 18:28:36" itemprop="dateCreated datePublished" datetime="2018-01-11T18:28:36+08:00">2018-01-11</time>
+      <time title="创建时间：2021-12-10 22:39:19" itemprop="dateCreated datePublished" datetime="2021-12-10T22:39:19+08:00">2021-12-10</time>
     </span>
 
   
@@ -222,14 +225,21 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>1.mybatis(前身是apache的ibatis)的出现解决了JDBC的若干缺陷，而且直接基于JDBC做了简单的映射包装，所以从性能上来说JDBC&gt;Mybatis&gt;Hibernate.</p>
-<p>2.Hibernate与Mybatis都是ORM(对象关系映射)持久化框架，但是Mybatis是将接口与POJO对象映射成数据库中的记录，Hibernate仅仅是通过pojo对象<br>Mybatis除了支持简单sql查询，也支持高级映射(关联查询)与存储过程，实现了自动对sql参数的设置，自动对结果集进行解析与封装。</p>
-<p>3.虽然mybatis支持注解与xml方式配置，但是一般来说我们采用xml配置方式，这样能将java代码与sql语句很好的隔离下来。</p>
-<p>4.但是正因为她只是做了简单的封装，所以需要手动写sql(通用mapper只是简单查询)，所以如果对性能要求较高的电商项目会用mybatis，而对于业务逻辑复杂，不太在乎执行效率的传统行业，一般会使用Hibernate.</p>
-<p>5.mybatis两种配置文件，一个全局的，还有一个映射文件，通过这两个配置文件就可以构建sqlsessionFactory相当于hibernate里的sessionFactory,打开sqlsession的会话。在通过session实现CRUD,接下来就是Executor(执行器)，是一个接口，有两种实现，一个是缓存的实现，还有一个是数据库的实现。最底层的Mapper Statement主要是在三个方面，即sql语句，参数类型(hashmap,基本数据类型，包装类型pojo)，结果集类型。</p>
-<p>6.mapper接口的动态代理实现，主要是两点，其一就是映射文件中的命名空间与Mapper接口的全路径一致。其二映射文件中的statementId与Mapper接口的方法名保持一致。</p>
-<p>7.mybatis-config.xml的配置，有严格的顺序之分。</p>
-<img src="/2018/01/11/mybatis%E5%BA%94%E7%94%A8%E5%B0%8F%E7%BB%93/mybatis%E6%95%B4%E4%BD%93%E6%A1%86%E6%9E%B6.jpg" class="" title="mybatis整体框架">
+        <p>首先看下图，component的派生关系图</p>
+<img src="/2021/12/10/UVM%E3%81%AEcomponent/component001.png" class="" title="component001">
+<p>没错，component也是object的子类，而且还不是直系的，中间查了一个report_object,object相对简单，提供基础接口，比如fiield_automation机制的</p>
+<span id="more"></span>
+<p>打包，打印，复制，get_name,get_type_name等report_object提供一些报告机制的接口比如uvm_report_error等而我们的component算是相对更有实际性的内容，<br>两大特点：parent与phase机制。<br>为什么要有parent？任何问题的答案都是从需求出发，因为肯定会要求查看UVM中的所有结构，比如查看A类的所有子类，如果不定义parent显然不能快速得到答案，</p>
+<img src="/2021/12/10/UVM%E3%81%AEcomponent/component002.png" class="" title="component002">
+<p>这两个联合数组实现了UVM的树形组织结构。m_children联合数组的索引是string类型的，其存储的内容则是uvm_component类型的。m_children_by_handle的索引是uvm_component类型的，<br>存储的内容是uvm_component类型的。另外，还有一个uvm_component类型的成员变量m_parent用于存储这个component的父亲的指针。<br>m_parent，m_children和m_children_by_handle三个成员变量实现了UVM的树形结构。<br>在component的构造函数里，因为都会传进来一个parent，然后执行parent.m_add_child(this)，等于调用的是uvm_component的m_add_child方法。</p>
+<img src="/2021/12/10/UVM%E3%81%AEcomponent/component003.png" class="" title="component003">
+<p>看上图，可以跳过if语句（ps:其实源码里很多代码都是检查作用，往往实现核心功能的不是在这里），核心的是下面两个联合数组，当然也不难理解，<br>第一个联合数组索引即类名，值即实例的指针，这样parent就知道有这个子类了，因为有了记录，第二个联合数组索引与值都是此类的指针。<br>大概结构可以参考下图：</p>
+<img src="/2021/12/10/UVM%E3%81%AEcomponent/component004.png" class="" title="component004">
+
+
+
+
+
     </div>
 
     
@@ -246,7 +256,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://www.wzljava.xyz/2018/01/11/mybatis%E5%BA%94%E7%94%A8%E5%B0%8F%E7%BB%93/" title="mybatis应用小结">http://www.wzljava.xyz/2018/01/11/mybatis应用小结/</a>
+      <a href="http://www.wzljava.xyz/2021/12/10/UVM%E3%81%AEcomponent/" title="UVMのcomponent">http://www.wzljava.xyz/2021/12/10/UVMのcomponent/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -255,20 +265,20 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/mybatis/" rel="tag"># mybatis</a>
+              <a href="/tags/component/" rel="tag"># component</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2017/09/10/%E5%85%B3%E4%BA%8E%E5%8F%8D%E5%B0%84/" rel="prev" title="关于反射">
-                  <i class="fa fa-chevron-left"></i> 关于反射
+                <a href="/2021/11/13/TLM1-0/" rel="prev" title="TLM1.0">
+                  <i class="fa fa-chevron-left"></i> TLM1.0
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2018/01/14/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAMVC/" rel="next" title="深入浅出MVC">
-                  深入浅出MVC <i class="fa fa-chevron-right"></i>
+                <a href="/2021/12/20/async-fifo/" rel="next" title="async_fifo">
+                  async_fifo <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
