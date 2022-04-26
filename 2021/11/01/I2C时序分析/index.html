@@ -30,11 +30,15 @@
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C005.png">
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C006.png">
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C007.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C008.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C009.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C010.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C011.png">
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C001.png">
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C002.png">
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C003.png">
 <meta property="article:published_time" content="2021-11-01T12:19:07.000Z">
-<meta property="article:modified_time" content="2022-04-26T04:53:07.338Z">
+<meta property="article:modified_time" content="2022-04-26T06:30:27.402Z">
 <meta property="article:author" content="shymakers">
 <meta property="article:tag" content="协议">
 <meta name="twitter:card" content="summary">
@@ -240,7 +244,15 @@
 <img src="/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C006.png" class="" title="I2C006">
 <p>ACK:接受信息的设备驱动SDA为低电平，告知发送设备接受正常。<br>S-T:slave-transmitter,从设备发送信息，主设备接受信息（其实定义在ACK里）。<br>M-T:master-transmitter,主设备发送信息，从设备接受信息。<br>关于同步信号<br>解决的问题 通信双方知道什么时候收发数据；能够区别出10与1100（都是由高变低）<br>在uart里通过起始位与波特率解决上述问题，那么IIC是怎么解决的呢？为什么iic可以传很多字节？</p>
 <img src="/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C007.png" class="" title="I2C007">
-<p>由上图可以看出，SCL为低电平的时候，发送器像SDA上发送一位数据，在此期间数据线上的信号允许变化，低0高1；当SCL为高电平的时候，接收器从SDA上读取<br>一位数据，在此期间数据线上的信号不允许变化，保持住需要，这样不断的循环必然会传输很多数据。</p>
+<p>由上图可以看出，SCL为低电平的时候，发送器像SDA上发送一位数据，在此期间数据线上的信号允许变化，低0高1；<br>当SCL为高电平的时候，接收器从SDA上读取一位数据，在此期间数据线上的信号不允许变化，保持住需要，这样不断的循环必然会传输很多数据。<br>IIC通信一般8个bit,数据传输时，<label style="color:red">先传高位，再传低位</label>，发送完一个字节后，接收器必须发送1位应答位来回应<br>发送器，总共9位的数据帧，一般也是9个时钟。</p>
+<img src="/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C008.png" class="" title="I2C008">
+
+<p>下面看看IIC一般的时序情况<br>1.主机向从机发送数据<br>深色表示主机发的，浅色表示从机发的，当然其实的地址肯定是主机发的，一般数据发完，接收器需要ACK，当主机不想发数据了<br>那么会发送停止位，<label style="color:red">当然从机不发ACK，主机也会发送停止位。</label></p>
+<img src="/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C009.png" class="" title="I2C009">
+<p>2.从机向主机发送数据，类似上面</p>
+<img src="/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C010.png" class="" title="I2C010">
+<p>3.主机向从机发送数据，然后从机再向主机发送数据，看起来好像就是再发起一次通信，其实不然，第一次主机向从机发送完后，没有发<br>停止位，直接开启新的通信，<label style="color:red"><b>这样的好处就是主线权能够继续保留。</b></label></p>
+<img src="/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C011.png" class="" title="I2C011">
 <p>看下图，以AT24C02B EEPROM写操作为例：<br>标识说明：</p>
 <img src="/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C001.png" class="" title="I2C001">
 <p>时序图：</p>
