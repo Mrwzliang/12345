@@ -37,8 +37,9 @@
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C001.png">
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C002.png">
 <meta property="og:image" content="http://www.wzljava.xyz/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C003.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C012.png">
 <meta property="article:published_time" content="2021-11-01T12:19:07.000Z">
-<meta property="article:modified_time" content="2022-04-26T08:43:35.983Z">
+<meta property="article:modified_time" content="2022-04-27T13:34:07.770Z">
 <meta property="article:author" content="shymakers">
 <meta property="article:tag" content="I2C">
 <meta name="twitter:card" content="summary">
@@ -273,6 +274,9 @@
 <img src="/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C002.png" class="" title="I2C002">
 <p>写操作时序步骤：</p>
 <img src="/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C003.png" class="" title="I2C003">
+<p>IIC仲裁机制，采用线与技术实现，看下图：</p>
+<img src="/2021/11/01/I2C%E6%97%B6%E5%BA%8F%E5%88%86%E6%9E%90/I2C012.png" class="" title="I2C012">
+<p>如果data1和data2全程保持与SDA上一致，则双Master都能正常访问同一设备；<br>如果data1先和SDA不一致，则DATA2的Master回去主动权，且继续完成相关操作，data1的Master丢失总线SDA控制，且关闭DATA1的输出。</p>
 
     </div>
 
