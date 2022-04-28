@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.wzljava.xyz","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文主要回顾一下以前在书上学习的内容的DMAC部分，可能技术有点”古老”，但是偏硬件的知识永远不过时，也值得回味。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DMA">
+<meta property="og:url" content="http://www.wzljava.xyz/2022/03/02/DMA/index.html">
+<meta property="og:site_name" content="small love">
+<meta property="og:description" content="本文主要回顾一下以前在书上学习的内容的DMAC部分，可能技术有点”古老”，但是偏硬件的知识永远不过时，也值得回味。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/03/02/DMA/DMA001.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/03/02/DMA/DMA002.png">
+<meta property="article:published_time" content="2022-03-02T12:10:47.000Z">
+<meta property="article:modified_time" content="2022-04-28T10:15:23.699Z">
+<meta property="article:author" content="shymakers">
+<meta property="article:tag" content="微信计算机原理与接口技术">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.wzljava.xyz/2022/03/02/DMA/DMA001.png">
+
+
+<link rel="canonical" href="http://www.wzljava.xyz/2022/03/02/DMA/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.wzljava.xyz/2022/03/02/DMA/","path":"2022/03/02/DMA/","title":"DMA"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>DMA | small love</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">small love</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="shymakers"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">shymakers</p>
+  <div class="site-description" itemprop="description">得到的都是侥幸</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=33875750&auto=1&height=66"></iframe>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.wzljava.xyz/2022/03/02/DMA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="shymakers">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="small love">
+      <meta itemprop="description" content="得到的都是侥幸">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="DMA | small love">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DMA
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-02 20:10:47" itemprop="dateCreated datePublished" datetime="2022-03-02T20:10:47+08:00">2022-03-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%BE%AE%E4%BF%A1%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8E%9F%E7%90%86%E4%B8%8E%E6%8E%A5%E5%8F%A3%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">微信计算机原理与接口技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>本文主要回顾一下以前在书上学习的内容的DMAC部分，可能技术有点”古老”，但是偏硬件的知识永远不过时，也值得回味。</p>
+<span id="more"></span>
+<p>DMA是用硬件实现存储器与存储器之间或者I&#x2F;O设备与存储器之间直接进行的高速数据传送，不需要CPU的干预。实际上是使用<br>专用的DMA控制器即DMAC代替CPU控制总线，实现I&#x2F;O接口与存储器之间的数据传送。<br>优点：传送速度快，因为不需要CPU的参与操作，省去了CPU取<label style="color:red">指令，指令译码，存取数据等操作。</label><br>缺点：硬件电路比较复杂。<br>通常DMA方式用来传输数据块。关键器件就是DMA控制器即DMAC。<br>DMA传送包括3部分：1.DMA读传送即RAM-&gt;I&#x2F;O端口。2.DMA写传送即I&#x2F;O端口-&gt;RAM。3.存储单元传送：RAM-&gt;RAM.</p>
+<img src="/2022/03/02/DMA/DMA001.png" class="" title="DMA001">
+<p>有上图可见系统总线受到CPU与DMAC两个器件的控制，即都可以向三大总线发送信息，并且只能一个在同一时间与总线交流。<br>因此CPU与DMAC之间必须有”联络信号”。<br>传送过程：I&#x2F;O端口向DMAC发出DMA请求，请求传送数据-&gt;DMAC接受到请求，向CPU发出总线请求信号，请求CPU脱离系统总线-&gt;<br>CPU在执行完当前指令的<b>当前总线周期后</b>，向DMAC发出总线响应信号-&gt;CPU与总线脱离关系（可能后面执行内部任务）,<br>DMAC控制总线-&gt;DMAC向I&#x2F;O端口发出DMA应答信号-&gt;DMAC将进行DMA传送涉及到的RAM地址方法地址总线上；若是I&#x2F;O端口到RAM传送，<br>则DMAC向I&#x2F;O端口发出I&#x2F;O读命令，向RAM发出存储器写命令；反之亦反。-&gt;当设定字节传送完毕，DMA传输结束，也可以由来自外部的终止<br>信号迫使传输过程结束。DMA传输结束后，<b>DMAC就将总线请求信号变为无效</b>并放弃对总线的控制，CPU检测到总线请求信号无效后，<br>也将总线响应信号变为无效，于是从新控制三总线，<b>继续执行被中断的当前指令的其他总线周期。</b><br>从上面分析可看出DMA传送比中断方式更快，分析：<br>1.DMA传送比中断传送的速度快，<label style="color:red">DMA传送一个字节只占用CPU一个总线周期，而中断传送方式是由CPU通过程序来实现的，每次执行中断服务程序，<br>CPU要保护断点，在中断服务程序中要保护现场和恢复现场，需要执行若干条指令才能传送一个字节。</label><br>2.DMA响应比中断响应的速度快。中断方式是在CPU的当前指令指令完（一条指令需要执行若干总线周期）才能响应中断请求。<br>而DMA方式是在CPU当前指令的一个总线周期执行完就响应DMA请求。<br>3.中断请求分为外部中断（由外部硬件产生）和内部中断（由执行指令产生的），DMA请求也有两种方式：可以由硬件发出也可以由软件发出。<br>下面看一下8237A的DMAC：<br>8237A是具有4个独立DMA通道的可编程DMAC，它使用单一+5V电源，单相时钟，40引脚双列直插式封装。在实际运用中，必须与一片8位锁存器一起使用，<br>才能形成一个完整的4通道DMA控制器。初始化后，可以控制每一个通道存储器和I&#x2F;O端口之间以最高1.6M波特率的速率传送最多可达64KB的数据块，<br>而不需要CPU介入。<br>1.8237A的基本功能：<br>    在一个芯片中有4个独立的DMA通道。每一个通道的DMA请求都可以被允许活禁止。每一个通道的DMA请求有不同的优先级，<br>    可以是固定优先级，也可以是循环优先级。每一个通道一次传送的最大字节数为64KB。提供四种传送方式：单字节传送方式，<br>    数据块传送方式，请求传送方式与级联传送方式。<br>2.8237的内部结构：</p>
+<img src="/2022/03/02/DMA/DMA002.png" class="" title="DMA002">
+<pre><code>1.DMA通道
+8237A内部包含4个独立通道，每个通道包含两个16位的地址寄存器，两个16位的字节寄存器，一个6位的方式寄存器，
+一个DMA请求触发器和一个DMA屏蔽触发器，此外，4个通道功用一个8位控制寄存器，一个8位状态寄存器，一个8位暂存器，
+一个8位屏蔽寄存器和一个8位请求寄存器。
+2.读/写逻辑
+当CPU对8237A初始化或对其寄存器进行读操作时，其就像I/O端口一样被操作，读/写逻辑接受&quot;上划线&quot;IOR（1）或&quot;上划线&quot;IOW（2）信号，
+当1为低电平时，CPU可以读取8237A的内部寄存器值；当2为低电平，CPU可以将数据写入8237A的内部寄存器。
+在DMA传送期间，系统由8237A控制总线，此时，8237A分两次向地址总线上送出要访问的内存单元20无力地址中的低16位，8237A输出必要的
+读/写信号，这些信号为I/O读信号1，I/O写信号2，存储器读信号上划线MEMR，存储器写信号上划线MEMW。
+3.控制逻辑
+在DMA周期内，控制逻辑通过产生相应的控制信号和16位要存取的内存单元地址来控制DMA的控制步骤。初始化时，通过对方式寄存器编程，
+使控制逻辑可以对各个通道的操作进行控制。
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>shymakers
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://www.wzljava.xyz/2022/03/02/DMA/" title="DMA">http://www.wzljava.xyz/2022/03/02/DMA/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%BE%AE%E4%BF%A1%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%8E%9F%E7%90%86%E4%B8%8E%E6%8E%A5%E5%8F%A3%E6%8A%80%E6%9C%AF/" rel="tag"># 微信计算机原理与接口技术</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/01/28/UVM%E3%81%AEreport%E6%9C%BA%E5%88%B6/" rel="prev" title="UVMのreport机制">
+                  <i class="fa fa-chevron-left"></i> UVMのreport机制
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/22/field-automation/" rel="next" title="field_automation">
+                  field_automation <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="lv-container" data-id="city" data-uid="MTAyMC8zNDM0OC8xMDg4NQ=="></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wzl</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+<script src="/js/third-party/comments/livere.js"></script>
+
+</body>
+</html>
