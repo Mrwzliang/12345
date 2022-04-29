@@ -26,11 +26,16 @@
 <meta property="og:site_name" content="small love">
 <meta property="og:description" content="中断技术起初是为了解决快速的CPU与慢速的外部设备之间传送数据的矛盾，现在应用更广泛，计算机故障检测与自动处理，实时信息处理，多道程序分时操作和人机交互等。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/03/25/%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F/%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F001.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/03/25/%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F/%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F002.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/03/25/%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F/%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F003.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/03/25/%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F/%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F004.png">
 <meta property="article:published_time" content="2022-03-25T13:58:02.000Z">
-<meta property="article:modified_time" content="2022-04-29T13:33:28.806Z">
+<meta property="article:modified_time" content="2022-04-29T16:46:39.095Z">
 <meta property="article:author" content="shymakers">
 <meta property="article:tag" content="微信计算机原理与接口技术">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.wzljava.xyz/2022/03/25/%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F/%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F001.png">
 
 
 <link rel="canonical" href="http://www.wzljava.xyz/2022/03/25/%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F/">
@@ -249,8 +254,22 @@
 </code></pre>
 <p>ISR    ENDP<br>说明：<br>保护现场 ：中断服务子程序中使用到的寄存器或者内存单元如果主程序中也使用就会发生冲突，so进入中断服务程序的第一步就是要保护现场，将主程序用到的资源保存。<br>保护现场有两个方面，第一就是保存主程序的断点，其二就是保存通用寄存器和状态寄存器的内容前者由中断隐指令完成后者由中断服务程序完成。<br>中断处理：不同的中断请求所需要的中断服务是不同的，实际有效的工作是在这部分完成。<br>恢复现场：将各个寄存器的内容出栈<br>中断返回：中断返回指令时IRET，使服务子程序能安全返回之前由中断隐指令保存的主程序断点。</p>
 <p><b>多级中断管理</b><br>中断优先与中断分级<br>多个中断源在同一时刻提出请求时，CPU对中断响应的次序称为中断优先级。中断响应的次序是用排队器硬件实现的。80x86响应中断的优先级由高到低：<br>除法错-&gt;软件中断INT n-&gt;断点中断-&gt;溢出中断INTO-&gt;NMI中断-&gt;INTR中断-&gt;单步中断。<br><b>中断系统应具备的基本功能</b><br>对于硬件中断，接口电路中应具备屏蔽与开放的功能，这种功能由程序员通过软件去控制。<br>能实现中断判优即中断源排队，当多个中断源提出请求时，能能够优先响应高级别的中断。<br>能够实现中断嵌套。<br>一旦响应中断，就能自动转入中断服务程序，处理完毕能能够自动返回断点。</p>
-<p><b>80x86中断指令</b><br>1.开中断指令STI 功能：F寄存器中I标志置1，CPU处于开中断状态。<br>2.关中断指令CLI 功能：F寄存器中I标志清零，CPU处于关中断状态。<br>3.软件中断指令INT n:<br>n取值0<del>255之间有定义的无符号整数。 功能：无条件转向n型中断服务子程序。INT n指令的执行过程—-CPU响应软件中断的过程。<br>   1.F寄存器-&gt;栈（保存INT n之前的F状态）使F中的T标志置0—-禁止单步操作。I标志置0—-CPU处于关中断状态。<br>   2.断点地址–&gt;栈<br>   先：断点所在段基地址（CS）-&gt;栈。<br>   后：断点偏移地址（IP）-&gt;栈。<br>   3.CPU从4n</del>4n+3单元取出n型服务程序入口地址-&gt;IP:CS,从而转入n型中断服务程序</p>
-<p><b></b><br><b></b><br><b></b></p>
+<p><b>80x86中断指令</b><br>1.开中断指令STI 功能：F寄存器中I标志置1，CPU处于开中断状态。<br>2.关中断指令CLI 功能：F寄存器中I标志清零，CPU处于关中断状态。<br>3.软件中断指令INT n:<br>n取值0<del>255之间有定义的无符号整数。 功能：无条件转向n型中断服务子程序。INT n指令的执行过程—-CPU响应软件中断的过程。<br>   1.F寄存器-&gt;栈（保存INT n之前的F状态）使F中的T标志置0—-禁止单步操作。I标志置0—-CPU处于关中断状态。<br>   2.断点地址–&gt;栈<br>   先：断点所在段基地址（CS）-&gt;栈。<br>   后：断点偏移地址（IP）-&gt;栈。<br>   3.CPU从4n</del>4n+3单元取出n型服务程序入口地址-&gt;IP:CS,从而转入n型中断服务程序。<br>4.中断返回指令IRET:依次从栈顶弹出6个元素-&gt;IP,CS,F寄存器。<b>IRET是中断服务子程序的出口指令</b>若栈顶是INT n的断点地址，则执行IRET后返回断点，否则不能。<br>下图展示了执行INT n指令于执行IRET指令的堆栈操作示意图：</p>
+<img src="/2022/03/25/%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F/%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F001.png" class="" title="中断系统001">
+<p>5.溢出中断指令INTO<br>功能：先判断F寄存器中O标志位是否为1，如是则直接调用类型为4的中断子程序，用以处理溢出中断。</p>
+<p><b>分析一下8259A中断控制器</b><br><label style="color:red">因为外部中断是CPU以外的中断请求而引发的，而CPU只有一个引脚INTR接收外部的可屏蔽中断请求，为了管理多个外部的中断源，英特尔设计了专用配套芯片8259A中断控制器<label>。</p>
+<p><b>首先看一下其功能：</b><br>8259A是可编程的中断控制器：</p>
+<ol>
+<li>1片此控制器可以管理8级中断，并最后向CPU提供中断请求，如下图所示。通过级联，采用1主8从的方式，可扩展管理64级中断。<img src="/2022/03/25/%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F/%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F002.png" class="" title="中断系统002"></li>
+</ol>
+<p>2.每一级中断都可以通过设置内部屏蔽字进行屏蔽或允许。<br>3.在中断响应周期，8259A可以向CPU提供相应的中断向量。<br>4.8259A是很复杂的中断控制器，可以通过编程从中断触发方式，中断屏蔽方式，中断优先管理方式，中断结束方式和总线连接5个方面进行对中断管理。</p>
+<p><b>8259A的结构</b><br>1.内部结构如下图所示：</p>
+<img src="/2022/03/25/%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F/%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F003.png" class="" title="中断系统003">    
+<p>  1.中断请求寄存器（8位）IRR(interrupt request register)功能：寄存引脚IR0<del>IR7的中断请求。<br>  中断请求寄存器是一个8位寄存器，IRR的D0</del>D7位分别对应着IR0<del>IR7.IRR中的Di位置1，表明IRi引脚上有了中断请求信号，当中断请求被响应时，IRR的相应位复位。<br>  2.中断屏蔽寄存器（8位）IMR（interrupt mask register）功能：保存程序员写入的中断屏蔽字。<br>  中断屏蔽寄存器是一个8位寄存器，IMR的D0</del>D7分别对应着IR0<del>IR7.屏蔽字某位&#x3D;1（IMR的Di位&#x3D;1），则与该对应的中断请求信号（IRR的Di位）不能送到中断优先电路。<br>  3.优先权电路（排队电路）：比较同时送达优先权电路的中断亲戚，哪一个级别最高。通过判优选中其中级别最高的中断源，然后通过INT端向CPU提出中断请求。<br>  4.中断控制电路：控制电路是8259A内部的控制器，存一组初始化命令字和操作命令字，通过译码产生内部控制信号；当判优电路选中一个中断源时向CPI提中断请求（INT）<br>  通过INTA接收CPU送来的中断响应信号，中断响应上划线INTA信号是2个连续的负脉冲。<br>  5.中断服务寄存器（8位）ISR（interrupt service register）：记录CPU正为之服务的是哪一个中断源。<br>  ISR中Di位和IRR中Di位对应。IDR每一位都是响应中断源的中断服务标志位。<br>  6.数据缓冲器：完成与CPU数据线配接；收初始化命令字，操作命令字。当收到第二个中断响应脉冲时，通过它们向CPU送出被选中的中断源的中断类型码n.<br>  在之后CPU从4n+0</del>4n+2单元取出n型中断向量，从而转入n型服务程序。<br>  7.读写控制模块：接收CPU的读&#x2F;写控制命令字和端口地址选择信号。<br>  8.级联缓冲&#x2F;比较器 </p>
+<p>2.8259A的工作过程-&gt;CPU响应硬件中断的过程</p>
+<img src="/2022/03/25/%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F/%E4%B8%AD%E6%96%AD%E7%B3%BB%E7%BB%9F004.png" class="" title="中断系统004">
+<p>1.当引脚IR0~IR7上有中断请求时，8259A中断请求寄存器相应位置为1，记录外部的中断请求，如上图假设IR0,IR6,IR7同时有3个中断请求信号，<br>则中短请求寄存器IRR的D0&#x3D;1,D6&#x3D;1,D7&#x3D;1.<br>2.根据程序员事先写入中断屏蔽寄存器IMR的中断屏蔽字，决定哪些中断请求能够送达到优先权电路，没有屏蔽的中断请求将被送到优先权电路判优，如上图<br>因为IMR的D0&#x3D;0,D6&#x3D;1,D7&#x3D;0,则IR0与IR7上的中断请求可以送达到优先权电路。而 IR6上的中断请求被屏蔽，不能送达到优先权电路。<br>3.所有到达优先权电路中的中断请求，首先需要经过优先权电路的判别。选中当前级别最好的中断源，然后从引脚INT向CPU发出中断请求信号，如上图，设IR0<br>优先级别高于IR7，排队结果将选中IR0，向CPU发出中断请求信号。<br>4.CPU满足一定条件后，通过上划线INTA引脚向8259A的上划线INTA发出2个负脉冲的中断响应信号，如上图，只要CPI满足响应可屏蔽中断条件，则可响应IR0中断<br>向8259A发送两个连续的脉冲信号。<br>5.8259A引脚上划线INTA收到第一个中断响应信号之后，立即使中断服务寄存器中与被选中的中断源对应的那一位置1，同时把中断请求寄存器中的相应位清0.<br>如上图，8259A收到一个脉冲信号，ISR D0由0变1，同时IRR D0由1变0.<br>6.从引脚上划线INTA收到第二个中断响应信号后，8259A通过数据线将选中的中断源类型码n送往CPU.  </p>
+<p><b></b><br><b></b><br><b></b><br><b></b></p>
 
     </div>
 
