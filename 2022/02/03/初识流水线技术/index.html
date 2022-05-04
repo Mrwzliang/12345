@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.wzljava.xyz","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="流水线是一种实现多条指令重叠执行的技术，与生产流水线类似。简言之就是同一时刻有多条指令在CPU的不同功能部件中并发执行，大大提高了功能部件的并行性与程序的执行效率。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初识流水线技术">
+<meta property="og:url" content="http://www.wzljava.xyz/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/index.html">
+<meta property="og:site_name" content="small love">
+<meta property="og:description" content="流水线是一种实现多条指令重叠执行的技术，与生产流水线类似。简言之就是同一时刻有多条指令在CPU的不同功能部件中并发执行，大大提高了功能部件的并行性与程序的执行效率。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/%E6%B5%81%E6%B0%B4%E7%BA%BF001.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/%E6%B5%81%E6%B0%B4%E7%BA%BF002.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/%E6%B5%81%E6%B0%B4%E7%BA%BF005.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/%E6%B5%81%E6%B0%B4%E7%BA%BF006.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/%E6%B5%81%E6%B0%B4%E7%BA%BF007.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/%E6%B5%81%E6%B0%B4%E7%BA%BF008.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/%E6%B5%81%E6%B0%B4%E7%BA%BF009.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/%E6%B5%81%E6%B0%B4%E7%BA%BF010.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/%E6%B5%81%E6%B0%B4%E7%BA%BF011.png">
+<meta property="og:image" content="http://www.wzljava.xyz/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/%E6%B5%81%E6%B0%B4%E7%BA%BF003.png">
+<meta property="article:published_time" content="2022-02-03T13:58:37.000Z">
+<meta property="article:modified_time" content="2022-05-04T15:47:16.584Z">
+<meta property="article:author" content="shymakers">
+<meta property="article:tag" content="计算机组成与设计">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.wzljava.xyz/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/%E6%B5%81%E6%B0%B4%E7%BA%BF001.png">
+
+
+<link rel="canonical" href="http://www.wzljava.xyz/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.wzljava.xyz/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/","path":"2022/02/03/初识流水线技术/","title":"初识流水线技术"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>初识流水线技术 | small love</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">small love</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="shymakers"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">shymakers</p>
+  <div class="site-description" itemprop="description">得到的都是侥幸</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">40</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+  <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=33875750&auto=1&height=66"></iframe>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.wzljava.xyz/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="shymakers">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="small love">
+      <meta itemprop="description" content="得到的都是侥幸">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="初识流水线技术 | small love">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          初识流水线技术
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-02-03 21:58:37" itemprop="dateCreated datePublished" datetime="2022-02-03T21:58:37+08:00">2022-02-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E4%B8%8E%E8%AE%BE%E8%AE%A1/" itemprop="url" rel="index"><span itemprop="name">计算机组成与设计</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>流水线是一种实现多条指令重叠执行的技术，与生产流水线类似。简言之就是同一时刻有多条指令在CPU的不同功能部件中并发执行，大大提高了功能部件的并行性与程序的执行效率。</p>
+<span id="more"></span>
+<p><b>一丶初探</b><br>一条指令的执行过程可分解为若干阶段，每个阶段由相应的功能部件完成。如果将各阶段视为相应的流水段，则指令的执行过程就构成了一条指令流水线。<br>一般情况，一个MIPS（每秒执行多少百万条指令，MIPS&#x3D;指令条数&#x2F;（执行时间<em>100w）&#x3D;主频&#x2F;（CPI</em>100w））指令包含如下5个处理步骤：<br><b>取指</b>（IF）：从指令寄存器或者Cache中取指令。<br><b>译码&#x2F;读寄存器</b>（ID）：操作控制器对指令进行译码，（按照给定的寻址方式和地址字段中的内容形成操作数有效地址EA）同时从寄存器对中取操作数（MIPS指令格式允许同时进行）。<br><b>执行&#x2F;计算地址</b>（EX）：执行运算操作或计算地址。根据操作码字段完成指令规定的功能<br><b>访存</b>（MEM）:对存储器进行读写操作。<br><b>写回</b>（WB）：将指令结果写回寄存器堆。（通用寄存器或主存）</p>
+<img src="/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/%E6%B5%81%E6%B0%B4%E7%BA%BF001.png" class="" title="流水线001">
+<p>如上图所示，传统冯若依曼结构采用串行执行方式，控制简单，硬件设计简单，但是执行指令速度较慢，假如按上面情况总耗时是5nT,而采用5级流水线总耗时：<br>5T+(n-1)T&#x3D;(4+n)T,在n趋向无穷大的时候，显然效率提了5倍耶。这个是典型的拿空间换时间的思想。<br>那么流水线的设计原则是什么呢？上图中每一指令为什么消耗的时间一样？为什么要分成5段？级数越多越好吗？<br>指令流水段个数以最复杂指令所用的功能段个数为准；流水段的长度以最复杂的操作所花的时间为准。假设某条指令的5个阶段所花时间分别如下。1.取指令：200ps<br>2.译码：100ps  3.执行：150ps 4.访存：200ps 5.写回：100ps,该指令的总执行时间为750ps.按照流水线设计原则，<br>每个流水段长度为200ps,所以每条指令的执行时间为1ns,好像反而比串行执行增加了250ps，但是上面分析过当不断的执行下去，指令数趋向无穷大，执行效率肯定提高。</p>
+<p><b>为了利于实现指令流水线，指令集应具有如下特征：</b><br>1.指令长度应尽量保持一致，有利于简化取指令与指令译码操作。否则，取指令所花时间长短不一，使得取指部件极其复杂，且不利于指令译码。<br>2.指令格式尽量规整，保证源寄存器的位置相同，有利于在指令未知时就可去寄存器操作数，否则需要译码后才能确定指令中寄存器编号的位置。（百度MIPS指令格式）<br>3.采用load&#x2F;store指令，其他指令都不能访问寄存器，这样就把load&#x2F;store指令的地址计算和运算指令的执行步骤规整在同一周期中，有利于减少操作步骤。<br>4.数据和指令在存储器中“对齐”存放，这样有利于减少访存次数，使所需数据在一个流水段内就能从存储器中得到。<br>通常用时空图来直观地描述流水线的执行情况，如下图所示：</p>
+<img src="/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/%E6%B5%81%E6%B0%B4%E7%BA%BF002.png" class="" title="流水线002">
+<p>横坐标表示时间，被分割成长度相等的时间段T；纵坐标为空间，<b>表示当前指令所处的功能部件<b/>。在0时刻，第一条指令I0进入流水线，在5T时刻流出流水线。<br>第二条指令I2在时刻T进入流水线，在时刻6T流出流水线。因此每隔一个T都会有一条指令进入流水线，从时刻5T开始每隔一个T就有一个指令流出流水线。<br>图中可知从10T时，有6条指令流出，若采用串行方式执行，在时刻10T时，只能执行2条指令。<br>只有大量任务不断输入流水线，才能充分发挥流水线得到性能，对于其他部件级流水线如浮点运算流水线，同样也仅适合于提升浮点运算密集型应用的性能，对于单个运算时无法提升的。</p>
+<p><b>流水线冒险</b><br>流水线有这样一种情况，在下一个时钟周期中下一条指令不能执行，这种情况称为冒险。一般有3种冒险情况：<br>1.结构冒险</p>
+<img src="/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/%E6%B5%81%E6%B0%B4%E7%BA%BF005.png" class="" title="流水线005">
+<p>即硬件不支持多条指令在同一时钟周期执行，主要因为缺乏硬件支持而导致指令不能在预定的时钟周期内执行的情况。比如多条指令同一时刻争用同一资源而形成的冲突。<br>一般有两种解决方法：<br>  1.前一指令访存时，使后一条相关指令(以及其后续指令)暂停一个时钟周期。<br>  2.单独设置数据存储器和指令存储器，使取数与取指操作各自在不同的存储器中进行。事实上，现在计算机都引入了cache机制，而L1 cache通常采用数据cache和<br>指令cache分离的方式，因而也就避免了资源冲突的发生。</p>
+<p>2.数据冒险</p>
+<img src="/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/%E6%B5%81%E6%B0%B4%E7%BA%BF006.png" class="" title="流水线006"><img src="/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/%E6%B5%81%E6%B0%B4%E7%BA%BF007.png" class="" title="流水线007">
+<img src="/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/%E6%B5%81%E6%B0%B4%E7%BA%BF008.png" class="" title="流水线008"><img src="/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/%E6%B5%81%E6%B0%B4%E7%BA%BF009.png" class="" title="流水线009"><img src="/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/%E6%B5%81%E6%B0%B4%E7%BA%BF010.png" class="" title="流水线010">
+<p>在一个程序中，吓一跳指令会用到当前指令计算的结果，此时这两条指令发生数据冲突。当多条指令重叠处理时就会发生冲突，数据冒险可分为三类：<br>  1.写后读相关：表示当前指令将数据写入寄存器后，下一条指令才能从该寄存器读取数据。否则，先读后写，读到的就是错误（旧）数据。<br>  2.读后写相关：表示当前指令读出数据后，下一条指令才能写该寄存器。否则，先写后读，读到的就是错误（新）的数据。<br>  3.写后写相关：表示当前指令写入寄存器后，下一条指令才能写该寄存器，否则，下一条指令在当前指令之前写将使寄存器的值不是最新值。<br>解决的办法：<br>  1.把遇到数据相关的指令及其后续指令都暂停一至几个时钟周期，直到数据相关问题消失后再继续执行，可以分为硬件阻塞(stall)与软件插入“NOP”指令两种方法。<br>  2.设置相关专用通路，即不等前一条指令把计算结果写回寄存器组，下一条指令也不再读寄存器组，而直接把前一条指令的ALU的计算结果作为自己额输入数据开始<br>  计算过程，使本来需要暂停的操作变得可以继续执行，这称为数据旁路技术。<br>  3.通过编译器对数据相关的指令编译优化的方法，调整指令顺序来解决数据相关。（有点像以前学的指令重排技术，百度搜索一下就知道了）</p>
+<p>3.控制冒险</p>
+<img src="/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/%E6%B5%81%E6%B0%B4%E7%BA%BF011.png" class="" title="流水线011">
+<p>指令通常是顺序执行的，但是在遇到改变指令执行顺序的情况，例如执行转移，调用或者返回等指令时，会改变PC值，会造成断流，从而引起控制冒险。<br>解决办法：<br>  1.对转移指令进行分支预测，尽早生存转移目标地址。分支预测分为简单（静态）预测与动态预测。静态预测总是预测条件不满足，即继续执行分支指令的后续<br>指令。动态预测根据程序执行的历史情况，进行动态预测调整，有较高的预测准确率。<br>  2.预取转移成功和不成功两个控制流方向上的目标指令。<br>  3.加快和提前形成条件码。<br>  4.提高转移方向的猜准率。<br><b>注意：</b>Cache缺失的处理过程也会引起流水线阻塞。在不过多增加硬件成本的情况下，如何尽可能的提高指令流水线的运行效率时选用指令流水线技术必须解决的问题。<br><b>流水线的基本实现</b><br>在单周期实现中，这5个功能段时串在一起的，如下图，将程序计数器（PC）的值送入IF段指令，然后依次进入ID,EX,MEM,WB段。虽然不是所有指令都必须经历<br>完整的5个阶段，但是只能以那个速度最慢的指令作为设计其时钟周期的依据，单周期CPU的时钟周期频率取决于数据通路中的关键路径即最长路径，因此单周期CPU<br>指令执行效率不佳。</p>
+<img src="/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/%E6%B5%81%E6%B0%B4%E7%BA%BF003.png" class="" title="流水线003">
+
+
+
+<p><b></b><br><b></b><br><b></b><br><b></b><br><b></b><br><b></b><br><b></b><br><b></b><br><b></b><br><b></b><br><b></b></p>
+
+<p><label style="color:red"></label></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>shymakers
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://www.wzljava.xyz/2022/02/03/%E5%88%9D%E8%AF%86%E6%B5%81%E6%B0%B4%E7%BA%BF%E6%8A%80%E6%9C%AF/" title="初识流水线技术">http://www.wzljava.xyz/2022/02/03/初识流水线技术/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E4%B8%8E%E8%AE%BE%E8%AE%A1/" rel="tag"># 计算机组成与设计</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/01/28/UVM%E3%81%AEreport%E6%9C%BA%E5%88%B6/" rel="prev" title="UVMのreport机制">
+                  <i class="fa fa-chevron-left"></i> UVMのreport机制
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/03/02/DMA/" rel="next" title="DMA">
+                  DMA <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments" id="lv-container" data-id="city" data-uid="MTAyMC8zNDM0OC8xMDg4NQ=="></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wzl</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+<script src="/js/third-party/comments/livere.js"></script>
+
+</body>
+</html>
