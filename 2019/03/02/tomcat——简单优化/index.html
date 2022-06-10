@@ -17,12 +17,12 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"www.wzljava.xyz","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.wzlic.xyz","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.11.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"livere","storage":true,"lazyload":false,"nav":null,"activeClass":"livere"},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="当一个进程有500个线程在跑的话，性能就很低了。tomcat默认配置的最大请求数是150，当然可以继续将其改大但是并不是越大越好，到底配置多少才是最合适的？当然这些也跟硬件有很大关系。禁用ajp服务是否会提高性能?">
 <meta property="og:type" content="article">
 <meta property="og:title" content="tomcat——简单优化">
-<meta property="og:url" content="http://www.wzljava.xyz/2019/03/02/tomcat%E2%80%94%E2%80%94%E7%AE%80%E5%8D%95%E4%BC%98%E5%8C%96/index.html">
+<meta property="og:url" content="http://www.wzlic.xyz/2019/03/02/tomcat%E2%80%94%E2%80%94%E7%AE%80%E5%8D%95%E4%BC%98%E5%8C%96/index.html">
 <meta property="og:site_name" content="small love">
 <meta property="og:description" content="当一个进程有500个线程在跑的话，性能就很低了。tomcat默认配置的最大请求数是150，当然可以继续将其改大但是并不是越大越好，到底配置多少才是最合适的？当然这些也跟硬件有很大关系。禁用ajp服务是否会提高性能?">
 <meta property="og:locale" content="zh_CN">
@@ -33,11 +33,11 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://www.wzljava.xyz/2019/03/02/tomcat%E2%80%94%E2%80%94%E7%AE%80%E5%8D%95%E4%BC%98%E5%8C%96/">
+<link rel="canonical" href="http://www.wzlic.xyz/2019/03/02/tomcat%E2%80%94%E2%80%94%E7%AE%80%E5%8D%95%E4%BC%98%E5%8C%96/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.wzljava.xyz/2019/03/02/tomcat%E2%80%94%E2%80%94%E7%AE%80%E5%8D%95%E4%BC%98%E5%8C%96/","path":"2019/03/02/tomcat——简单优化/","title":"tomcat——简单优化"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.wzlic.xyz/2019/03/02/tomcat%E2%80%94%E2%80%94%E7%AE%80%E5%8D%95%E4%BC%98%E5%8C%96/","path":"2019/03/02/tomcat——简单优化/","title":"tomcat——简单优化"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>tomcat——简单优化 | small love</title>
@@ -183,7 +183,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.wzljava.xyz/2019/03/02/tomcat%E2%80%94%E2%80%94%E7%AE%80%E5%8D%95%E4%BC%98%E5%8C%96/">
+    <link itemprop="mainEntityOfPage" href="http://www.wzlic.xyz/2019/03/02/tomcat%E2%80%94%E2%80%94%E7%AE%80%E5%8D%95%E4%BC%98%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -255,7 +255,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://www.wzljava.xyz/2019/03/02/tomcat%E2%80%94%E2%80%94%E7%AE%80%E5%8D%95%E4%BC%98%E5%8C%96/" title="tomcat——简单优化">http://www.wzljava.xyz/2019/03/02/tomcat——简单优化/</a>
+      <a href="http://www.wzlic.xyz/2019/03/02/tomcat%E2%80%94%E2%80%94%E7%AE%80%E5%8D%95%E4%BC%98%E5%8C%96/" title="tomcat——简单优化">http://www.wzlic.xyz/2019/03/02/tomcat——简单优化/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
