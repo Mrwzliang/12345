@@ -33,8 +33,14 @@
 <meta property="og:image" content="http://www.wzlic.xyz/2022/05/05/config-db%E6%9C%BA%E5%88%B6/config_db005.png">
 <meta property="og:image" content="http://www.wzlic.xyz/2022/05/05/config-db%E6%9C%BA%E5%88%B6/config_db006.png">
 <meta property="og:image" content="http://www.wzlic.xyz/2022/05/05/config-db%E6%9C%BA%E5%88%B6/config_db007.png">
+<meta property="og:image" content="http://www.wzlic.xyz/2022/05/05/config-db%E6%9C%BA%E5%88%B6/config_db008.png">
+<meta property="og:image" content="http://www.wzlic.xyz/2022/05/05/config-db%E6%9C%BA%E5%88%B6/config_db009.png">
+<meta property="og:image" content="http://www.wzlic.xyz/2022/05/05/config-db%E6%9C%BA%E5%88%B6/config_db010.png">
+<meta property="og:image" content="http://www.wzlic.xyz/2022/05/05/config-db%E6%9C%BA%E5%88%B6/config_db010.png">
+<meta property="og:image" content="http://www.wzlic.xyz/2022/05/05/config-db%E6%9C%BA%E5%88%B6/config_db010.png">
+<meta property="og:image" content="http://www.wzlic.xyz/2022/05/05/config-db%E6%9C%BA%E5%88%B6/config_db010.png">
 <meta property="article:published_time" content="2022-05-05T13:03:12.000Z">
-<meta property="article:modified_time" content="2022-07-06T02:37:16.962Z">
+<meta property="article:modified_time" content="2022-07-07T02:05:24.199Z">
 <meta property="article:author" content="shymakers">
 <meta property="article:tag" content="config_db机制">
 <meta name="twitter:card" content="summary">
@@ -263,6 +269,17 @@
 <p>检查这个资源是不是只读的，如果是只读的，那么是不能进行write操作的，从而给出出错提示，1636行调用record_write_acccess函数，这是在uvm_resource_base中定义的函数：</p>
 <img src="/2022/05/05/config-db%E6%9C%BA%E5%88%B6/config_db007.png" class="" title="config_db007">
 <p>这里就不详细总结这里了，回头可以自己看代码，主要功能就是记录config_db的一些信息用于记录资源访问时间，访问次数的机制，其对于整个resource_db机制并无太大影响。<br>回到write函数，1639行是这个函数的核心，它把输入的val值赋值给了val。从而经过write函数后，这个uvm_resource#(T)的实例中val值被设置了，<br>再加上此前的scope和precedence在new的时候被设置，加入uvm_resource_pool的条件都满足了，因此可以加入到uvm_resource_pool中了。</p>
+<p>下面看一下uvm_resource#(type T)的set函数基本逻辑：<br>先拿到全局的pool指针，再调用uvm_resource_pool的set函数，传入参数为this,uvm_resource_base 类型，</p>
+<img src="/2022/05/05/config-db%E6%9C%BA%E5%88%B6/config_db008.png" class="" title="config_db008">
+<img src="/2022/05/05/config-db%E6%9C%BA%E5%88%B6/config_db009.png" class="" title="config_db009">
+<img src="/2022/05/05/config-db%E6%9C%BA%E5%88%B6/config_db010.png" class="" title="config_db010">
+
+<p><b>uvm_config_db的write_by_name函数</b></p>
+<p><b>资源的读出：</b></p>
+<img src="/2022/05/05/config-db%E6%9C%BA%E5%88%B6/config_db010.png" class="" title="config_db015">
+<img src="/2022/05/05/config-db%E6%9C%BA%E5%88%B6/config_db010.png" class="" title="config_db016">
+<img src="/2022/05/05/config-db%E6%9C%BA%E5%88%B6/config_db010.png" class="" title="config_db017">
+<p>resource_db机制中，资源的读出是由uvm_resource_db类中的read_by_name和read_by_type完成的，这两个函数比较类似，先通过get_by_type或者get_by_name得到要读取的资源的指针，之后调用uvm_resource#(T)的read函数。<br>read函数比较简单：先调用record_read_access函数记录读取信息，之后直接返回val值。</p>
 
     </div>
 
