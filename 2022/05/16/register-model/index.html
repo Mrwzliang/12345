@@ -27,8 +27,11 @@
 <meta property="og:description" content="一丶基本数据结构1.uvm_reg_field最基本存储数据的单元，原型如下：">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://www.wzlic.xyz/2022/05/16/register-model/rg_model001.png">
+<meta property="og:image" content="http://www.wzlic.xyz/2022/05/16/register-model/rg_model002.png">
+<meta property="og:image" content="http://www.wzlic.xyz/2022/05/16/register-model/rg_model003.png">
+<meta property="og:image" content="http://www.wzlic.xyz/2022/05/16/register-model/rg_model004.png">
 <meta property="article:published_time" content="2022-05-16T12:26:57.000Z">
-<meta property="article:modified_time" content="2022-07-16T04:09:33.339Z">
+<meta property="article:modified_time" content="2022-07-16T08:08:57.429Z">
 <meta property="article:author" content="shymakers">
 <meta property="article:tag" content="register model">
 <meta name="twitter:card" content="summary">
@@ -237,10 +240,16 @@
     
     <div class="post-body" itemprop="articleBody">
         <p><b>一丶基本数据结构</b><br>1.uvm_reg_field最基本存储数据的单元，原型如下：</p>
+<span id="more"></span>
 <img src="/2022/05/16/register-model/rg_model001.png" class="" title="rg_model001">
-
-
-
+<p>uvm_reg_data_t类型：</p>
+<img src="/2022/05/16/register-model/rg_model002.png" class="" title="rg_model002">
+<p>我们可以通过改变这个宏的值来变更register  model所能表示的最大寄存器的值。<br>除了存放数据外，uvm_reg_field还有一些其它常用的成员变量：</p>
+<img src="/2022/05/16/register-model/rg_model003.png" class="" title="rg_model003">
+<p>大多数在白皮书已涉及，m_reset表示此uvm_reg_field复位后的值。注意的是，这里的m_reset是一个联合数组，<br>表示一个寄存器可以有多个复位值，如硬复位，软复位等。实际上，一般来说只会用到一种复位，<br>即硬复位。m_individeally_accessible表示此uvm_reg_field是否可以进行field级别的读写操作。<br>2.uvm_reg,相对独立的数据单元。virtual定义，即不能直接实例化，需要派生，派生过程也就是将field加入其中。</p>
+<img src="/2022/05/16/register-model/rg_model004.png" class="" title="rg_model004">
+<p>m_regfile_parent表示此reg所在m_reg_file的指针。<br>m_n_bits表示此寄存器的位数，m_n_used_bits表示此寄存器已经用了多少位。<br>m_n_bits一般为系统位宽，后者在不断add_field不断增加，超出前者会警告。<br>m_maps表示此寄存器所在的uvm_reg_map信息。这里也是一个联合数组的形式，表示一个寄存器可以位于多个uvm_reg_map中，但是一般说来，一个寄存器只属于一个uvm_reg_map中。<br>另外这里需要注意的是，这里虽然是一个联合数组，但是用到的仅仅是其索引。<br>uvm_reg_map用于统一的组织管理register model中寄存器的物理地址信息，当使用frontdoor操作时，会用到uvm_reg_map。<br>m_fields联合数组是uvm_reg中最核心的东西。它记录了加入到此uvm_reg中所有的uvm_reg_field的指针。<br>m_hdl_paths_pool用于存储此寄存器的backdoor操作时用到的路径信息。<br>uvm_object_string_pool前文已知是继承与uvm_pool的一个类，本质也是个联合数组，所以这里m_hdl_paths_pool是一个联合数组，<br>索引为string，内容是一个队列，而这个队列的索引为uvm_hdl_path_concat，而这个类中有register model中用于组织hdl路径信息的结构体。</p>
+<p><b>三丶reg的操作</b><br>reset操作：当一个register model被集成到验证平台后，必须进行reset操作，这样才能保证每个寄存器的值等于我们设置的初始值。</p>
 
     </div>
 
